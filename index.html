@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corporation2K4 :: Core System Interface</title>
-    <!-- Load Tailwind CSS for utility classes -->
+    <!-- Tailwind for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Three.js (latest stable) for 3D rendering -->
+    <!-- Three.js (latest stable) -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
-    <!-- Load OrbitControls for camera interaction -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/examples/js/controls/OrbitControls.min.js"></script>
     <style>
         :root {
@@ -17,163 +16,176 @@
             --color-terminal-blue: #1e90ff;
             --color-terminal-yellow: #FFD700;
             --color-terminal-white: #FFFFFF;
-            --color-dim-green: #006600;
+            --color-dim-green: #004400;
         }
 
         body {
             background-color: var(--color-background);
             color: var(--color-terminal-green);
             font-family: 'Fira Mono', 'Consolas', 'Courier New', monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            overflow-x: hidden;
-            padding: 10px;
+            padding: 0;
+            min-height: 100vh;
         }
-
         #app-container {
-            width: 100%;
-            max-width: 1400px;
-            height: calc(100vh - 80px);
-            display: flex;
-            flex-direction: column;
+            max-width: 1200px;
+            margin: 32px auto 0 auto;
+            background: #111;
+            border-radius: 18px;
             border: 3px solid var(--color-terminal-green);
-            box-shadow: 0 0 40px var(--color-terminal-green), inset 0 0 20px var(--color-dim-green);
-            position: relative;
-            background-color: #000000;
-        }
-        
-        #main-layout {
-            flex-grow: 1;
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
             display: flex;
             flex-direction: column;
         }
-        
-        @media (min-width: 768px) {
-            #main-layout {
-                flex-direction: row;
-            }
-        }
-
         #terminal-header {
             width: 100%;
-            padding: 12px;
+            padding: 18px 24px;
             background: linear-gradient(90deg, var(--color-dim-green) 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
             border-bottom: 3px solid var(--color-terminal-green);
             text-align: center;
             font-weight: bold;
             text-shadow: 0 0 8px var(--color-terminal-green);
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
-            flex-shrink: 0;
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #main-layout {
+            display: flex;
+            flex-direction: column;
+        }
+        @media (min-width: 1000px) {
+            #main-layout {
+                flex-direction: row;
+                min-height: 540px;
+                align-items: stretch;
+            }
         }
 
         #text-content {
-            padding: 24px 28px;
+            padding: 32px 36px;
+            background: #151819;
+            border-radius: 0 0 0 14px;
             border-right: 2px dashed var(--color-dim-green);
-            overflow-y: auto;
-            max-height: 50vh;
+            flex: 1 1 55%;
+            min-width: 340px;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
-        
-        @media (min-width: 768px) {
-             #text-content {
-                max-height: 100%;
-             }
+        @media (max-width: 1000px) {
+            #text-content {
+                border-radius: 0 0 14px 14px;
+                border-right: none;
+                border-bottom: 2px dashed var(--color-dim-green);
+                max-width: 100%;
+            }
         }
 
         #canvas-container {
-            flex-grow: 1;
-            min-height: 40vh;
-            border-top: 2px dashed var(--color-dim-green);
+            background: linear-gradient(135deg, #101010 80%, #191970 100%);
+            flex: 1 1 45%;
+            min-width: 310px;
+            min-height: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 0 0 14px 0;
+            position: relative;
+            overflow: hidden;
         }
-        
-        @media (min-width: 768px) {
-             #canvas-container {
-                min-height: 100%;
-                border-top: none;
-             }
+        @media (max-width: 1000px) {
+            #canvas-container {
+                border-radius: 0 0 14px 14px;
+                min-height: 280px;
+            }
         }
-
         canvas {
             display: block;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 450px;
+            max-height: 350px;
+            margin: auto;
             border-radius: 12px;
-            background: linear-gradient(135deg, #101010 80%, #191970 100%);
-            box-shadow: 0 0 24px #00ff0055;
+            background: transparent;
+            box-shadow: 0 0 18px #00ff0039;
         }
-
         h2 {
             color: var(--color-terminal-yellow);
             text-shadow: 0 0 7px var(--color-terminal-yellow);
-            margin-top: 36px;
+            margin-top: 30px;
             border-bottom: 1px solid var(--color-dim-green);
-            padding-bottom: 8px;
-            font-size: 1.65rem;
+            padding-bottom: 6px;
+            font-size: 1.35rem;
+            letter-spacing: 0.2px;
+            margin-bottom: 10px;
         }
-
         p {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             line-height: 1.7;
             color: var(--color-terminal-white);
         }
-        
         ul {
-            margin-bottom: 24px;
+            margin-bottom: 22px;
+            margin-top: 0;
         }
-
         li {
             padding: 4px 0;
-            line-height: 1.45;
+            line-height: 1.5;
         }
-
         #controls {
-            padding: 10px;
             display: flex;
-            gap: 15px;
-            margin-top: 14px;
-            flex-wrap: wrap;
+            gap: 18px;
+            margin: 18px auto 0 auto;
             justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 700px;
         }
-
         .demo-button {
-            padding: 10px 20px;
-            background-color: var(--color-background);
+            padding: 10px 22px;
+            background: #181818;
             border: 2px solid var(--color-terminal-green);
             color: var(--color-terminal-green);
             cursor: pointer;
             text-transform: uppercase;
-            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 8px var(--color-terminal-green);
-            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            transition: 
+                background 0.2s cubic-bezier(.4,0,.2,1),
+                color 0.2s cubic-bezier(.4,0,.2,1),
+                box-shadow 0.2s cubic-bezier(.4,0,.2,1);
+            box-shadow: 0 0 8px #00ff0038;
+            outline: none;
         }
-
         .demo-button:hover, .demo-button.active {
-            background: linear-gradient(90deg, var(--color-terminal-green) 60%, var(--color-terminal-yellow) 100%);
-            color: var(--color-background);
-            border-color: var(--color-terminal-white);
-            box-shadow: 0 0 24px var(--color-terminal-green);
+            background: linear-gradient(90deg, #00ff00 70%, #fffa70 100%);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 20px #00ff0090;
             font-weight: bold;
         }
-
         #message-box {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             padding: 32px;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.97);
             border: 3px solid var(--color-terminal-yellow);
             color: var(--color-terminal-yellow);
             box-shadow: 0 0 30px var(--color-terminal-yellow);
-            z-index: 100;
+            z-index: 200;
             display: none;
             text-align: center;
-            font-size: 1.2rem;
-            border-radius: 8px;
+            font-size: 1.17rem;
+            border-radius: 10px;
+            min-width: 240px;
         }
         .keyword {
             color: var(--color-terminal-green);
@@ -190,6 +202,22 @@
         .muted {
             color: var(--color-dim-green);
         }
+        /* Responsive box and button stacking */
+        @media (max-width: 760px) {
+            #app-container {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            #main-layout {
+                flex-direction: column;
+                min-height: unset;
+            }
+            #text-content, #canvas-container {
+                border-radius: 0;
+                padding: 22px 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -198,23 +226,20 @@
             Corporation2K4.github.io $ KERNEL BOOT SUCCESSFUL. INITIATING CORE INTERFACE 
             <span style="color: var(--color-terminal-yellow);">[STATUS: SECURE]</span>
         </div>
-        
         <div id="main-layout">
-            <!-- LEFT PANEL: TEXT CONTENT (Primary Focus) -->
-            <div id="text-content" class="md:w-1/2">
-                <p class="mt-4">
+            <!-- LEFT PANEL: TEXT CONTENT -->
+            <div id="text-content">
+                <p style="font-size:1.13rem;">
                     <span class="keyword">Welcome to the Corporation2K4 Core System Interface.</span> 
                     We specialize in advanced digital solutions, hardware logistics, and secure system mastery.
                 </p>
-
                 <h2>[SECTOR-ALPHA] Digital & Academic Development</h2>
-                <ul class="list-disc list-inside ml-4">
+                <ul class="list-disc pl-6">
                     <li><span class="keyword">Graphic Design & Artworks:</span> Branding, logo, poster, brochure, and all types of digital graphics.</li>
                     <li><span class="keyword">Website Development:</span> Full-stack web apps, custom platforms, and fast portfolio sites.</li>
                     <li><span class="highlight">Software & Data Services:</span> Custom software, deployment, and precise data entry.</li>
                     <li><span class="subtle">Academic Project Solutions:</span> <span style="color: var(--color-terminal-white);">BCA projects</span> with full documentation (physical & soft copy).</li>
                 </ul>
-
                 <h2>[SECTOR-BETA] Knowledge & System Engineering</h2>
                 <p>
                     <span class="subtle">Digital Repository Access:</span> Immediate digital delivery of <span style="color: var(--color-terminal-white);">courses and books</span> for learning and upskilling.
@@ -222,51 +247,44 @@
                 <p>
                     <span class="highlight">System Procurement:</span> We <span style="color: var(--color-terminal-white);">buy/sell cheap used & new laptops & computers</span> (assembled, branded, or by parts).
                 </p>
-                <ul class="list-disc list-inside ml-4">
+                <ul class="list-disc pl-6">
                     <li><span class="keyword">OS Installation & Setup:</span> Professional OS installs, dual-booting, and multi-platform configuration.</li>
                     <li><span class="keyword">Device Customization:</span> Mobile rooting, optimization, and advanced system tweaks.</li>
                 </ul>
-                
                 <h2>[SECTOR-GAMMA] Security & Advanced Operations</h2>
                 <p class="subtle">
                     <span style="color: var(--color-terminal-white);">Technical Specialization:</span> Our core expertise is rooted in advanced computing, including:
                 </p>
-                <ul class="list-disc list-inside ml-4">
+                <ul class="list-disc pl-6">
                     <li><span class="keyword">Mastery in Secure UNIX Environments:</span> Linux/ILUNX system architecture & command line.</li>
                     <li>Software Reverse Engineering (functionality analysis, audits).</li>
                     <li>Website Penetration Testing (ethical hacking & security audit reports).</li>
                 </ul>
-                
                 <h2>[SECTOR-DELTA] Commodity Brokerage</h2>
                 <p>
                     <span class="highlight">Rural Logistics & Brokering:</span> We are a trusted <span style="color: var(--color-terminal-white);">agent brokerage</span> for buyers and dealers of <span class="keyword">crops and agricultural commodities</span>. Secure your supply chain with us.
                 </p>
-                <p class="muted" style="margin-top: 30px;">
+                <p class="muted" style="margin-top: 26px;">
                     [INPUT REQUIRED] <span style="color: var(--color-terminal-white);">Visualize System Status:</span> Use the buttons below to interact with the 3D data-stream simulation.
                 </p>
             </div>
-            
-            <!-- RIGHT PANEL: 3D CANVAS (Secondary Focus) -->
-            <div id="canvas-container" class="md:w-1/2"></div>
+            <!-- RIGHT PANEL: 3D CANVAS -->
+            <div id="canvas-container"></div>
         </div>
     </div>
-
     <div id="controls">
         <button class="demo-button active" data-demo="1">Demo 1: Green Matrix Cube</button>
         <button class="demo-button" data-demo="2">Demo 2: Blue Data Pulse</button>
         <button class="demo-button" data-demo="3">Demo 3: Yellow Hyperspace</button>
     </div>
-
     <div id="message-box">
         <p id="message-text"></p>
         <button class="demo-button mt-4" onclick="closeMessage()">[ACKNOWLEDGE]</button>
     </div>
-
     <script>
         let scene, camera, renderer, controls;
         let currentDemo = 1;
         let objects = [];
-
         function showMessage(text) {
             document.getElementById('message-text').innerText = text;
             document.getElementById('message-box').style.display = 'block';
@@ -274,19 +292,19 @@
         function closeMessage() {
             document.getElementById('message-box').style.display = 'none';
         }
-
         function init() {
             const container = document.getElementById('canvas-container');
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x000000);
+            scene.background = null;
             camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.z = 5;
+            camera.position.set(0, 0, 5);
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setClearAlpha(0);
             container.appendChild(renderer.domElement);
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
-            controls.dampingFactor = 0.06;
+            controls.dampingFactor = 0.07;
             controls.enablePan = false;
             controls.maxDistance = 12;
             controls.target.set(0, 0, 0);
@@ -294,7 +312,6 @@
             window.addEventListener('resize', onWindowResize, false);
             loadDemo(currentDemo);
         }
-
         function onWindowResize() {
             const container = document.getElementById('canvas-container');
             if (container.clientWidth > 0 && container.clientHeight > 0) {
@@ -303,7 +320,6 @@
                 renderer.setSize(container.clientWidth, container.clientHeight);
             }
         }
-
         function clearScene() {
             objects.forEach(obj => {
                 scene.remove(obj);
@@ -318,17 +334,18 @@
             });
             objects = [];
         }
-
-        // Demo 1: The Matrix Cube (Green/White)
+        // Demo 1: Matrix Cube
         function setupDemo1() {
-            const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+            // Central Cube
+            const geometry = new THREE.BoxGeometry(1.6, 1.6, 1.6);
             const material = new THREE.MeshBasicMaterial({ color: 0x00FF00, wireframe: true });
             const cube = new THREE.Mesh(geometry, material);
             scene.add(cube);
             objects.push(cube);
-            const gridSize = 8;
-            const cubeSize = 0.12;
-            const gap = 0.7;
+            // 3D Grid
+            const gridSize = 7;
+            const cubeSize = 0.13;
+            const gap = 0.8;
             const whiteMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
             for (let x = -gridSize / 2; x < gridSize / 2; x += gap) {
                 for (let y = -gridSize / 2; y < gridSize / 2; y += gap) {
@@ -344,31 +361,30 @@
         function animateDemo1(time) {
             const centralCube = objects[0];
             if (centralCube) {
-                centralCube.rotation.x = time * 0.0006;
-                centralCube.rotation.y = time * 0.0012;
+                centralCube.rotation.x = time * 0.0007;
+                centralCube.rotation.y = time * 0.0013;
             }
             for (let i = 1; i < objects.length; i++) {
-                objects[i].material.opacity = Math.sin(time * 0.0008 + i) * 0.09 + 0.5; 
+                objects[i].material.opacity = Math.sin(time * 0.001 + i) * 0.08 + 0.4; 
                 objects[i].material.transparent = true;
             }
         }
-
-        // Demo 2: Blue Data Pulse (Blue/Yellow)
+        // Demo 2: Blue Data Pulse
         function setupDemo2() {
             const sphereGeometry = new THREE.SphereGeometry(1, 16, 16);
             const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x1e90ff, wireframe: true, transparent: true, opacity: 0.8 });
             const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
             scene.add(sphere);
             objects.push(sphere);
-            const particleCount = 100;
+            const particleCount = 90;
             const particleGeometry = new THREE.TetrahedronGeometry(0.13);
             const particleMaterial = new THREE.MeshBasicMaterial({ color: 0xFFD700 });
             for (let i = 0; i < particleCount; i++) {
                 const particle = new THREE.Mesh(particleGeometry, particleMaterial);
                 particle.position.set(
-                    (Math.random() - 0.5) * 7,
-                    (Math.random() - 0.5) * 7,
-                    (Math.random() - 0.5) * 7
+                    (Math.random() - 0.5) * 6.5,
+                    (Math.random() - 0.5) * 6.5,
+                    (Math.random() - 0.5) * 6.5
                 );
                 particle.userData.initialPos = particle.position.clone();
                 scene.add(particle);
@@ -378,18 +394,17 @@
         function animateDemo2(time) {
             const sphere = objects[0];
             if (sphere) {
-                const scale = 1 + Math.sin(time * 0.001) * 0.13;
+                const scale = 1 + Math.sin(time * 0.001) * 0.12;
                 sphere.scale.set(scale, scale, scale);
                 sphere.rotation.y += 0.008;
             }
-            const amplitude = 1.1;
+            const amplitude = 1.05;
             for (let i = 1; i < objects.length; i++) {
                 const particle = objects[i];
                 particle.position.x = particle.userData.initialPos.x + Math.sin(time * 0.001 + i * 0.1) * amplitude;
-                particle.position.y = particle.userData.initialPos.y + Math.cos(time * 0.0014 + i * 0.13) * amplitude;
+                particle.position.y = particle.userData.initialPos.y + Math.cos(time * 0.0013 + i * 0.15) * amplitude;
             }
         }
-
         // Demo 3: Yellow Hyperspace
         function setupDemo3() {
             const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 14);
@@ -397,55 +412,40 @@
             const torusKnot = new THREE.Mesh(geometry, material);
             scene.add(torusKnot);
             objects.push(torusKnot);
-            const gridHelper = new THREE.GridHelper(16, 16, 0x00FF00, 0x006600);
+            const gridHelper = new THREE.GridHelper(13, 13, 0x00FF00, 0x004400);
             scene.add(gridHelper);
             objects.push(gridHelper);
         }
         function animateDemo3(time) {
             const torusKnot = objects[0];
             if (torusKnot) {
-                torusKnot.rotation.x = time * 0.0004;
-                torusKnot.rotation.y = time * 0.0007;
-                torusKnot.rotation.z = time * 0.001;
+                torusKnot.rotation.x = time * 0.00042;
+                torusKnot.rotation.y = time * 0.00068;
+                torusKnot.rotation.z = time * 0.00093;
             }
         }
-
         let animationFrameId;
         function animate(time) {
             animationFrameId = requestAnimationFrame(animate);
             switch(currentDemo) {
-                case 1:
-                    animateDemo1(time);
-                    break;
-                case 2:
-                    animateDemo2(time);
-                    break;
-                case 3:
-                    animateDemo3(time);
-                    break;
+                case 1: animateDemo1(time); break;
+                case 2: animateDemo2(time); break;
+                case 3: animateDemo3(time); break;
             }
             controls.update();
             renderer.render(scene, camera);
         }
         function loadDemo(demoId) {
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-            }
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
             clearScene();
             currentDemo = demoId;
             camera.position.set(0, 0, 5);
             controls.target.set(0, 0, 0);
             controls.update();
             switch(demoId) {
-                case 1:
-                    setupDemo1();
-                    break;
-                case 2:
-                    setupDemo2();
-                    break;
-                case 3:
-                    setupDemo3();
-                    break;
+                case 1: setupDemo1(); break;
+                case 2: setupDemo2(); break;
+                case 3: setupDemo3(); break;
                 default:
                     showMessage(`[ERROR] Demo ${demoId} not found. Loading default.`);
                     setupDemo1();
@@ -455,24 +455,18 @@
             animate(0); 
             document.querySelectorAll('.demo-button').forEach(btn => {
                 btn.classList.remove('active');
-                if (parseInt(btn.dataset.demo) === demoId) {
-                    btn.classList.add('active');
-                }
+                if (parseInt(btn.dataset.demo) === demoId) btn.classList.add('active');
             });
         }
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('controls').addEventListener('click', (e) => {
                 if (e.target.classList.contains('demo-button')) {
                     const demoId = parseInt(e.target.dataset.demo);
-                    if (demoId !== currentDemo) {
-                        loadDemo(demoId);
-                    }
+                    if (demoId !== currentDemo) loadDemo(demoId);
                 }
             });
         });
-        window.onload = function () {
-            init();
-        }
+        window.onload = function () { init(); }
     </script>
 </body>
 </html>
