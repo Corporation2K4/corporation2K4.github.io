@@ -2,291 +2,477 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Corporation2K4's Page</title>
-    <!-- Import Three.js for 3D effects -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporation2K4 :: Core System Interface</title>
+    <!-- Load Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Three.js (latest stable) for 3D rendering -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
-    <!-- Import OrbitControls for 3D interaction -->
+    <!-- Load OrbitControls for camera interaction -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/examples/js/controls/OrbitControls.min.js"></script>
     <style>
         :root {
-            /* Linux shell color palette */
-            --shell-green: #00ff00;
-            --shell-black: #181818;
-            --shell-white: #ffffff;
-            --shell-blue: #1e90ff;
-            --shell-yellow: #ffd700;
-            --shell-grey: #2c2c2c;
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #006600;
         }
 
         body {
-            margin: 0;
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
             font-family: 'Fira Mono', 'Consolas', 'Courier New', monospace;
-            background: var(--shell-black);
-            color: var(--shell-green);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+            padding: 10px;
         }
 
-        .theme-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10;
-        }
-        .theme-btn {
-            background: var(--shell-grey);
-            color: var(--shell-yellow);
-            border: none;
-            margin: 0 4px;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .theme-btn.active {
-            background: var(--shell-green);
-            color: var(--shell-black);
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 60px 20px 20px 20px;
-        }
-
-        h1 {
-            color: var(--shell-white);
-            font-size: 2.5rem;
-            text-shadow: 0 0 6px var(--shell-green);
-            margin-bottom: 20px;
-        }
-        h2 {
-            color: var(--shell-yellow);
-            margin-top: 40px;
-            margin-bottom: 12px;
-            font-size: 1.6rem;
-            letter-spacing: 2px;
-        }
-        .service-list {
-            margin-bottom: 35px;
-        }
-        .service {
-            background: var(--shell-grey);
-            color: var(--shell-green);
-            border-left: 6px solid var(--shell-blue);
-            margin: 16px 0;
-            padding: 18px 28px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px #000c  ;
-            transition: border 0.25s, box-shadow 0.2s;
-        }
-        .service:hover {
-            border-left: 6px solid var(--shell-yellow);
-            box-shadow: 0 0 12px var(--shell-blue);
-        }
-
-        .contact {
-            margin-top: 44px;
-            padding: 18px 28px;
-            background: var(--shell-blue);
-            color: var(--shell-black);
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .three-container {
+        #app-container {
             width: 100%;
-            height: 350px;
-            margin: 42px 0 24px 0;
-            border-radius: 16px;
-            overflow: hidden;
-            background: linear-gradient(135deg, var(--shell-black) 60%, var(--shell-blue) 100%);
+            max-width: 1400px;
+            height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), inset 0 0 20px var(--color-dim-green);
+            position: relative;
+            background-color: #000000;
+        }
+        
+        #main-layout {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (min-width: 768px) {
+            #main-layout {
+                flex-direction: row;
+            }
+        }
+
+        #terminal-header {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--color-dim-green) 80%, var(--color-terminal-blue) 100%);
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+
+        #text-content {
+            padding: 24px 28px;
+            border-right: 2px dashed var(--color-dim-green);
+            overflow-y: auto;
+            max-height: 50vh;
+        }
+        
+        @media (min-width: 768px) {
+             #text-content {
+                max-height: 100%;
+             }
+        }
+
+        #canvas-container {
+            flex-grow: 1;
+            min-height: 40vh;
+            border-top: 2px dashed var(--color-dim-green);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 18px #0008;
+        }
+        
+        @media (min-width: 768px) {
+             #canvas-container {
+                min-height: 100%;
+                border-top: none;
+             }
         }
 
-        /* Theme variations */
-        body.theme-demo1 {
-            background: var(--shell-black);
-            color: var(--shell-green);
+        canvas {
+            display: block;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #101010 80%, #191970 100%);
+            box-shadow: 0 0 24px #00ff0055;
         }
-        body.theme-demo2 {
-            background: var(--shell-blue);
-            color: var(--shell-yellow);
+
+        h2 {
+            color: var(--color-terminal-yellow);
+            text-shadow: 0 0 7px var(--color-terminal-yellow);
+            margin-top: 36px;
+            border-bottom: 1px solid var(--color-dim-green);
+            padding-bottom: 8px;
+            font-size: 1.65rem;
         }
-        body.theme-demo2 .service {
-            background: var(--shell-white);
-            color: var(--shell-blue);
-            border-left: 6px solid var(--shell-green);
+
+        p {
+            margin-bottom: 18px;
+            line-height: 1.7;
+            color: var(--color-terminal-white);
         }
-        body.theme-demo2 h1 {
-            color: var(--shell-black);
-            text-shadow: 0 0 8px var(--shell-yellow);
+        
+        ul {
+            margin-bottom: 24px;
         }
-        body.theme-demo3 {
-            background: var(--shell-grey);
-            color: var(--shell-yellow);
+
+        li {
+            padding: 4px 0;
+            line-height: 1.45;
         }
-        body.theme-demo3 .service {
-            background: var(--shell-black);
-            color: var(--shell-green);
-            border-left: 6px solid var(--shell-yellow);
+
+        #controls {
+            padding: 10px;
+            display: flex;
+            gap: 15px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        body.theme-demo3 h1 {
-            color: var(--shell-yellow);
-            text-shadow: 0 0 8px var(--shell-blue);
+
+        .demo-button {
+            padding: 10px 20px;
+            background-color: var(--color-background);
+            border: 2px solid var(--color-terminal-green);
+            color: var(--color-terminal-green);
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 8px var(--color-terminal-green);
+            border-radius: 4px;
+        }
+
+        .demo-button:hover, .demo-button.active {
+            background: linear-gradient(90deg, var(--color-terminal-green) 60%, var(--color-terminal-yellow) 100%);
+            color: var(--color-background);
+            border-color: var(--color-terminal-white);
+            box-shadow: 0 0 24px var(--color-terminal-green);
+            font-weight: bold;
+        }
+
+        #message-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 32px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 3px solid var(--color-terminal-yellow);
+            color: var(--color-terminal-yellow);
+            box-shadow: 0 0 30px var(--color-terminal-yellow);
+            z-index: 100;
+            display: none;
+            text-align: center;
+            font-size: 1.2rem;
+            border-radius: 8px;
+        }
+        .keyword {
+            color: var(--color-terminal-green);
+            font-weight: bold;
+        }
+        .subtle {
+            color: var(--color-terminal-blue);
+            font-style: italic;
+        }
+        .highlight {
+            color: var(--color-terminal-yellow);
+            font-weight: bold;
+        }
+        .muted {
+            color: var(--color-dim-green);
         }
     </style>
 </head>
-<body class="theme-demo1">
-    <div class="theme-switcher">
-        <button class="theme-btn active" data-theme="demo1">Demo 1</button>
-        <button class="theme-btn" data-theme="demo2">Demo 2</button>
-        <button class="theme-btn" data-theme="demo3">Demo 3</button>
-    </div>
-    <div class="container">
-        <h1>Welcome to Corporation2K4!</h1>
-        <div class="three-container" id="three-canvas"></div>
-        <p>
-            <span style="color: var(--shell-green); font-size:1.1em;">Official services powered by expertise in Linux, software, and digital solutions.<br>
-            Your trusted partner for all things tech, design, hardware, and more.</span>
-        </p>
-
-        <h2>Our Core Services</h2>
-        <div class="service-list">
-            <div class="service">
-                <b>Graphic Design</b>: Professional logo, poster, brochure, and digital graphics for your brand or business.
-            </div>
-            <div class="service">
-                <b>Website Development</b>: Modern, responsive websites for personal, business, or e-commerce needs.
-            </div>
-            <div class="service">
-                <b>Data Entry Service</b>: Accurate and confidential data entry for businesses and individuals.
-            </div>
-            <div class="service">
-                <b>BCA Projects</b>: Complete project solutions for BCA students, including physical and soft copy reports.
-            </div>
-            <div class="service">
-                <b>Software Services</b>: Custom software development, installation, troubleshooting, and updates.
-            </div>
-            <div class="service">
-                <b>Digital Courses & Books</b>: Access to a wide range of courses and e-books for learning and upskilling.
-            </div>
-            <div class="service">
-                <b>Rural Brokerage</b>: Connecting buyers and sellers of agricultural products and rural goods as trusted agents.
-            </div>
-            <div class="service">
-                <b>Mobile Rooting & OS Installation</b>: Unlock the full potential of your devices with expert rooting and OS installs.
-            </div>
-            <div class="service">
-                <b>Hardware Sales & Service</b>: Buy/sell new and used laptops, computers, components—assembled or by parts.
-            </div>
-            <div class="service">
-                <b>Academic Services</b>: Facilitation for obtaining 10th and 12th results, with guaranteed confidentiality.
-            </div>
-            <div class="service">
-                <b>Reverse Engineering & Penetration Testing</b>: Security audits, reverse engineering, and penetration testing for websites and software.
-            </div>
-            <div class="service">
-                <b>Linux Mastery & Advanced Support</b>: Expert help for Linux users, from installation to advanced troubleshooting.
-            </div>
-            <div class="service">
-                <b>All Graphic Works & More</b>: From banners to business cards—if you imagine it, we create it.
-            </div>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4.github.io $ KERNEL BOOT SUCCESSFUL. INITIATING CORE INTERFACE 
+            <span style="color: var(--color-terminal-yellow);">[STATUS: SECURE]</span>
         </div>
+        
+        <div id="main-layout">
+            <!-- LEFT PANEL: TEXT CONTENT (Primary Focus) -->
+            <div id="text-content" class="md:w-1/2">
+                <p class="mt-4">
+                    <span class="keyword">Welcome to the Corporation2K4 Core System Interface.</span> 
+                    We specialize in advanced digital solutions, hardware logistics, and secure system mastery.
+                </p>
 
-        <div class="contact">
-            <b>Interested in any service listed above or want to know more?</b><br>
-            <span style="color: var(--shell-white);">Contact us now: <a href="mailto:corporation2k4@example.com" style="color:var(--shell-black); font-weight:bold; text-decoration:underline;">corporation2k4@example.com</a>
-            <br>
-            <span style="color:var(--shell-yellow);">We use neuromarketing techniques to ensure you remember us!</span>
-            </span>
+                <h2>[SECTOR-ALPHA] Digital & Academic Development</h2>
+                <ul class="list-disc list-inside ml-4">
+                    <li><span class="keyword">Graphic Design & Artworks:</span> Branding, logo, poster, brochure, and all types of digital graphics.</li>
+                    <li><span class="keyword">Website Development:</span> Full-stack web apps, custom platforms, and fast portfolio sites.</li>
+                    <li><span class="highlight">Software & Data Services:</span> Custom software, deployment, and precise data entry.</li>
+                    <li><span class="subtle">Academic Project Solutions:</span> <span style="color: var(--color-terminal-white);">BCA projects</span> with full documentation (physical & soft copy).</li>
+                </ul>
+
+                <h2>[SECTOR-BETA] Knowledge & System Engineering</h2>
+                <p>
+                    <span class="subtle">Digital Repository Access:</span> Immediate digital delivery of <span style="color: var(--color-terminal-white);">courses and books</span> for learning and upskilling.
+                </p>
+                <p>
+                    <span class="highlight">System Procurement:</span> We <span style="color: var(--color-terminal-white);">buy/sell cheap used & new laptops & computers</span> (assembled, branded, or by parts).
+                </p>
+                <ul class="list-disc list-inside ml-4">
+                    <li><span class="keyword">OS Installation & Setup:</span> Professional OS installs, dual-booting, and multi-platform configuration.</li>
+                    <li><span class="keyword">Device Customization:</span> Mobile rooting, optimization, and advanced system tweaks.</li>
+                </ul>
+                
+                <h2>[SECTOR-GAMMA] Security & Advanced Operations</h2>
+                <p class="subtle">
+                    <span style="color: var(--color-terminal-white);">Technical Specialization:</span> Our core expertise is rooted in advanced computing, including:
+                </p>
+                <ul class="list-disc list-inside ml-4">
+                    <li><span class="keyword">Mastery in Secure UNIX Environments:</span> Linux/ILUNX system architecture & command line.</li>
+                    <li>Software Reverse Engineering (functionality analysis, audits).</li>
+                    <li>Website Penetration Testing (ethical hacking & security audit reports).</li>
+                </ul>
+                
+                <h2>[SECTOR-DELTA] Commodity Brokerage</h2>
+                <p>
+                    <span class="highlight">Rural Logistics & Brokering:</span> We are a trusted <span style="color: var(--color-terminal-white);">agent brokerage</span> for buyers and dealers of <span class="keyword">crops and agricultural commodities</span>. Secure your supply chain with us.
+                </p>
+                <p class="muted" style="margin-top: 30px;">
+                    [INPUT REQUIRED] <span style="color: var(--color-terminal-white);">Visualize System Status:</span> Use the buttons below to interact with the 3D data-stream simulation.
+                </p>
+            </div>
+            
+            <!-- RIGHT PANEL: 3D CANVAS (Secondary Focus) -->
+            <div id="canvas-container" class="md:w-1/2"></div>
         </div>
     </div>
+
+    <div id="controls">
+        <button class="demo-button active" data-demo="1">Demo 1: Green Matrix Cube</button>
+        <button class="demo-button" data-demo="2">Demo 2: Blue Data Pulse</button>
+        <button class="demo-button" data-demo="3">Demo 3: Yellow Hyperspace</button>
+    </div>
+
+    <div id="message-box">
+        <p id="message-text"></p>
+        <button class="demo-button mt-4" onclick="closeMessage()">[ACKNOWLEDGE]</button>
+    </div>
+
     <script>
-        // Theme switcher logic
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.onclick = function() {
-                document.body.className = 'theme-' + btn.dataset.theme;
-                document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            };
-        });
+        let scene, camera, renderer, controls;
+        let currentDemo = 1;
+        let objects = [];
 
-        // 3D Linux-inspired terminal cube using Three.js
-        let scene, camera, renderer, cube, controls, animateId;
-        function init3D() {
-            const container = document.getElementById('three-canvas');
-            const width = container.offsetWidth;
-            const height = container.offsetHeight;
+        function showMessage(text) {
+            document.getElementById('message-text').innerText = text;
+            document.getElementById('message-box').style.display = 'block';
+        }
+        function closeMessage() {
+            document.getElementById('message-box').style.display = 'none';
+        }
 
+        function init() {
+            const container = document.getElementById('canvas-container');
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
-            camera.position.set(1.7, 1.5, 3);
-
+            scene.background = new THREE.Color(0x000000);
+            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 5;
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(width, height);
+            renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
-
-            // Cube with shell colors
-            const materials = [
-                new THREE.MeshBasicMaterial({ color: "#00ff00" }), // green
-                new THREE.MeshBasicMaterial({ color: "#1e90ff" }), // blue
-                new THREE.MeshBasicMaterial({ color: "#ffd700" }), // yellow
-                new THREE.MeshBasicMaterial({ color: "#ffffff" }), // white
-                new THREE.MeshBasicMaterial({ color: "#181818" }), // black
-                new THREE.MeshBasicMaterial({ color: "#2c2c2c" }), // grey
-            ];
-            const geometry = new THREE.BoxGeometry(1, 1, 1);
-            cube = new THREE.Mesh(geometry, materials);
-            scene.add(cube);
-
-            // Light
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-            scene.add(ambientLight);
-
-            // Orbit controls
             controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableZoom = false;
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.06;
             controls.enablePan = false;
-            controls.autoRotate = true;
-            controls.autoRotateSpeed = 2;
+            controls.maxDistance = 12;
+            controls.target.set(0, 0, 0);
+            controls.update();
+            window.addEventListener('resize', onWindowResize, false);
+            loadDemo(currentDemo);
+        }
 
-            // Add some text on top (simulated command line)
-            const loader = new THREE.TextureLoader();
-            loader.load('https://dummyimage.com/512x64/181818/00ff00&text=corp2k4@linux:~$', function(texture) {
-                const planeGeo = new THREE.PlaneGeometry(1.4, 0.18);
-                const planeMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-                const plane = new THREE.Mesh(planeGeo, planeMat);
-                plane.position.set(0, 0.7, 0.51);
-                cube.add(plane);
-            });
-
-            // Render loop
-            function animate() {
-                animateId = requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
+        function onWindowResize() {
+            const container = document.getElementById('canvas-container');
+            if (container.clientWidth > 0 && container.clientHeight > 0) {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
             }
-            animate();
         }
 
-        // Responsive canvas
-        function resize3D() {
-            if(!renderer) return;
-            const container = document.getElementById('three-canvas');
-            const width = container.offsetWidth;
-            const height = container.offsetHeight;
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
+        function clearScene() {
+            objects.forEach(obj => {
+                scene.remove(obj);
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) {
+                    if (Array.isArray(obj.material)) {
+                        obj.material.forEach(m => m.dispose());
+                    } else {
+                        obj.material.dispose();
+                    }
+                }
+            });
+            objects = [];
         }
-        window.addEventListener('resize', resize3D);
 
-        document.addEventListener('DOMContentLoaded', init3D);
+        // Demo 1: The Matrix Cube (Green/White)
+        function setupDemo1() {
+            const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00FF00, wireframe: true });
+            const cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+            objects.push(cube);
+            const gridSize = 8;
+            const cubeSize = 0.12;
+            const gap = 0.7;
+            const whiteMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+            for (let x = -gridSize / 2; x < gridSize / 2; x += gap) {
+                for (let y = -gridSize / 2; y < gridSize / 2; y += gap) {
+                    for (let z = -gridSize / 2; z < gridSize / 2; z += gap) {
+                        const smallCube = new THREE.Mesh(new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize), whiteMaterial);
+                        smallCube.position.set(x, y, z);
+                        scene.add(smallCube);
+                        objects.push(smallCube);
+                    }
+                }
+            }
+        }
+        function animateDemo1(time) {
+            const centralCube = objects[0];
+            if (centralCube) {
+                centralCube.rotation.x = time * 0.0006;
+                centralCube.rotation.y = time * 0.0012;
+            }
+            for (let i = 1; i < objects.length; i++) {
+                objects[i].material.opacity = Math.sin(time * 0.0008 + i) * 0.09 + 0.5; 
+                objects[i].material.transparent = true;
+            }
+        }
+
+        // Demo 2: Blue Data Pulse (Blue/Yellow)
+        function setupDemo2() {
+            const sphereGeometry = new THREE.SphereGeometry(1, 16, 16);
+            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x1e90ff, wireframe: true, transparent: true, opacity: 0.8 });
+            const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            scene.add(sphere);
+            objects.push(sphere);
+            const particleCount = 100;
+            const particleGeometry = new THREE.TetrahedronGeometry(0.13);
+            const particleMaterial = new THREE.MeshBasicMaterial({ color: 0xFFD700 });
+            for (let i = 0; i < particleCount; i++) {
+                const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+                particle.position.set(
+                    (Math.random() - 0.5) * 7,
+                    (Math.random() - 0.5) * 7,
+                    (Math.random() - 0.5) * 7
+                );
+                particle.userData.initialPos = particle.position.clone();
+                scene.add(particle);
+                objects.push(particle);
+            }
+        }
+        function animateDemo2(time) {
+            const sphere = objects[0];
+            if (sphere) {
+                const scale = 1 + Math.sin(time * 0.001) * 0.13;
+                sphere.scale.set(scale, scale, scale);
+                sphere.rotation.y += 0.008;
+            }
+            const amplitude = 1.1;
+            for (let i = 1; i < objects.length; i++) {
+                const particle = objects[i];
+                particle.position.x = particle.userData.initialPos.x + Math.sin(time * 0.001 + i * 0.1) * amplitude;
+                particle.position.y = particle.userData.initialPos.y + Math.cos(time * 0.0014 + i * 0.13) * amplitude;
+            }
+        }
+
+        // Demo 3: Yellow Hyperspace
+        function setupDemo3() {
+            const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 14);
+            const material = new THREE.MeshBasicMaterial({ color: 0xFFD700, wireframe: true, transparent: true, opacity: 0.95 });
+            const torusKnot = new THREE.Mesh(geometry, material);
+            scene.add(torusKnot);
+            objects.push(torusKnot);
+            const gridHelper = new THREE.GridHelper(16, 16, 0x00FF00, 0x006600);
+            scene.add(gridHelper);
+            objects.push(gridHelper);
+        }
+        function animateDemo3(time) {
+            const torusKnot = objects[0];
+            if (torusKnot) {
+                torusKnot.rotation.x = time * 0.0004;
+                torusKnot.rotation.y = time * 0.0007;
+                torusKnot.rotation.z = time * 0.001;
+            }
+        }
+
+        let animationFrameId;
+        function animate(time) {
+            animationFrameId = requestAnimationFrame(animate);
+            switch(currentDemo) {
+                case 1:
+                    animateDemo1(time);
+                    break;
+                case 2:
+                    animateDemo2(time);
+                    break;
+                case 3:
+                    animateDemo3(time);
+                    break;
+            }
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        function loadDemo(demoId) {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            clearScene();
+            currentDemo = demoId;
+            camera.position.set(0, 0, 5);
+            controls.target.set(0, 0, 0);
+            controls.update();
+            switch(demoId) {
+                case 1:
+                    setupDemo1();
+                    break;
+                case 2:
+                    setupDemo2();
+                    break;
+                case 3:
+                    setupDemo3();
+                    break;
+                default:
+                    showMessage(`[ERROR] Demo ${demoId} not found. Loading default.`);
+                    setupDemo1();
+                    currentDemo = 1;
+            }
+            onWindowResize();
+            animate(0); 
+            document.querySelectorAll('.demo-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.demo) === demoId) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('controls').addEventListener('click', (e) => {
+                if (e.target.classList.contains('demo-button')) {
+                    const demoId = parseInt(e.target.dataset.demo);
+                    if (demoId !== currentDemo) {
+                        loadDemo(demoId);
+                    }
+                }
+            });
+        });
+        window.onload = function () {
+            init();
+        }
     </script>
 </body>
 </html>
