@@ -1,1 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporation2K4 :: Ultimate Knowledge Base & Premium Courses</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* === Root Variables for Terminal Theme === */
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
 
+        /* === Base Body and Container Styling === */
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', 'Noto Sans Gujarati', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1000px;
+            margin: 32px auto 60px auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            /* Neon glow effect */
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+        }
+
+        /* === Header and Status Bar === */
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #terminal-header .status {
+            color: var(--color-terminal-yellow);
+            font-size: 0.9em;
+        }
+        #content {
+            padding: 32px 36px;
+        }
+        
+        /* === Navigation Bar Styles (Menu Bar) === */
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 10px 20px; 
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-dim-green);
+        }
+        .nav-button {
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover {
+            background-color: var(--color-terminal-white);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-terminal-yellow); 
+            border-color: var(--color-terminal-yellow);
+        }
+        /* Active button style */
+        .nav-button.active {
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+
+        /* === Page specific styles (Content) === */
+        .prompt {
+            color: var(--color-terminal-blue);
+            font-weight: bold;
+        }
+        .success {
+            color: var(--color-terminal-yellow);
+            font-weight: bold;
+        }
+        .category-heading {
+            color: var(--color-terminal-green);
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--color-dim-green);
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--color-dim-green);
+        }
+        .course-list-item {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            border-left: 3px solid var(--color-terminal-blue);
+            padding-left: 15px;
+            margin-bottom: 10px;
+        }
+        .course-list-item::before {
+            content: '>>';
+            color: var(--color-terminal-yellow);
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+        .contact-info {
+            background-color: #1a1a1a;
+            border: 2px solid var(--color-terminal-yellow);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 0 15px #FFD70050;
+        }
+        .contact-link {
+            color: var(--color-terminal-yellow);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+            text-shadow: 0 0 5px var(--color-terminal-yellow);
+        }
+        .contact-link:hover {
+            color: var(--color-terminal-white);
+            text-shadow: 0 0 8px var(--color-terminal-white);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 760px) {
+            #app-container {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+            }
+            #terminal-header {
+                border-radius: 0;
+            }
+            #content {
+                padding: 20px 15px;
+            }
+            #top-nav-bar {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4 Services Terminal :: Ultimate Knowledge Base & Premium Courses
+            <span class="status">[ACCESS LEVEL: : PREMIUM REQUIRED]</span>
+            
+            <nav id="top-nav-bar">
+                <a href="index.html" class="nav-button">System :: Index</a>
+                <a href="course_books.html" class="nav-button active">Knowledge :: Books</a>
+                <a href="bca_project_reports.html" class="nav-button">BCA :: Projects</a>
+                <a href="hardware_system.html" class="nav-button">Hardware :: Systems</a>
+                <a href="contactus.html" class="nav-button">Contact :: System</a>
+            </nav>
+            </div>
+
+        <div id="content">
+            <p class="prompt text-lg mb-6">
+                &gt;&gt; Module Load: All_Courses_Books_V7.2_Ultimate_Catalogue;
+            </p>
+
+            <p class="success text-base mb-8">
+                [RESPONSE] Access Granted. Displaying Key Knowledge Domains (Theories & Practical)...
+            </p>
+
+            <div class="category-heading">🎓 Educational & Academic Resources (Core Theories & Books)</div>
+            <p class="text-base mt-2 mb-4" style="color: var(--color-terminal-white);">
+                **Latest Edition Books**, full reports, and in-depth courses covering all **educational theories**, university syllabi, and competitive exams.
+            </p>
+            <div class="course-list">
+                <div class="course-list-item">Computer Science **Core Theories** (Algorithms, Networking, AI Principles)</div>
+                <div class="course-list-item">Advanced Mathematics, Statistics & Discrete Structures</div>
+                <div class="course-list-item">University Syllabus Books (BCA, MCA, B.Tech, MBA)</div>
+                <div class="course-list-item">Competitive Exam Guides & Mock Tests (GATE, UGC NET, IAS/PCS)</div>
+            </div>
+            
+            <div class="category-heading">💻 Industrial & Technical Skills (Practical Training)</div>
+            <p class="text-base mt-2 mb-4" style="color: var(--color-terminal-white);">
+                High-demand **practical courses** with live projects, real-world case studies, and complete **industrial manuals**.
+            </p>
+            <div class="course-list">
+                <div class="course-list-item">Full Stack Development (MERN, Django) & Mobile App Development</div>
+                <div class="course-list-item">Data Science, Machine Learning, Deep Learning **Practical** Implementation</div>
+                <div class="course-list-item">Cloud Platforms (AWS, Azure) & DevOps (Docker, Kubernetes) Mastery</div>
+                <div class="course-list-item">Cyber Security, Ethical Hacking & **Network Penetration** Testing</div>
+            </div>
+
+            <div class="category-heading">💰 Financial, Management & Commerce (All Types)</div>
+            <p class="text-base mt-2 mb-4" style="color: var(--color-terminal-white);">
+                Expert knowledge, books, and courses on **financial analysis**, corporate management, and commerce.
+            </p>
+            <div class="course-list">
+                <div class="course-list-item">Stock Market Trading (Intraday & Long-Term), Forex, and Crypto</div>
+                <div class="course-list-item">Accounting, Auditing, GST, Tally, and Financial Modeling</div>
+                <div class="course-list-item">Business Management, HR, and **Logistics/Supply Chain** Operations</div>
+            </div>
+
+            <div class="category-heading">🌐 Miscellaneous & General Competency (What Not All Courses)</div>
+            <p class="text-base mt-2 mb-4" style="color: var(--color-terminal-white);">
+                A vast library covering all other topics and skills necessary for professional success and general knowledge.
+            </p>
+            <div class="course-list">
+                <div class="course-list-item">**All Types** of Language Learning (Programming & Human Languages)</div>
+                <div class="course-list-item">Graphics Design, Digital Marketing, SEO & Content Strategy</div>
+                <div class="course-list-item">Soft Skills, Personality Development & Corporate Interview Training</div>
+            </div>
+            
+            <p class="prompt text-base mt-10">
+                &gt;&gt; WARNING: Full Premium Catalogue (Thousands of Titles) is BLOCKED.
+            </p>
+
+            <div class="contact-info">
+                <p class="prompt text-lg mb-4">
+                    [ACTION REQUIRED] Unlock Your Premium Content Now!
+                </p>
+                <p class="text-base mb-4" style="color: var(--color-terminal-white); font-weight: bold;">
+                    To access the **FULL PAID AND PREMIUM LATEST COURSES & BOOKS**, contact the <span class="success">Corporation2K4 Service Desk</span> using the channels below:
+                </p>
+                <p class="text-lg">
+                    <span class="prompt">EMAIL:</span> <a href="mailto:contact@corporation2k4.com" class="contact-link">contact@corporation2k4.com</a><br>
+                    <span class="prompt">WHATSAPP/CALL:</span> <a href="tel:+91XXXXXXXXXX" class="contact-link">+91 XXXXXXXXXX</a> 
+                </p>
+                <p class="text-sm mt-4" style="color: var(--color-terminal-green);">
+                    [DELIVERY] Immediate soft copy delivery and custom print options available upon payment confirmation.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
