@@ -35,7 +35,6 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            /* REMOVED: min-height on main-layout or text-content */
         }
         #terminal-header {
             width: 100%;
@@ -51,10 +50,50 @@
             color: var(--color-terminal-white);
         }
         
+        /* === NEW: Styles for the Top Navigation Bar === */
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
+            justify-content: center; 
+            gap: 10px 20px; /* Vertical and horizontal space between buttons */
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            /* Basic styling */
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover {
+            background-color: var(--color-terminal-white);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-terminal-yellow); /* Glow on hover */
+            border-color: var(--color-terminal-yellow);
+        }
+        .nav-button.active {
+            /* Highlight the current page */
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        /* ============================================== */
+
         /* ADJUSTED: #main-layout to simply hold #text-content */
         #main-layout {
             display: flex;
-            flex-direction: column; /* Always column or row-wrap if needed */
+            flex-direction: column; 
         }
         
         /* ADJUSTED: #text-content to take full width and handle all corners */
@@ -62,23 +101,20 @@
             padding: 32px 36px;
             background: #151819;
             border-radius: 0 0 14px 14px; /* Corners are now rounded at the bottom */
-            flex: 1 1 100%; /* Take full available space */
-            min-width: 0; /* Remove restrictive min/max widths */
+            flex: 1 1 100%; 
+            min-width: 0; 
             max-width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            /* REMOVED: Border-right and media query overrides for layout split */
         }
-
-        /* REMOVED: All #canvas-container and canvas specific CSS */
 
         /* New Terminal/List Styles (Kept) */
         #terminal-output {
-             /* Add scrollbar for content overflow */
-             max-height: 60vh; /* Example maximum height, adjust as needed */
-             overflow-y: auto;
-             padding-right: 15px; /* Space for scrollbar */
+            /* Add scrollbar for content overflow */
+            max-height: 60vh; /* Example maximum height, adjust as needed */
+            overflow-y: auto;
+            padding-right: 15px; /* Space for scrollbar */
         }
         
         /* Scrollbar styling for a terminal look (optional) */
@@ -153,6 +189,8 @@
         @keyframes fadeIn {
             to { opacity: 1; }
         }
+        /* REMOVED .bca-button-area and .bca-button styles as the link is moved to the top nav */
+        /*
         .bca-button-area {
             margin-top: 30px;
             padding-top: 20px;
@@ -168,7 +206,7 @@
             background-color: #000;
             color: var(--color-terminal-yellow);
         }
-        /* REMOVED: Media query for main-layout */
+        */
     </style>
 </head>
 <body>
@@ -176,6 +214,12 @@
         <div id="terminal-header">
             Corporation2K4 Services Terminal
             <span style="color: var(--color-terminal-yellow);">[STATUS: : ONLINE]</span>
+            
+            <nav id="top-nav-bar">
+                <a href="index.html" class="nav-button active">System :: Index</a>
+                <a href="course_books.html" class="nav-button">Knowledge :: Books</a>
+                <a href="bca_project_reports.html" class="nav-button">BCA :: Projects</a>
+            </nav>
         </div>
         <div id="main-layout">
             <div id="text-content">
@@ -188,15 +232,7 @@
                     </div>
                 </div>
 
-                <div class="bca-button-area">
-                    <p class="success text-lg text-center">ACCESS BCA  PROJECTS AND REPORTS DIRECTORY:</p>
-                    <a href="bca_project_reports.html" class="block w-full text-center">
-                        <button class="demo-button bca-button w-full lg:w-3/4 mx-auto mt-2" data-demo="4">
-                            [BCA_PROJECTS_DB_ACCESS]
-                        </button>
-                    </a>
                 </div>
-            </div>
             </div>
     </div>
     <script>
@@ -228,7 +264,7 @@
                 type: 'item', 
                 text: '<span class="command">Software & Data Services:</span> Custom software development, deployment, and data entry. <span class="gujarati-text">(સોફ્ટવેર બનાવવું અને ડેટા એન્ટ્રીનું કામ.)</span>' 
             },
-             
+            
             // --- NEW: Government & Online Forms Section ---
             { type: 'heading', text: 'DIGITAL & GOVERNMENT SERVICES' },
             { 
@@ -293,7 +329,7 @@
             { type: 'line', text: '<span class="prompt">Operation Complete. Ready for next command.</span>' }
         ];
 
-        // --- Terminal Typing Logic (Minor adjustment for scroll) ---
+        // --- Terminal Typing Logic (Unchanged) ---
         const terminalOutput = document.getElementById('terminal-output');
         let lineIndex = 0;
         let charIndex = 0;
@@ -396,12 +432,11 @@
                 }
             }
         }
-         
+        
         // --- Event Listeners and Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
              // Start the service list typing
              setTimeout(typeWriter, 1500); 
-             // REMOVED: 3D demo button event listeners and init function calls
         });
 
     </script>
