@@ -6,8 +6,6 @@
     <title>Corporation2K4 :: SYSTEM ACCESS</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/examples/js/controls/OrbitControls.min.js"></script>
     <style>
         :root {
             --color-background: #000000;
@@ -37,6 +35,7 @@
             padding: 0;
             display: flex;
             flex-direction: column;
+            /* REMOVED: min-height on main-layout or text-content */
         }
         #terminal-header {
             width: 100%;
@@ -51,72 +50,51 @@
             letter-spacing: 1px;
             color: var(--color-terminal-white);
         }
+        
+        /* ADJUSTED: #main-layout to simply hold #text-content */
         #main-layout {
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* Always column or row-wrap if needed */
         }
-        @media (min-width: 1000px) {
-            #main-layout {
-                flex-direction: row;
-                min-height: 540px;
-                align-items: stretch;
-            }
-        }
-
+        
+        /* ADJUSTED: #text-content to take full width and handle all corners */
         #text-content {
             padding: 32px 36px;
             background: #151819;
-            border-radius: 0 0 0 14px;
-            border-right: 2px dashed var(--color-dim-green);
-            flex: 1 1 55%;
-            min-width: 340px;
-            max-width: 700px;
+            border-radius: 0 0 14px 14px; /* Corners are now rounded at the bottom */
+            flex: 1 1 100%; /* Take full available space */
+            min-width: 0; /* Remove restrictive min/max widths */
+            max-width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            /* REMOVED: Border-right and media query overrides for layout split */
         }
-        @media (max-width: 1000px) {
-            #text-content {
-                border-radius: 0 0 14px 14px;
-                border-right: none;
-                border-bottom: 2px dashed var(--color-dim-green);
-                max-width: 100%;
-            }
-        }
-         
-        /* 3D Canvas Styles (kept for consistency) */
-        #canvas-container {
-            background: linear-gradient(135deg, #101010 80%, #191970 100%);
-            flex: 1 1 45%;
-            min-width: 310px;
-            min-height: 320px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0 0 14px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        @media (max-width: 1000px) {
-            #canvas-container {
-                border-radius: 0 0 14px 14px;
-                min-height: 280px;
-            }
-        }
-        canvas {
-            display: block;
-            width: 100% !important;
-            height: 100% !important;
-            max-width: 450px;
-            max-height: 350px;
-            margin: auto;
-            border-radius: 12px;
-            background: transparent;
-            box-shadow: 0 0 18px #00ff0039;
-        }
-        /* End 3D Canvas Styles */
 
-        /* New Terminal/List Styles */
+        /* REMOVED: All #canvas-container and canvas specific CSS */
+
+        /* New Terminal/List Styles (Kept) */
+        #terminal-output {
+             /* Add scrollbar for content overflow */
+             max-height: 60vh; /* Example maximum height, adjust as needed */
+             overflow-y: auto;
+             padding-right: 15px; /* Space for scrollbar */
+        }
+        
+        /* Scrollbar styling for a terminal look (optional) */
+        #terminal-output::-webkit-scrollbar {
+            width: 10px;
+            background-color: #111;
+        }
+        #terminal-output::-webkit-scrollbar-thumb {
+            background-color: var(--color-dim-green);
+            border-radius: 5px;
+        }
+        #terminal-output::-webkit-scrollbar-track {
+            background-color: #000000;
+        }
+
+
         .terminal-line {
             line-height: 1.65;
             padding: 2px 0;
@@ -125,7 +103,7 @@
             border-right: 3px solid transparent;
             font-size: 1rem;
         }
-        /* Style for Gujarati Text to use its own font, ensuring proper display */
+        /* Style for Gujarati Text (Kept) */
         .gujarati-text {
             font-family: 'Noto Sans Gujarati', sans-serif;
             font-size: 1.05rem; /* Slightly larger for better readability in terminal */
@@ -190,6 +168,7 @@
             background-color: #000;
             color: var(--color-terminal-yellow);
         }
+        /* REMOVED: Media query for main-layout */
     </style>
 </head>
 <body>
@@ -218,17 +197,10 @@
                     </a>
                 </div>
             </div>
-            <div id="canvas-container">
-                <div id="controls" class="absolute bottom-4 z-10 w-full px-4">
-                    <button class="demo-button active" data-demo="1">_Cube_</button>
-                    <button class="demo-button" data-demo="2">_Pulse_</button>
-                    <button class="demo-button" data-demo="3">_Warp_</button>
-                </div>
             </div>
-        </div>
     </div>
     <script>
-        // --- Service Listing Data ---
+        // --- Service Listing Data (Unchanged) ---
         const serviceLines = [
             // Line 0
             { type: 'line', text: '<span class="prompt">Fetching Database...</span>' },
@@ -256,7 +228,7 @@
                 type: 'item', 
                 text: '<span class="command">Software & Data Services:</span> Custom software development, deployment, and data entry. <span class="gujarati-text">(સોફ્ટવેર બનાવવું અને ડેટા એન્ટ્રીનું કામ.)</span>' 
             },
-            
+             
             // --- NEW: Government & Online Forms Section ---
             { type: 'heading', text: 'DIGITAL & GOVERNMENT SERVICES' },
             { 
@@ -321,7 +293,7 @@
             { type: 'line', text: '<span class="prompt">Operation Complete. Ready for next command.</span>' }
         ];
 
-        // --- Terminal Typing Logic (Unchanged) ---
+        // --- Terminal Typing Logic (Minor adjustment for scroll) ---
         const terminalOutput = document.getElementById('terminal-output');
         let lineIndex = 0;
         let charIndex = 0;
@@ -348,6 +320,7 @@
                 newLine.innerHTML = content.text;
             }
             terminalOutput.appendChild(newLine);
+            // Scroll to the bottom as new content is added
             terminalOutput.scrollTop = terminalOutput.scrollHeight;
             return newLine;
         }
@@ -382,11 +355,6 @@
                         cursorElement = newCursor;
                     }
 
-                    // Get the text to be typed (remove HTML tags temporarily for length calculation)
-                    // NOTE: This part is now a simplification and does not handle the embedded <span> tags perfectly 
-                    // during the *typing* process, but the final content is displayed correctly. 
-                    // For a true typing effect with embedded HTML, more complex logic is needed.
-                    // We will just type the pure text content to keep the typing function simple.
                     const textContent = lineData.text.replace(/<[^>]*>/g, '');
                     const char = textContent[charIndex];
 
@@ -429,202 +397,13 @@
             }
         }
          
-        // --- Three.js 3D Demo Logic (Unchanged) ---
-        let scene, camera, renderer, controls;
-        let currentDemo = 1;
-        let objects = [];
-         
-        // function showMessage(text) { /* ... (unchanged) ... */ }
-        // function closeMessage() { /* ... (unchanged) ... */ }
-         
-        function init() {
-            const container = document.getElementById('canvas-container');
-            scene = new THREE.Scene();
-            scene.background = null;
-            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.set(0, 0, 5);
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.setClearAlpha(0);
-            container.appendChild(renderer.domElement);
-           
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.07;
-            controls.enablePan = false;
-            controls.maxDistance = 12;
-            controls.target.set(0, 0, 0);
-            controls.update();
-           
-            window.addEventListener('resize', onWindowResize, false);
-            loadDemo(currentDemo);
-        }
-         
-        function onWindowResize() {
-            const container = document.getElementById('canvas-container');
-            if (container.clientWidth > 0 && container.clientHeight > 0) {
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            }
-        }
-         
-        function clearScene() {
-            objects.forEach(obj => {
-                scene.remove(obj);
-                if (obj.geometry) obj.geometry.dispose();
-                if (obj.material) {
-                    if (Array.isArray(obj.material)) {
-                        obj.material.forEach(m => m.dispose());
-                    } else {
-                        obj.material.dispose();
-                    }
-                }
-            });
-            objects = [];
-        }
-         
-        // Demo 1: Matrix Cube (Green)
-        function setupDemo1() {
-            const geometry = new THREE.BoxGeometry(1.6, 1.6, 1.6);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00FF00, wireframe: true });
-            const cube = new THREE.Mesh(geometry, material);
-            scene.add(cube);
-            objects.push(cube);
-            const gridSize = 7;
-            const cubeSize = 0.13;
-            const gap = 0.8;
-            const whiteMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
-            for (let x = -gridSize / 2; x < gridSize / 2; x += gap) {
-                for (let y = -gridSize / 2; y < gridSize / 2; y += gap) {
-                    for (let z = -gridSize / 2; z < gridSize / 2; z += gap) {
-                        const smallCube = new THREE.Mesh(new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize), whiteMaterial);
-                        smallCube.position.set(x, y, z);
-                        scene.add(smallCube);
-                        objects.push(smallCube);
-                    }
-                }
-            }
-        }
-        function animateDemo1(time) {
-            const centralCube = objects[0];
-            if (centralCube) {
-                centralCube.rotation.x = time * 0.0007;
-                centralCube.rotation.y = time * 0.0013;
-            }
-            for (let i = 1; i < objects.length; i++) {
-                objects[i].material.opacity = Math.sin(time * 0.001 + i) * 0.08 + 0.4; 
-                objects[i].material.transparent = true;
-            }
-        }
-         
-        // Demo 2: Blue Data Pulse
-        function setupDemo2() {
-            const sphereGeometry = new THREE.SphereGeometry(1, 16, 16);
-            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x1e90ff, wireframe: true, transparent: true, opacity: 0.8 });
-            const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-            scene.add(sphere);
-            objects.push(sphere);
-            const particleCount = 90;
-            const particleGeometry = new THREE.TetrahedronGeometry(0.13);
-            const particleMaterial = new THREE.MeshBasicMaterial({ color: 0xFFD700 });
-            for (let i = 0; i < particleCount; i++) {
-                const particle = new THREE.Mesh(particleGeometry, particleMaterial);
-                particle.position.set(
-                    (Math.random() - 0.5) * 6.5,
-                    (Math.random() - 0.5) * 6.5,
-                    (Math.random() - 0.5) * 6.5
-                );
-                particle.userData.initialPos = particle.position.clone();
-                scene.add(particle);
-                objects.push(particle);
-            }
-        }
-        function animateDemo2(time) {
-            const sphere = objects[0];
-            if (sphere) {
-                const scale = 1 + Math.sin(time * 0.001) * 0.12;
-                sphere.scale.set(scale, scale, scale);
-                sphere.rotation.y += 0.008;
-            }
-            const amplitude = 1.05;
-            for (let i = 1; i < objects.length; i++) {
-                const particle = objects[i];
-                particle.position.x = particle.userData.initialPos.x + Math.sin(time * 0.001 + i * 0.1) * amplitude;
-                particle.position.y = particle.userData.initialPos.y + Math.cos(time * 0.0013 + i * 0.15) * amplitude;
-            }
-        }
-         
-        // Demo 3: Yellow Hyperspace
-        function setupDemo3() {
-            const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 14);
-            const material = new THREE.MeshBasicMaterial({ color: 0xFFD700, wireframe: true, transparent: true, opacity: 0.95 });
-            const torusKnot = new THREE.Mesh(geometry, material);
-            scene.add(torusKnot);
-            objects.push(torusKnot);
-            const gridHelper = new THREE.GridHelper(13, 13, 0x00FF00, 0x004400);
-            gridHelper.position.y = -1.5;
-            scene.add(gridHelper);
-            objects.push(gridHelper);
-        }
-        function animateDemo3(time) {
-            const torusKnot = objects[0];
-            if (torusKnot) {
-                torusKnot.rotation.x = time * 0.00042;
-                torusKnot.rotation.y = time * 0.00068;
-                torusKnot.rotation.z = time * 0.00093;
-            }
-        }
-         
-        let animationFrameId;
-        function animate(time) {
-            animationFrameId = requestAnimationFrame(animate);
-            switch(currentDemo) {
-                case 1: animateDemo1(time); break;
-                case 2: animateDemo2(time); break;
-                case 3: animateDemo3(time); break;
-            }
-            controls.update();
-            renderer.render(scene, camera);
-        }
-         
-        function loadDemo(demoId) {
-            if (animationFrameId) cancelAnimationFrame(animationFrameId);
-            clearScene();
-            currentDemo = demoId;
-            camera.position.set(0, 0, 5);
-            controls.target.set(0, 0, 0);
-            controls.update();
-            switch(demoId) {
-                case 1: setupDemo1(); break;
-                case 2: setupDemo2(); break;
-                case 3: setupDemo3(); break;
-                default:
-                    // showMessage(`[ERROR] Demo ${demoId} not found. Loading default.`);
-                    setupDemo1();
-                    currentDemo = 1;
-            }
-            onWindowResize();
-            animate(0); 
-            document.querySelectorAll('.demo-button').forEach(btn => {
-                btn.classList.remove('active');
-                if (parseInt(btn.dataset.demo) === demoId) btn.classList.add('active');
-            });
-        }
-
         // --- Event Listeners and Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('controls').addEventListener('click', (e) => {
-                if (e.target.classList.contains('demo-button')) {
-                    const demoId = parseInt(e.target.dataset.demo);
-                    if (demoId !== currentDemo) loadDemo(demoId);
-                }
-            });
-            // Start the service list typing
-            setTimeout(typeWriter, 1500); 
+             // Start the service list typing
+             setTimeout(typeWriter, 1500); 
+             // REMOVED: 3D demo button event listeners and init function calls
         });
 
-        window.onload = function () { init(); }
     </script>
 </body>
 </html>
