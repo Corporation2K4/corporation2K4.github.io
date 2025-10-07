@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/examples/js/controls/OrbitControls.min.js"></script>
     <style>
+        /* Reusing all root variables and base styles from the original code */
         :root {
             --color-background: #000000;
             --color-terminal-green: #00FF00;
@@ -40,7 +41,7 @@
         #terminal-header {
             width: 100%;
             padding: 18px 24px;
-            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%); /* Darker green header */
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
             border-radius: 14px 14px 0 0;
             border-bottom: 3px solid var(--color-terminal-green);
             text-align: center;
@@ -82,8 +83,8 @@
                 max-width: 100%;
             }
         }
-        
-        /* 3D Canvas Styles (kept for consistency) */
+         
+        /* 3D Canvas Styles */
         #canvas-container {
             background: linear-gradient(135deg, #101010 80%, #191970 100%);
             flex: 1 1 45%;
@@ -119,9 +120,9 @@
         .terminal-line {
             line-height: 1.65;
             padding: 2px 0;
-            white-space: pre-wrap; /* Allows text to wrap */
-            overflow: hidden; /* Hide content while typing */
-            border-right: 3px solid transparent; /* Placeholder for cursor */
+            white-space: pre-wrap;
+            overflow: hidden;
+            border-right: 3px solid transparent;
             font-size: 1rem;
         }
         .prompt {
@@ -176,10 +177,33 @@
             color: #000;
             border: 2px solid var(--color-terminal-yellow);
             box-shadow: 0 0 15px var(--color-terminal-yellow);
+            transition: all 0.2s;
         }
         .bca-button:hover {
             background-color: #000;
             color: var(--color-terminal-yellow);
+        }
+        .demo-button {
+            padding: 8px 15px;
+            background: #111;
+            border: 1px solid var(--color-terminal-green);
+            color: var(--color-terminal-green);
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: inherit;
+            margin: 5px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .demo-button:hover {
+            background: var(--color-terminal-green);
+            color: #000;
+        }
+        .demo-button.active {
+            background: var(--color-terminal-blue);
+            border-color: var(--color-terminal-blue);
+            color: var(--color-terminal-white);
+            box-shadow: 0 0 10px var(--color-terminal-blue);
         }
     </style>
 </head>
@@ -223,41 +247,41 @@
         <button class="demo-button mt-4" onclick="closeMessage()">[ACKNOWLEDGE]</button>
     </div>
     <script>
-        // --- Service Listing Data ---
+        // --- Service Listing Data with Simple English ---
         const serviceLines = [
             // Line 0
             { type: 'line', text: '<span class="prompt">Fetching Database...</span>' },
             // Line 1: Main Introduction
-            { type: 'line', text: '<span class="success">[CORE_MISSION]</span> Digital Solutions, Hardware Logistics, and Secure System Mastery.' },
-            // Line 2: BCA Project Focus (New/Highlighted)
-            { type: 'heading', text: 'ACADEMIC & DIGITAL PRODUCTS' },
-            { type: 'item', text: '<span class="command">BCA Project Solutions:</span> Complete <span style="color: var(--color-terminal-yellow); font-weight: bold;">BCA projects</span> with full Reports (physical & soft copy). <span class="success">HIGH DEMAND.</span>' },
+            { type: 'line', text: '<span class="success">[CORE_MISSION]</span> Digital kaam, Computer saaman, ane System ni pakad (Total solutions).' },
+            // Line 2: BCA Project Focus
+            { type: 'heading', text: 'COLLAGE / DIGITAL KAAM' },
+            { type: 'item', text: '<span class="command">BCA Project Solutions:</span> <span style="color: var(--color-terminal-yellow); font-weight: bold;">BCA na pura projects</span>, full report (print ane softcopy) sathe male. <span class="success">HIGH DEMAND.</span>' },
             // Line 3: Digital Services
-            { type: 'item', text: '<span class="command">Graphic Design & Artworks:</span> Branding, Logo, Poster, Brochure, and Digital Graphics.' },
-            { type: 'item', text: '<span class="command">Website Development:</span> Full-stack web apps, custom platforms, and fast portfolio sites.' },
-            { type: 'item', text: '<span class="command">Software & Data Services:</span> Custom software development, deployment, and data entry.' },
-            // Line 4: Knowledge Products (New/Highlighted)
-            { type: 'heading', text: 'KNOWLEDGE & PREMIUM DATA' },
-            { type: 'item', text: '<span class="command">Paid Courses & Books:</span> Immediate digital delivery of <span style="color: var(--color-terminal-yellow);">All Paid Premium Courses and Books at Cheap Price.</span>' },
-            // Line 5: System Products (New/Highlighted Location Detail)
-            { type: 'heading', text: 'COMPUTER SYSTEMS & LOGISTICS' },
-            { type: 'item', text: '<span class="command">Computer Systems:</span> <span style="color: var(--color-terminal-yellow); font-weight: bold;">Buy/Sell Cheap Used & New Laptops/Computers</span> (Assembled, Branded, or Parts).' },
-            { type: 'item', text: '<span class="command">Local Service Area:</span> Primary hardware logistics focus in <span style="color: var(--color-terminal-yellow);">Amreli District, Gujarat</span>.' },
-            { type: 'item', text: '<span class="command">OS & Setup:</span> Professional OS installs, dual-booting, and multi-platform configuration.' },
-            { type: 'item', text: '<span class="command">Device Customization:</span> Mobile rooting, optimization, and advanced system tweaks.' },
+            { type: 'item', text: '<span class="command">Design & Artwork:</span> Logo, Poster, Visating Card, Brochure (Chopani) ane Digital Photo banavi aapiye.' },
+            { type: 'item', text: '<span class="command">Website Banavavo:</span> Nathi thi mothi web site, custom platform, ane jaldi site banavi aapiye.' },
+            { type: 'item', text: '<span class="command">Software & Data Service:</span> Koi pan kaam mate software banavavo, ane data entry nu kaam.' },
+            // Line 4: Knowledge Products
+            { type: 'heading', text: 'SIKHVANU / COURSES & CHHEPA DATA' },
+            { type: 'item', text: '<span class="command">Paid Courses & Books:</span> <span style="color: var(--color-terminal-yellow);">Badha paid courses ane books sasta ma.</span> Turant digital mokali aapis.' },
+            // Line 5: System Products (Highlighted Location Detail)
+            { type: 'heading', text: 'COMPUTER LELU-DELU (LOGISTICS)' },
+            { type: 'item', text: '<span class="command">Computer Systems:</span> <span style="color: var(--color-terminal-yellow); font-weight: bold;">Nava ane juna laptop/computer</span> (parts, company na, ke jodela) sasta ma kharido/vecho.' },
+            { type: 'item', text: '<span class="command">Local Service Area:</span> Amreli Jilla (Gujarat) ma computer saaman ni delivery/seva khaskari ne kariye chhe.' },
+            { type: 'item', text: '<span class="command">OS & Setup:</span> Nava OS (Windows/Linux) nakho, dual-booting, ane badha platform set kari aapis.' },
+            { type: 'item', text: '<span class="command">Mobile Customization:</span> Mobile Rooting, fast karavavun, ane phone ma vadhavu kaam karavavun.' },
             // Line 6: Security & Advanced Ops
-            { type: 'heading', text: 'SECURITY & ADVANCED OPERATIONS' },
-            { type: 'item', text: '<span class="command">Secure UNIX Environments:</span> Linux/ILUNX system architecture & command line mastery.' },
-            { type: 'item', text: '<span class="command">Software Reverse Engineering:</span> Functionality analysis and security audits.' },
-            { type: 'item', text: '<span class="command">Penetration Testing:</span> Ethical hacking and website security audit reports.' },
+            { type: 'heading', text: 'ADVANCED/MOTA KAAM & SURAKSHA (SECURITY)' },
+            { type: 'item', text: '<span class="command">Secure UNIX (Linux) System:</span> Linux system nu kaam ane command line mastery (Jaldi sikhvun).' },
+            { type: 'item', text: '<span class="command">Software Reverse Engineering:</span> Software kem kaam kare chhe, te samjhavun ane security check karavun.' },
+            { type: 'item', text: '<span class="command">Website Testing (Hacking):</span> Website ni chuk (vulnerability) shodhvi ane security report banavavo.' },
             // Line 7: Commodity Brokerage
-            { type: 'heading', text: 'COMMODITY BROKERAGE (RURAL LOGISTICS)' },
-            { type: 'item', text: '<span class="command">Agent Brokerage:</span> Trusted brokerage for buyers and dealers of <span class="success">crops and agricultural commodities</span>.' },
+            { type: 'heading', text: 'VASATU NI DALALI (RURAL BROKERAGE)' },
+            { type: 'item', text: '<span class="command">Agent Dalali:</span> <span class="success">Kheti na paak ane vasatu</span> kharidnar ane vechnar mate bharoso mand dalali.' },
             // Final line
-            { type: 'line', text: '<span class="prompt">Operation Complete. Ready for next command.</span>' }
+            { type: 'line', text: '<span class="prompt">Kaam Pura Thayu. Navo Command/Kaam taiyar chhe.</span>' }
         ];
 
-        // --- Terminal Typing Logic ---
+        // --- Terminal Typing Logic (Unchanged for Functionality) ---
         const terminalOutput = document.getElementById('terminal-output');
         let lineIndex = 0;
         let charIndex = 0;
@@ -293,79 +317,68 @@
                 const lineData = serviceLines[lineIndex];
 
                 if (lineData.type === 'heading' || lineData.type === 'item') {
-                    // Headings and Items are displayed immediately
                     currentLineElement = createNewLine(lineData);
                     lineIndex++;
-                    setTimeout(typeWriter, 50); // Small pause before the next line
+                    setTimeout(typeWriter, 50);
                 } else if (lineData.type === 'line') {
-                    // Regular lines get the typing effect
-
                     if (!currentLineElement) {
-                        // Find the last line to append the text to (the one with the command)
                         const lines = terminalOutput.querySelectorAll('.terminal-line');
                         currentLineElement = lines[lines.length - 1];
-                        // Remove the old cursor from the command line
                         cursorElement = currentLineElement.querySelector('.cursor');
                         if (cursorElement) cursorElement.remove();
                         currentLineElement.innerHTML += ' <span class="output-text"></span>';
                         currentLineElement = currentLineElement.querySelector('.output-text');
                         charIndex = 0;
 
-                        // Add a fresh cursor after the text starts
                         const newCursor = document.createElement('span');
                         newCursor.classList.add('cursor');
                         currentLineElement.after(newCursor);
                         cursorElement = newCursor;
                     }
 
-                    // Get the text to be typed (remove HTML tags temporarily for length calculation)
                     const textContent = lineData.text.replace(/<[^>]*>/g, '');
                     const char = textContent[charIndex];
 
                     if (char) {
-                        // Type a character
                         currentLineElement.innerHTML += char;
                         charIndex++;
                     } else {
-                        // Line finished typing
                         if (cursorElement) cursorElement.remove();
                         currentLineElement = null;
                         lineIndex++;
                         charIndex = 0;
                         setTimeout(() => {
                             if (lineIndex < serviceLines.length) {
-                                // Add prompt for the next line
                                 const nextPrompt = createNewLine({
                                     type: 'line',
                                     text: '...<span class="prompt">Awaiting Command...</span>'
                                 });
-                                // Add a cursor to the new prompt line
                                 const newCursor = document.createElement('span');
                                 newCursor.classList.add('cursor');
                                 nextPrompt.querySelector('.prompt').after(newCursor);
                                 cursorElement = newCursor;
 
-                                setTimeout(typeWriter, 1500); // Longer pause before the next command
+                                setTimeout(typeWriter, 1500);
                             } else {
-                                // All lines done
                                 if (cursorElement) cursorElement.remove();
                             }
                         }, 500);
-                        return; // Stop the current interval iteration
+                        return;
                     }
 
-                    setTimeout(typeWriter, 35); // Typing speed
+                    setTimeout(typeWriter, 35);
                 }
             }
         }
-        
-        // --- Three.js 3D Demo Logic (Kept as is for functionality) ---
+         
+        // --- Three.js 3D Demo Logic (Unchanged for Functionality) ---
         let scene, camera, renderer, controls;
         let currentDemo = 1;
         let objects = [];
         
-        function showMessage(text) { /* ... (unchanged) ... */ }
-        function closeMessage() { /* ... (unchanged) ... */ }
+        // Mock functions for unused message box
+        function showMessage(text) { console.log(text); }
+        function closeMessage() { /* Functionality disabled for simplicity */ }
         
         function init() {
             const container = document.getElementById('canvas-container');
@@ -377,8 +390,7 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setClearAlpha(0);
             container.appendChild(renderer.domElement);
-            
-            // Fix: Move OrbitControls initialization after renderer.domElement is added
+         
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.07;
@@ -386,24 +398,20 @@
             controls.maxDistance = 12;
             controls.target.set(0, 0, 0);
             controls.update();
-            
+         
             window.addEventListener('resize', onWindowResize, false);
             loadDemo(currentDemo);
         }
-        
+         
         function onWindowResize() {
             const container = document.getElementById('canvas-container');
             if (container.clientWidth > 0 && container.clientHeight > 0) {
                 camera.aspect = container.clientWidth / container.clientHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(container.clientWidth, container.clientHeight);
-                // Adjust canvas size specifically if needed, but the CSS handles most of it
-                const canvas = renderer.domElement;
-                const size = Math.min(container.clientWidth, container.clientHeight);
-                // Adjust max-width/height logic based on preference, removed internal setting for simplicity to rely on CSS
             }
         }
-        
+         
         function clearScene() {
             objects.forEach(obj => {
                 scene.remove(obj);
@@ -418,7 +426,7 @@
             });
             objects = [];
         }
-        
+         
         // Demo 1: Matrix Cube (Green)
         function setupDemo1() {
             const geometry = new THREE.BoxGeometry(1.6, 1.6, 1.6);
@@ -452,7 +460,7 @@
                 objects[i].material.transparent = true;
             }
         }
-        
+         
         // Demo 2: Blue Data Pulse
         function setupDemo2() {
             const sphereGeometry = new THREE.SphereGeometry(1, 16, 16);
@@ -489,7 +497,7 @@
                 particle.position.y = particle.userData.initialPos.y + Math.cos(time * 0.0013 + i * 0.15) * amplitude;
             }
         }
-        
+         
         // Demo 3: Yellow Hyperspace
         function setupDemo3() {
             const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 14);
@@ -510,7 +518,7 @@
                 torusKnot.rotation.z = time * 0.00093;
             }
         }
-        
+         
         let animationFrameId;
         function animate(time) {
             animationFrameId = requestAnimationFrame(animate);
@@ -522,7 +530,7 @@
             controls.update();
             renderer.render(scene, camera);
         }
-        
+         
         function loadDemo(demoId) {
             if (animationFrameId) cancelAnimationFrame(animationFrameId);
             clearScene();
