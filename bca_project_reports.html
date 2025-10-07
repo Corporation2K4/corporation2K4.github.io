@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corporation2K4 :: BCA Projects Database</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Reusing all root variables and base styles from the main page */
@@ -20,7 +20,7 @@
         body {
             background-color: var(--color-background);
             color: var(--color-terminal-green);
-            font-family: 'Fira Mono', monospace;
+            font-family: 'Fira Mono', 'Noto Sans Gujarati', monospace;
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -46,18 +46,58 @@
             font-size: 1.15rem;
             letter-spacing: 1px;
             color: var(--color-terminal-white);
-            display: flex;
+            /* Removed the flex properties for the main header title to be centered */
+            /* display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: center; */
         }
         #terminal-header .status {
-             color: var(--color-terminal-yellow);
-             font-size: 0.9em;
+            color: var(--color-terminal-yellow);
+            font-size: 0.9em;
         }
         #content {
             padding: 32px 36px;
         }
         
+        /* === Styles for the Top Navigation Bar (Copied from index.html) === */
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 10px 20px; 
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover {
+            background-color: var(--color-terminal-white);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-terminal-yellow); 
+            border-color: var(--color-terminal-yellow);
+        }
+        .nav-button.active {
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        /* Removed .back-button styles as they are replaced by the nav bar */
+        /* ============================================================= */
+
         /* Specific page styles for projects */
         .prompt {
             color: var(--color-terminal-blue);
@@ -119,26 +159,6 @@
             font-weight: bold;
         }
 
-        .back-button {
-            padding: 8px 18px;
-            background: #181818;
-            border: 2px solid var(--color-terminal-yellow);
-            color: var(--color-terminal-yellow);
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            font-family: inherit;
-            border-radius: 6px;
-            transition: all 0.2s;
-            box-shadow: 0 0 8px #fffa7038;
-        }
-        .back-button:hover {
-            background: var(--color-terminal-yellow);
-            color: #000;
-            box-shadow: 0 0 20px #fffa7090;
-            font-weight: bold;
-        }
-
         /* Responsive adjustments */
         @media (max-width: 760px) {
             #app-container {
@@ -159,11 +179,16 @@
 <body>
     <div id="app-container">
         <div id="terminal-header">
-            <a href="index.html" class="back-button">
-                &lt; BACK TO SERVICES
-            </a>
-            <span>BCA Academic Project Repository</span>
+            Corporation2K4 Services Terminal :: BCA Academic Project Repository
             <span class="status">[ACCESS LEVEL: : PUBLIC]</span>
+            
+            <nav id="top-nav-bar">
+                <a href="index.html" class="nav-button">System :: Index</a>
+                <a href="course_books.html" class="nav-button">Knowledge :: Books</a>
+                <a href="bca_project_reports.html" class="nav-button active">BCA :: Projects</a>
+                <a href="hardware_system.html" class="nav-button">Hardware :: Systems</a>
+                <a href="contact_us.html" class="nav-button">Contact :: System</a>
+            </nav>
         </div>
         <div id="content">
             <p class="prompt text-lg mb-6">
@@ -176,71 +201,4 @@
 
             <div class="category-heading">E-Commerce & Management Systems</div>
             <div class="project-item">
-                <span class="project-title">Online Book Store Management System</span>
-                <div class="project-details">
-                    <span class="detail-tag">Type: E-Commerce</span>
-                    <span class="language-tag">Language: PHP & MySQL</span>
-                    <span class="language-tag">Platform: Web</span>
-                    <span class="report-status">FULL REPORT INCLUDED</span>
-                </div>
-            </div>
-            <div class="project-item">
-                <span class="project-title">Restaurant Billing and Inventory System</span>
-                <div class="project-details">
-                    <span class="detail-tag">Type: Inventory/POS</span>
-                    <span class="language-tag">Language: Python (Django/Flask)</span>
-                    <span class="language-tag">Platform: Web/Desktop</span>
-                    <span class="report-status">FULL REPORT INCLUDED</span>
-                </div>
-            </div>
-
-            <div class="category-heading">Academic & Resource Tools</div>
-            <div class="project-item">
-                <span class="project-title">College Placement Management System</span>
-                <div class="project-details">
-                    <span class="detail-tag">Type: Resource Mgmt</span>
-                    <span class="language-tag">Language: ASP.NET (C#)</span>
-                    <span class="language-tag">Platform: Web</span>
-                    <span class="report-status">FULL REPORT INCLUDED</span>
-                </div>
-            </div>
-            <div class="project-item">
-                <span class="project-title">Online Examination System with Admin Panel</span>
-                <div class="project-details">
-                    <span class="detail-tag">Type: Academic Tool</span>
-                    <span class="language-tag">Language: Core Java</span>
-                    <span class="language-tag">Platform: Desktop App</span>
-                    <span class="report-status">FULL REPORT INCLUDED</span>
-                </div>
-            </div>
-            
-            <div class="category-heading">Core Applications & Utilities</div>
-            <div class="project-item">
-                <span class="project-title">Simple Chat Application (Client-Server)</span>
-                <div class="project-details">
-                    <span class="detail-tag">Type: Network Utility</span>
-                    <span class="language-tag">Language: Python / Java</span>
-                    <span class="language-tag">Platform: Desktop/Network</span>
-                    <span class="report-status">FULL REPORT INCLUDED</span>
-                </div>
-            </div>
-            <div class="project-item">
-                <span class="project-title">Library Management System (GUI based)</span>
-                <div class="project-details">
-                    <span class="detail-tag">Type: Database Application</span>
-                    <span class="language-tag">Language: VB.NET</span>
-                    <span class="language-tag">Platform: Desktop</span>
-                    <span class="report-status">FULL REPORT INCLUDED</span>
-                </div>
-            </div>
-
-            <p class="prompt text-base mt-10">
-                &gt;&gt; END OF LISTING. For customized projects, specific languages (C, C++, Angular, React), or full thesis documentation, please contact the <span class="success">Corporation2K4 Service Desk.</span>
-            </p>
-            <p class="text-base text-center mt-6" style="color: var(--color-terminal-white);">
-                <span class="prompt">[INFO]</span> All projects come with **Physical Print** and **Soft Copy** of the complete report.
-            </p>
-        </div>
-    </div>
-</body>
-</html>
+                <span
