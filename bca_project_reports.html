@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Reusing all root variables and base styles from the main page */
         :root {
             --color-background: #000000;
             --color-terminal-green: #00FF00;
@@ -16,7 +15,6 @@
             --color-terminal-white: #FFFFFF;
             --color-dim-green: #004400;
         }
-
         body {
             background-color: var(--color-background);
             color: var(--color-terminal-green);
@@ -26,7 +24,7 @@
             min-height: 100vh;
         }
         #app-container {
-            max-width: 1000px; /* Slightly narrower than main page, focusing on text */
+            max-width: 1000px;
             margin: 32px auto 60px auto;
             background: #111;
             border-radius: 18px;
@@ -46,10 +44,6 @@
             font-size: 1.15rem;
             letter-spacing: 1px;
             color: var(--color-terminal-white);
-            /* Removed the flex properties for the main header title to be centered */
-            /* display: flex;
-            justify-content: space-between;
-            align-items: center; */
         }
         #terminal-header .status {
             color: var(--color-terminal-yellow);
@@ -58,15 +52,13 @@
         #content {
             padding: 32px 36px;
         }
-        
-        /* === Styles for the Top Navigation Bar (Copied from index.html) === */
         #top-nav-bar {
             width: 100%;
             display: flex;
-            flex-wrap: wrap; 
-            justify-content: center; 
-            gap: 10px 20px; 
-            margin-top: 15px; 
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px 20px;
+            margin-top: 15px;
             padding-top: 10px;
             border-top: 1px dashed var(--color-terminal-green);
         }
@@ -77,7 +69,7 @@
             padding: 8px 15px;
             text-transform: uppercase;
             font-size: 0.9rem;
-            text-decoration: none; 
+            text-decoration: none;
             transition: all 0.2s;
             border-radius: 5px;
             font-weight: bold;
@@ -86,7 +78,7 @@
         .nav-button:hover {
             background-color: var(--color-terminal-white);
             color: #000;
-            box-shadow: 0 0 10px var(--color-terminal-yellow); 
+            box-shadow: 0 0 10px var(--color-terminal-yellow);
             border-color: var(--color-terminal-yellow);
         }
         .nav-button.active {
@@ -95,10 +87,6 @@
             border-color: var(--color-terminal-yellow);
             box-shadow: 0 0 15px var(--color-terminal-yellow);
         }
-        /* Removed .back-button styles as they are replaced by the nav bar */
-        /* ============================================================= */
-
-        /* Specific page styles for projects */
         .prompt {
             color: var(--color-terminal-blue);
             font-weight: bold;
@@ -158,8 +146,19 @@
             border: 1px solid var(--color-terminal-yellow);
             font-weight: bold;
         }
-
-        /* Responsive adjustments */
+        .contact-info {
+            margin-top: 30px;
+            background: #181b1e;
+            border-radius: 9px;
+            border: 2px solid var(--color-terminal-blue);
+            padding: 18px 24px;
+            color: var(--color-terminal-white);
+            font-size: 1rem;
+            box-shadow: 0 0 8px var(--color-terminal-blue);
+        }
+        .contact-info strong {
+            color: var(--color-terminal-yellow);
+        }
         @media (max-width: 760px) {
             #app-container {
                 margin: 0;
@@ -173,14 +172,15 @@
             #content {
                 padding: 20px 15px;
             }
+            .contact-info { padding: 12px 6px;}
         }
     </style>
 </head>
 <body>
-     <div id="app-container">
+    <div id="app-container">
         <div id="terminal-header">
-            Corporation2K4
-            <span class="status"></span>
+            Corporation2K4 :: BCA Academic Project Repository
+            <span class="status">[ACCESS LEVEL: PUBLIC]</span>
             <nav id="top-nav-bar">
                 <a href="index.html" class="nav-button">INDEX :: Home</a>
                 <a href="course_books.html" class="nav-button">કોર્સ/બુક :: Course/Books</a>
@@ -196,9 +196,194 @@
             </p>
 
             <p class="success text-base mb-8">
-                [RESPONSE] Total Records Found: 15+ (Contact for Full Custom List)
+                [RESPONSE] Listed Below: Ready-Made Projects & Reports (Soft & Hard Copy Available at Cheap Price)
             </p>
 
             <div class="category-heading">E-Commerce & Management Systems</div>
             <div class="project-item">
-                <span
+                <span class="project-title">NextGen Retail POS Suite</span>
+                <div class="project-details">
+                    <span class="detail-tag">Retail Billing, Inventory</span>
+                    <span class="language-tag">PHP, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">BookBazaar Online Book Store</span>
+                <div class="project-details">
+                    <span class="detail-tag">Online Storefront</span>
+                    <span class="language-tag">Python (Django)</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">EventEase Booking Platform</span>
+                <div class="project-details">
+                    <span class="detail-tag">Event Management</span>
+                    <span class="language-tag">Java, JSP</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">SmartCart Shopping WebApp</span>
+                <div class="project-details">
+                    <span class="detail-tag">E-Commerce</span>
+                    <span class="language-tag">PHP, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+
+            <div class="category-heading">Education & Information Systems</div>
+            <div class="project-item">
+                <span class="project-title">AttendPro Student Tracker</span>
+                <div class="project-details">
+                    <span class="detail-tag">Attendance Solution</span>
+                    <span class="language-tag">Python, SQLite</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">QuizNest Online Quiz Platform</span>
+                <div class="project-details">
+                    <span class="detail-tag">Quiz/Exam</span>
+                    <span class="language-tag">PHP, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">LibAccess Library Automation</span>
+                <div class="project-details">
+                    <span class="detail-tag">Library Management</span>
+                    <span class="language-tag">Java, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">Student360 Info System</span>
+                <div class="project-details">
+                    <span class="detail-tag">Student Info</span>
+                    <span class="language-tag">React Native</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+
+            <div class="category-heading">Healthcare & Social Systems</div>
+            <div class="project-item">
+                <span class="project-title">HealthMate Hospital Suite</span>
+                <div class="project-details">
+                    <span class="detail-tag">Hospital/Clinic</span>
+                    <span class="language-tag">PHP, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">BloodServe Bank System</span>
+                <div class="project-details">
+                    <span class="detail-tag">Blood Bank</span>
+                    <span class="language-tag">Python, SQLite</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">CareHome Old Age Manager</span>
+                <div class="project-details">
+                    <span class="detail-tag">Social Welfare</span>
+                    <span class="language-tag">Java, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">HealthWise Medical Advisor App</span>
+                <div class="project-details">
+                    <span class="detail-tag">Medical Guide</span>
+                    <span class="language-tag">Android (Java, SQLite)</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+
+            <div class="category-heading">Banking, Utility & General Apps</div>
+            <div class="project-item">
+                <span class="project-title">SimpleBank Account Manager</span>
+                <div class="project-details">
+                    <span class="detail-tag">Banking/Accounts</span>
+                    <span class="language-tag">Java, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">PayBill Utility Portal</span>
+                <div class="project-details">
+                    <span class="detail-tag">Bill Payment</span>
+                    <span class="language-tag">PHP, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">ExpenseLog Daily Tracker</span>
+                <div class="project-details">
+                    <span class="detail-tag">Expense Manager</span>
+                    <span class="language-tag">Flutter</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">NoticeBoardX Digital Notices</span>
+                <div class="project-details">
+                    <span class="detail-tag">Notice Board</span>
+                    <span class="language-tag">PHP, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">HostelEase Hostel Manager</span>
+                <div class="project-details">
+                    <span class="detail-tag">Hostel/PG System</span>
+                    <span class="language-tag">Python, SQLite</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">DocuSafe Document Vault</span>
+                <div class="project-details">
+                    <span class="detail-tag">Document Storage</span>
+                    <span class="language-tag">PHP, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">ParkRight Parking Management</span>
+                <div class="project-details">
+                    <span class="detail-tag">Parking/Transport</span>
+                    <span class="language-tag">Java, MySQL</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+
+            <div class="category-heading">Artificial Intelligence & Data Science</div>
+            <div class="project-item">
+                <span class="project-title">VisionAI Image Classifier</span>
+                <div class="project-details">
+                    <span class="detail-tag">Image Recognition</span>
+                    <span class="language-tag">Python, Deep Learning</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+            <div class="project-item">
+                <span class="project-title">WebMiner Data Extractor</span>
+                <div class="project-details">
+                    <span class="detail-tag">Web Scraping</span>
+                    <span class="language-tag">Python</span>
+                    <span class="report-status">Soft/Hard Copy Report</span>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <div><strong>પ્રોજેક્ટ્સ & રિપોર્ટ્સ ખરીદવા અથવા વધારે માહિતી માટે સંપર્ક કરો:</strong></div>
+                <div><b>Email:</b> <a href="mailto:brownfistist777@gmail.com" style="color:var(--color-terminal-yellow)">brownfistist777@gmail.com</a></div>
+                <div><b>WhatsApp / Call:</b> <a href="tel:9274402187" style="color:var(--color-terminal-yellow)">9274402187</a> / <a href="tel:9328888320" style="color:var(--color-terminal-yellow)">9328888320</a></div>
+                <div class="mt-2"><span style="color:var(--color-terminal-blue);">તમામ પ્રોજેક્ટ અને રિપોર્ટ ઓરીજિનલ, સોફ્ટ અને હાર્ડ કોપી બંને ઉપલબ્ધ છે. આજે જ સંપર્ક કરો!</span></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
