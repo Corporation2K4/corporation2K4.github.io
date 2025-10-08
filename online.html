@@ -1,1 +1,356 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporation2K4 :: Online Digital Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', 'Noto Sans Gujarati', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1200px;
+            margin: 32px auto 0 auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            gap: 10px 20px;
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover {
+            background-color: var(--color-terminal-white);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-terminal-yellow);
+            border-color: var(--color-terminal-yellow);
+        }
+        .nav-button.active {
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        #main-layout {
+            display: flex;
+            flex-direction: column; 
+        }
+        #text-content {
+            padding: 32px 36px;
+            background: #151819;
+            border-radius: 0 0 14px 14px;
+            flex: 1 1 100%; 
+            min-width: 0; 
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        #terminal-output {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+        #terminal-output::-webkit-scrollbar {
+            width: 10px;
+            background-color: #111;
+        }
+        #terminal-output::-webkit-scrollbar-thumb {
+            background-color: var(--color-dim-green);
+            border-radius: 5px;
+        }
+        #terminal-output::-webkit-scrollbar-track {
+            background-color: #000000;
+        }
+        .terminal-line {
+            line-height: 1.65;
+            padding: 2px 0;
+            white-space: pre-wrap;
+            overflow: hidden;
+            border-right: 3px solid transparent;
+            font-size: 1rem;
+        }
+        .gujarati-text {
+            font-family: 'Noto Sans Gujarati', sans-serif;
+            font-size: 1.05rem;
+            color: var(--color-terminal-white);
+            font-weight: normal;
+        }
+        .prompt {
+            color: var(--color-terminal-blue);
+            font-weight: bold;
+        }
+        .success {
+            color: var(--color-terminal-yellow);
+            font-weight: bold;
+        }
+        .command {
+            color: var(--color-terminal-green);
+        }
+        .output-text {
+            color: var(--color-terminal-white);
+            font-size: 1rem;
+        }
+        .list-item {
+            padding-left: 20px;
+            text-indent: -15px;
+        }
+        .list-item::before {
+            content: ">> ";
+            color: var(--color-terminal-green);
+        }
+        .cursor {
+            border-right: 3px solid var(--color-terminal-green);
+            animation: blink-caret .75s step-end infinite;
+            display: inline-block;
+            height: 1em;
+            vertical-align: middle;
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--color-terminal-green); }
+        }
+        .fade-in-content {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: 0.5s;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4
+            <span class="status"></span>
+            <nav id="top-nav-bar">
+                <a href="index.html" class="nav-button">INDEX :: Home</a>
+                <a href="course_books.html" class="nav-button">કોર્સ/બુક :: Course/Books</a>
+                <a href="bca_project_reports.html" class="nav-button">BCA Projects :: રીપોર્ટ્સ</a>
+                <a href="hardware_system.html" class="nav-button">લેપટોપ/કોમ્પ્યુટર :: Buy/Sell</a>
+                <a href="online.html" class="nav-button active">ઓનલાઈન સેવા :: Online Services</a>
+                <a href="contactus.html" class="nav-button">સંપર્ક કરો :: Contact</a>
+            </nav>
+        </div>
+        <div id="main-layout">
+            <div id="text-content">
+                <div id="terminal-output">
+                    <div class="terminal-line"><span class="prompt">Corp2K4@System:~$</span> <span class="command">| |</span></div>
+                    <div class="terminal-line success fade-in-content" style="animation-delay: 0.5s;">Corporation2K4 <span class="gujarati-text">ઓનલાઈન ડિજિટલ સર્વિસ પેજ પર આપનું સ્વાગત છે.</span></div>
+                    <div class="terminal-line" style="margin-top: 10px;">
+                        <span class="prompt">Corp2K4@System:~$</span>
+                        <span class="command">તમારા તમામ ઓનલાઈન કામ માટે એક જ જગ્યા.</span>
+                        <div class="cursor"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const serviceLines = [
+            { type: 'line', text: '<span class="prompt">ઓનલાઈન સર્વિસ માહિતી લાવી રહ્યા છીએ...</span>' },
+            { 
+                type: 'line', 
+                text: '<span class="success">[મુખ્ય ડિજિટલ સેવા]</span> વિદ્યાર્થીઓ, ખેડૂતો, તેમજ સામાન્ય લોકો માટે તમામ મુખ્ય ઓનલાઈન/ડિજિટલ સેવાઓ.' 
+            },
+            { type: 'heading', text: 'વિદ્યાર્થીઓ માટે ખાસ' },
+            { 
+                type: 'item', 
+                text: `<span class="command">Online Services:</span> Scholarship Form, Government Yojana Form, College/Exam Form વગેરે બધાં ઓનલાઈન ફોર્મ ભરાવાની સેવા. <span class="gujarati-text">તમારા તમામ ઓનલાઈન કામ માટે એક જ જગ્યા.</span>`
+            },
+            { 
+                type: 'item', 
+                text: `<span class="command">Scholarship & Exam Forms:</span> તમામ શિષ્યવૃત્તિ, કોલેજ એડમિશન, પરીક્ષા ફોર્મ ભરાવવાની સુવિધા. <span class="gujarati-text">Guidance અને Error Free ભરાવાની ખાતરી.</span>`
+            },
+            { 
+                type: 'item', 
+                text: `<span class="command">Digital Marksheet & Degree Download:</span> ઓનલાઈન માર્કશીટ, ડિગ્રી, બોનાફાઈડ, પ્રોવિઝનલ વગેરે ડાઉનલોડ અને પ્રિન્ટ સેવા.`
+            },
+            { type: 'heading', text: 'આમ જનતા માટે' },
+            { 
+                type: 'item', 
+                text: `<span class="command">Aadhaar, PAN, Voter ID:</span> નવા કાર્ડ, સુધારા, અપડેટ, પેપર/ડિજિટલ કૉપિ, ઓનલાઇન સ્ટેટસ ચેક. <span class="gujarati-text">આધાર, પાન, વોટર કાર્ડ માટે સંપૂર્ણ સેવા.</span>`
+            },
+            { 
+                type: 'item', 
+                text: `<span class="command">LIC/Insurance Policies:</span> નવી પોલિસી ખરીદવી, પ્રીમિયમ ભરવું, પોર્ટલ અપડેટ, ઓનલાઈન સ્ટેટસ ચેક.`
+            },
+            { 
+                type: 'item', 
+                text: `<span class="command">Mobile, DTH & Utility Bill Payment:</span> મોબાઈલ રિચાર્જ, ડીટીએચ, વીજળી, પાણી, ગેસ, ફાસ્ટટૅગ વગેરેનું બિલ પેમેન્ટ.`
+            },
+            { 
+                type: 'item', 
+                text: `<span class="command">Passport & Driving Licence:</span> નવી અરજી, સુધારા, એપોઈન્ટમેન્ટ બુક, સ્ટેટસ ચેક.`
+            },
+            { 
+                type: 'item', 
+                text: `<span class="command">Birth, Death, Caste, Income Certificates:</span> જન્મ/મૃત્યુ પ્રમાણપત્ર, જાતિ દાખલો, આવક દાખલો મેળવવાની સેવા.`
+            },
+            { type: 'heading', text: 'ખાસ ખેડૂતો માટે' },
+            { 
+                type: 'item', 
+                text: `<span class="command">ખેતી અને કૃષિ પોર્ટલ:</span> ખેડૂત પોર્ટલ રજીસ્ટ્રેશન, PM-Kisan, ખેતી સબસીડી, કૃષિ સાધનો સહાય, પાક વીમા માટે અરજી.`
+            },
+            { 
+                type: 'item', 
+                text: `<span class="command">Government Schemes for Farmers:</span> ખેડૂત માટે તમામ સરકારી યોજનાઓ (ખેતી સાધન સહાય, બીજ સહાય, પાક વિમો, પાક સહાય) માટે ઓનલાઈન અરજી અને માર્ગદર્શન.`
+            },
+            { 
+                type: 'item', 
+                text: `<span class="command">Land Records & Satbara Download:</span> ખાતા નંબર, 7/12, 8A, જમીન રેકોર્ડની ડિજિટલ નકલ ડાઉનલોડ અને પ્રિન્ટ.`
+            },
+            { type: 'heading', text: 'અન્ય સર્વિસીસ' },
+            { 
+                type: 'item', 
+                text: `<span class="command">Government Schemes:</span> વિધવા સહાય, વૃદ્ધ પેન્શન, દિવ્યાંગ પેન્શન, નાના વેપારી યોજના, આવાસ યોજના વગેરે માટે અરજી અને માર્ગદર્શન.`
+            },
+            { 
+                type: 'item', 
+                text: `<span class="command">PMAY, Ration Card, Ayushman Card:</span> નવી અરજી, સુધારા અને સ્ટેટસ ચેક સેવા.`
+            },
+            { type: 'line', text: '<span class="prompt">વધુ માહિતી માટે સંપર્ક કરો. તમે સરળ, ઝડપી અને વિશ્વસનીય સર્વિસ મેળવો.</span>' }
+        ];
 
+        // Terminal Typing Logic (same as index)
+        const terminalOutput = document.getElementById('terminal-output');
+        let lineIndex = 0;
+        let charIndex = 0;
+        let currentLineElement = null;
+        let cursorElement = null;
+
+        function createNewLine(content) {
+            const newLine = document.createElement('div');
+            newLine.classList.add('terminal-line');
+            if (content.type === 'item') {
+                newLine.classList.add('list-item');
+                newLine.innerHTML = content.text;
+            } else if (content.type === 'heading') {
+                const h2 = document.createElement('h2');
+                h2.innerHTML = content.text;
+                h2.style.fontSize = '1.2rem';
+                h2.style.marginTop = '20px';
+                h2.style.marginBottom = '5px';
+                h2.style.borderBottom = '1px solid var(--color-terminal-yellow)';
+                h2.style.color = 'var(--color-terminal-yellow)';
+                newLine.appendChild(h2);
+            } else {
+                newLine.innerHTML = content.text;
+            }
+            terminalOutput.appendChild(newLine);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            return newLine;
+        }
+
+        function typeWriter() {
+            if (lineIndex < serviceLines.length) {
+                const lineData = serviceLines[lineIndex];
+                if (lineData.type === 'heading' || lineData.type === 'item') {
+                    currentLineElement = createNewLine(lineData);
+                    lineIndex++;
+                    setTimeout(typeWriter, 50);
+                } else if (lineData.type === 'line') {
+                    if (!currentLineElement) {
+                        const lines = terminalOutput.querySelectorAll('.terminal-line');
+                        currentLineElement = lines[lines.length - 1];
+                        cursorElement = currentLineElement.querySelector('.cursor');
+                        if (cursorElement) cursorElement.remove();
+                        currentLineElement.innerHTML += ' <span class="output-text"></span>';
+                        currentLineElement = currentLineElement.querySelector('.output-text');
+                        charIndex = 0;
+                        const newCursor = document.createElement('span');
+                        newCursor.classList.add('cursor');
+                        currentLineElement.after(newCursor);
+                        cursorElement = newCursor;
+                    }
+                    const textContent = lineData.text.replace(/<[^>]*>/g, '');
+                    const char = textContent[charIndex];
+                    if (char) {
+                        currentLineElement.innerHTML += char;
+                        charIndex++;
+                    } else {
+                        if (cursorElement) cursorElement.remove();
+                        currentLineElement.innerHTML = lineData.text.substring(lineData.text.indexOf('>') + 1).replace('</span>', '').trim();
+                        currentLineElement = null;
+                        lineIndex++;
+                        charIndex = 0;
+                        setTimeout(() => {
+                            if (lineIndex < serviceLines.length) {
+                                const nextPrompt = createNewLine({
+                                    type: 'line',
+                                    text: '...<span class="prompt">કમાંડ માટે રાહ જુઓ...</span>'
+                                });
+                                const newCursor = document.createElement('span');
+                                newCursor.classList.add('cursor');
+                                nextPrompt.querySelector('.prompt').after(newCursor);
+                                cursorElement = newCursor;
+                                setTimeout(typeWriter, 1200);
+                            } else {
+                                if (cursorElement) cursorElement.remove();
+                            }
+                        }, 500);
+                        return;
+                    }
+                    setTimeout(typeWriter, 35);
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(typeWriter, 1500); 
+        });
+    </script>
+</body>
+</html>
