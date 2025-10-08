@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="gu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Corporation2K4 :: Hardware Systems</title>
+    <title>Corporation2K4 :: Computer & Laptop Buy/Sell</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -50,7 +49,7 @@
             color: var(--color-terminal-yellow);
             font-size: 0.9em;
         }
-        #main-content {
+        #content {
             padding: 32px 36px;
         }
         #top-nav-bar {
@@ -88,59 +87,35 @@
             border-color: var(--color-terminal-yellow);
             box-shadow: 0 0 15px var(--color-terminal-yellow);
         }
-        .heading {
+        .heading-main {
             color: var(--color-terminal-yellow);
-            font-size: 1.35rem;
-            margin-top: 22px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid var(--color-terminal-green);
-            padding-bottom: 5px;
-        }
-        .item-list {
-            margin: 0 0 24px 0;
-            padding: 0;
-            list-style: none;
-        }
-        .item-list li {
-            padding-left: 18px;
-            margin-bottom: 10px;
-            position: relative;
-            font-size: 1.08rem;
-        }
-        .item-list li:before {
-            content: ">>";
-            color: var(--color-terminal-green);
-            position: absolute;
-            left: 0;
-        }
-        .highlight {
-            color: var(--color-terminal-yellow);
+            font-size: 1.3rem;
             font-weight: bold;
+            margin-bottom: 12px;
+            margin-top: 10px;
+            text-shadow: 0 0 8px var(--color-terminal-yellow);
         }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 24px;
-            background: #191f23;
-            border-radius: 10px;
-            overflow: hidden;
+        .list-item {
+            padding-left: 20px;
+            text-indent: -15px;
+            margin-bottom: 10px;
         }
-        .table th, .table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #222;
+        .list-item::before {
+            content: ">> ";
+            color: var(--color-terminal-green);
+        }
+        .contact-info {
+            margin-top: 30px;
+            background: #181b1e;
+            border-radius: 9px;
+            border: 2px solid var(--color-terminal-blue);
+            padding: 18px 24px;
             color: var(--color-terminal-white);
-            text-align: left;
+            font-size: 1rem;
+            box-shadow: 0 0 8px var(--color-terminal-blue);
         }
-        .table th {
-            background: #222;
-            color: var(--color-terminal-green);
-        }
-        .table tr:last-child td {
-            border-bottom: none;
-        }
-        .success {
+        .contact-info strong {
             color: var(--color-terminal-yellow);
-            font-weight: bold;
         }
         @media (max-width: 760px) {
             #app-container {
@@ -152,21 +127,18 @@
             #terminal-header {
                 border-radius: 0;
             }
-            #main-content {
+            #content {
                 padding: 20px 15px;
             }
-            .table th, .table td {
-                padding: 7px 5px;
-                font-size: 0.96rem;
-            }
+            .contact-info { padding: 12px 6px;}
         }
     </style>
 </head>
 <body>
     <div id="app-container">
         <div id="terminal-header">
-            Corporation2K4 :: Computer Hardware Systems & Buy/Sell Solutions
-            <span class="status">[સસ્તા & શ્રેષ્ઠ]</span>
+            Corporation2K4 :: Computer & Laptop Buy/Sell
+            <span class="status">[હાર્ડવેર સેવા]</span>
             <nav id="top-nav-bar">
                 <a href="index.html" class="nav-button">INDEX :: Home</a>
                 <a href="course_books.html" class="nav-button">કોર્સ/બુક :: Course/Books</a>
@@ -176,62 +148,42 @@
                 <a href="contactus.html" class="nav-button">સંપર્ક કરો :: Contact</a>
             </nav>
         </div>
-        <div id="main-content">
-            <div class="heading">કમ્પ્યુટર અને લેપટોપ ખરીદો/વેચો</div>
-            <ul class="item-list">
-                <li>નવા અને જૂના લેપટોપ તથા ડેસ્કટોપ કમ્પ્યુટર્સ <span class="highlight">સસ્તા ભાવે</span> ખરીદી-વેચાણ.</li>
-                <li>દરેક પ્રકારના કોમ્પ્યુટર એસેસરીઝ (માઉસ, કીબોર્ડ, મોનીટર, કેમેરા, પ્રિન્ટર, સ્પીકર, કેબલ્સ, પાવર સપ્લાય, વગેરે).</li>
-                <li>રીફર્બિશ્ડ (Refurbished) અને બ્રાન્ડેડ પીસી/લેપટોપ ઉપલબ્ધ.</li>
-                <li>વિશેષ: <span class="highlight">અમરેલી જિલ્લામાં ફ્રી ડિલિવરી/ઇન્સ્ટોલેશન સેવા</span>.</li>
-                <li>તમારી જરૂર મુજબ કસ્ટમ પીસી બિલ્ડ/અપગ્રેડ.</li>
-                <li>ઓલ-ઈન-વન (All-in-one) પીસી તથા બિઝનેસ માટે સ્પેશિયલ સોલ્યુશન.</li>
-            </ul>
+        <div id="content">
+            <div class="heading-main">કોમ્પ્યુટર અને લેપટોપ ખરીદી-વેચાણ</div>
+            <div class="list-item">
+                <span class="gujarati-text">અમારા પાસેથી નાના-મોટા બિઝનેસ, વિદ્યાર્થીઓ અને ઘર માટે <b>ક્વોલિટી કમ્પ્યુટર સિસ્ટમ</b> અને <b>લેપટોપ</b> સૌથી ઓછી કિંમતમાં ખરીદી શકો છો.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>ડેસ્કટોપ કમ્પ્યુટર</b> રૂ. <b>5000</b> થી શરૂ, અને <b>કસ્ટમ બિઝનેસ/ગેમિંગ</b> સેટઅપ પણ ઉપલબ્ધ.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>નવી અને જૂની લેપટોપ</b> પણ રૂ. <b>6000</b> થી શરૂ થાય છે. બધા બ્રાન્ડેડ તથા કસ્ટમ કન્ફિગરેશનમાં.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>Computer Accessories</b> (માઉસ, કી-બોર્ડ, મોનીટર, પ્રિન્ટર, હાર્ડ ડિસ્ક, કેબલ, CCTV, UPS, સ્પીકર, વગેરે) પણ સૌથી ઓછી કિંમતે.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text">ખોટા/જૂના કમ્પ્યુટર, લેપટોપ, પાર્ટ્સનું <b>ખરીદી અને એક્સચેન્જ</b> પણ કરીએ છીએ.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text">અમારી તમામ પ્રોડક્ટ્સ સાથે <b>પરીક્ષણ અને વોરંટી</b> ઉપલબ્ધ છે.</span>
+            </div>
+            <div class="heading-main">અમારી ખાસ સેવાઓ</div>
+            <div class="list-item">
+                <span class="gujarati-text">જરૂરિયાત મુજબ <b>ઓફિસ, સ્કૂલ, દુકાન</b> માટે પીસી/લેપટોપ સેટઅપ, ઇન્સ્ટોલેશન અને <b>ઓએસ/સોફ્ટવેર</b> ઇન્સ્ટોલેશન સર્વિસ.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>પ્રિન્ટર, CCTV, નેટવર્કિંગ, UPS</b> વગેરે સંપૂર્ણ સોલ્યુશન.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text">લોકલ સર્વિસિંગ અને <b>ફાસ્ટ ડિલિવરી</b> અમરેલી જિલ્લાના તમામ ગામડાં અને શહેરમાં.</span>
+            </div>
 
-            <div class="heading">સ્ટાર્ટિંગ પ્રાઇઝ અને પોપ્યુલર ઓપ્શન</div>
-            <table class="table">
-                <tr>
-                    <th>પ્રોડક્ટ</th>
-                    <th>સ્ટાર્ટિંગ કિંમત</th>
-                    <th>વિશેષતા</th>
-                </tr>
-                <tr>
-                    <td>ડેસ્કટોપ કોમ્પ્યુટર (Entry Level)</td>
-                    <td><span class="success">₹ 5000</span></td>
-                    <td>Pentium/Core2Duo/2GB/160GB/17" LCD</td>
-                </tr>
-                <tr>
-                    <td>ડેસ્કટોપ કોમ્પ્યુટર (Standard)</td>
-                    <td><span class="success">₹ 6000</span></td>
-                    <td>i3/i5 2nd Gen+, 4GB+, 250GB+, 18.5" LED</td>
-                </tr>
-                <tr>
-                    <td>લેપટોપ (Used/Refurbished)</td>
-                    <td><span class="success">₹ 7500</span></td>
-                    <td>i3/i5, 4GB+, SSD/HDD, Webcam, WiFi</td>
-                </tr>
-                <tr>
-                    <td>બ્રાન્ડેડ/કસ્ટમ પીસી બિલ્ડ</td>
-                    <td><span class="success">₹ 11000+</span></td>
-                    <td>Office, Gaming, Graphic Design, Student Use</td>
-                </tr>
-            </table>
-
-            <div class="heading">સર્વિસિસ અને વધારાની સુવિધા</div>
-            <ul class="item-list">
-                <li>ઓપરેટિંગ સિસ્ટમ, સોફ્ટવેર ઇન્સ્ટોલેશન અને સેટઅપ.</li>
-                <li>હાર્ડવેئر/સોફ્ટવેર અપગ્રેડ અને ટRouબલશૂટિંગ/રિપેર.</li>
-                <li>એડવાન્સ કન્ફિગરેશન, નેટવર્કિંગ, પ્રિન્ટર/સ્કેનર/કેમેરા સેટઅપ.</li>
-                <li>લેમિનેશન, પ્રિન્ટિંગ, સ્કેનિંગ અને ડિજિટલ ડોક્યુમેન્ટ સર્વિસ.</li>
-            </ul>
-            <div class="heading">શું મળશે?</div>
-            <ul class="item-list">
-                <li>દરેક પીસી/લેપટોપ સાથે ચેકિંગ અને વર્કિંગ વોરંટી.</li>
-                <li>બેસ્ટ ક્વોલિટી અને પર્સનલ એડવાઇઝ.</li>
-                <li>સ્ટુડન્ટ અને ઓફિસ માટે સ્પેશિયલ ડિસ્કાઉન્ટ.</li>
-                <li>કસ્ટમ ઓર્ડર પણ સ્વીકારીએ છીએ.</li>
-            </ul>
-            <div style="margin-top:24px;">
-                <span class="success">મેહરબાની કરીને તમારા બજેટ અને જરૂરિયાત મુજબ સંપર્ક કરો. વધુ માહિતી માટે WhatsApp/Call કરો.</span>
+            <div class="contact-info">
+                <div><strong>સંપર્ક માહિતી:</strong></div>
+                <div><b>Email:</b> <a href="mailto:brownfistist777@gmail.com" style="color:var(--color-terminal-yellow)">brownfistist777@gmail.com</a></div>
+                <div><b>WhatsApp / Call:</b> <a href="tel:9274402187" style="color:var(--color-terminal-yellow)">9274402187</a> / <a href="tel:9328888320" style="color:var(--color-terminal-yellow)">9328888320</a></div>
+                <div class="mt-2"><span style="color:var(--color-terminal-blue);">તમારી જરૂરિયાત માટે આજે જ સંપર્ક કરો!</span></div>
             </div>
         </div>
     </div>
