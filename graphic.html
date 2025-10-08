@@ -1,1 +1,199 @@
-gr
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporation2K4 :: Graphic Design Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', 'Noto Sans Gujarati', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1000px;
+            margin: 32px auto 60px auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+        }
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #terminal-header .status {
+            color: var(--color-terminal-yellow);
+            font-size: 0.9em;
+        }
+        #content {
+            padding: 32px 36px;
+        }
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px 20px;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover {
+            background-color: var(--color-terminal-white);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-terminal-yellow);
+            border-color: var(--color-terminal-yellow);
+        }
+        .nav-button.active {
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        .heading-main {
+            color: var(--color-terminal-yellow);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            margin-top: 10px;
+            text-shadow: 0 0 8px var(--color-terminal-yellow);
+        }
+        .list-item {
+            padding-left: 20px;
+            text-indent: -15px;
+            margin-bottom: 10px;
+        }
+        .list-item::before {
+            content: ">> ";
+            color: var(--color-terminal-green);
+        }
+        .contact-info {
+            margin-top: 30px;
+            background: #181b1e;
+            border-radius: 9px;
+            border: 2px solid var(--color-terminal-blue);
+            padding: 18px 24px;
+            color: var(--color-terminal-white);
+            font-size: 1rem;
+            box-shadow: 0 0 8px var(--color-terminal-blue);
+        }
+        .contact-info strong {
+            color: var(--color-terminal-yellow);
+        }
+        @media (max-width: 760px) {
+            #app-container {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+            }
+            #terminal-header {
+                border-radius: 0;
+            }
+            #content {
+                padding: 20px 15px;
+            }
+            .contact-info { padding: 12px 6px;}
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4 :: ગ્રાફિક ડિઝાઇન સેવા
+            <span class="status">[GRAPHIC DESIGN]</span>
+            <nav id="top-nav-bar">
+                <a href="index.html" class="nav-button">INDEX :: Home</a>
+                <a href="course_books.html" class="nav-button">કોર્સ/બુક :: Course/Books</a>
+                <a href="bca_project_reports.html" class="nav-button">BCA Projects :: રીપોર્ટ્સ</a>
+                <a href="hardware_system.html" class="nav-button">લેપટોપ/કોમ્પ્યુટર :: Buy/Sell</a>
+                <a href="online.html" class="nav-button">ઓનલાઈન સેવા :: Online Services</a>
+                <a href="graphic.html" class="nav-button active">ગ્રાફિક :: Graphic Work</a>
+                <a href="contactus.html" class="nav-button">સંપર્ક કરો :: Contact</a>
+            </nav>
+        </div>
+        <div id="content">
+            <div class="heading-main">ગ્રાફિક ડિઝાઇન – તમારી દરેક જરૂરિયાત માટે</div>
+            
+            <div class="list-item">
+                <span class="gujarati-text">મોડર્ન અને પ્રોફેશનલ <b>Resume</b> અને <b>CV Design</b> – જેવું તમે ઈચ્છો એ રીતે, ખાસ યુવા માટે.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>બિઝનેસ કાર્ડ</b> અને <b>વિઝિટિંગ કાર્ડ</b> – તમારી ઓળખને વધુ અસરકારક બનાવતી ડિઝાઇન.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>લોગો ડિઝાઇન</b>, <b>બ્રાન્ડિંગ</b>, અને <b>લેટરહેડ</b> – સંપૂર્ણ બ્રાન્ડ ઈમેજ માટે.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>પોસ્ટર</b>, <b>બેનર</b>, <b>ફ્લેક્સ</b>, <b>બ્રોશર</b>, <b>પમ્ફલેટ</b> – દુકાન, સ્કૂલ, ઇવેન્ટ વગેરે માટે.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>સોશિયલ મીડિયા પોસ્ટ</b> (Instagram, Facebook, Whatsapp Status) – ખાસ ઓફર, પ્રોડક્ટ, અને ઈવેન્ટ માટે.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>યુટ્યુબ થંબનેલ</b> અને <b>પ્રોફાઇલ/કવર ફોટો</b> – ક્રિએટિવ અને આકર્ષક.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text"><b>સરકારી/એજ્યુકેશનલ પ્રોજેક્ટના ગ્રાફિક્સ</b>, સર્ટિફિકેટ, ઈન્ફોગ્રાફિક, ચાર્ટ વગેરે.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text">જરૂર પડે ત્યાં <b>ડિઝાઇન પ્રિન્ટ</b> પણ ઉપલબ્ધ છે.</span>
+            </div>
+            <div class="heading-main">શા માટે Corporation2K4?</div>
+            <div class="list-item">
+                <span class="gujarati-text">તમારી જરૂર મુજબ કસ્ટમ ડિઝાઇન, ઓછી કિંમત અને ઝડપી ડિલિવરી.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text">ઓનલાઇન પેમેન્ટ અને ડિજિટલ ફોર્મેટમાં ડિઝાઇન મેળવવાની સુવિધા.</span>
+            </div>
+            <div class="list-item">
+                <span class="gujarati-text">લોકલ તેમજ ગુજરાત ભર સર્વિસ અને સપોર્ટ.</span>
+            </div>
+
+            <div class="contact-info">
+                <div><strong>સંપર્ક માહિતી:</strong></div>
+                <div><b>Email:</b> <a href="mailto:brownfistist777@gmail.com" style="color:var(--color-terminal-yellow)">brownfistist777@gmail.com</a></div>
+                <div><b>WhatsApp / Call:</b> <a href="tel:9274402187" style="color:var(--color-terminal-yellow)">9274402187</a> / <a href="tel:9328888320" style="color:var(--color-terminal-yellow)">9328888320</a></div>
+                <div class="mt-2"><span style="color:var(--color-terminal-blue);">તમારા તમામ ગ્રાફિક કામ માટે આજે જ સંપર્ક કરો!</span></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
