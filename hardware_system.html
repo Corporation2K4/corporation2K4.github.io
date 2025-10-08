@@ -1,1 +1,239 @@
 
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporation2K4 :: Hardware Systems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', 'Noto Sans Gujarati', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1000px;
+            margin: 32px auto 60px auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+        }
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #terminal-header .status {
+            color: var(--color-terminal-yellow);
+            font-size: 0.9em;
+        }
+        #main-content {
+            padding: 32px 36px;
+        }
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px 20px;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover {
+            background-color: var(--color-terminal-white);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-terminal-yellow);
+            border-color: var(--color-terminal-yellow);
+        }
+        .nav-button.active {
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        .heading {
+            color: var(--color-terminal-yellow);
+            font-size: 1.35rem;
+            margin-top: 22px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--color-terminal-green);
+            padding-bottom: 5px;
+        }
+        .item-list {
+            margin: 0 0 24px 0;
+            padding: 0;
+            list-style: none;
+        }
+        .item-list li {
+            padding-left: 18px;
+            margin-bottom: 10px;
+            position: relative;
+            font-size: 1.08rem;
+        }
+        .item-list li:before {
+            content: ">>";
+            color: var(--color-terminal-green);
+            position: absolute;
+            left: 0;
+        }
+        .highlight {
+            color: var(--color-terminal-yellow);
+            font-weight: bold;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+            background: #191f23;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table th, .table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #222;
+            color: var(--color-terminal-white);
+            text-align: left;
+        }
+        .table th {
+            background: #222;
+            color: var(--color-terminal-green);
+        }
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+        .success {
+            color: var(--color-terminal-yellow);
+            font-weight: bold;
+        }
+        @media (max-width: 760px) {
+            #app-container {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+            }
+            #terminal-header {
+                border-radius: 0;
+            }
+            #main-content {
+                padding: 20px 15px;
+            }
+            .table th, .table td {
+                padding: 7px 5px;
+                font-size: 0.96rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4 :: Computer Hardware Systems & Buy/Sell Solutions
+            <span class="status">[સસ્તા & શ્રેષ્ઠ]</span>
+            <nav id="top-nav-bar">
+                <a href="index.html" class="nav-button">INDEX :: Home</a>
+                <a href="course_books.html" class="nav-button">કોર્સ/બુક :: Course/Books</a>
+                <a href="bca_project_reports.html" class="nav-button">BCA Projects :: રીપોર્ટ્સ</a>
+                <a href="hardware_system.html" class="nav-button active">લેપટોપ/કોમ્પ્યુટર :: Buy/Sell</a>
+                <a href="online.html" class="nav-button">ઓનલાઈન સેવા :: Online Services</a>
+                <a href="contactus.html" class="nav-button">સંપર્ક કરો :: Contact</a>
+            </nav>
+        </div>
+        <div id="main-content">
+            <div class="heading">કમ્પ્યુટર અને લેપટોપ ખરીદો/વેચો</div>
+            <ul class="item-list">
+                <li>નવા અને જૂના લેપટોપ તથા ડેસ્કટોપ કમ્પ્યુટર્સ <span class="highlight">સસ્તા ભાવે</span> ખરીદી-વેચાણ.</li>
+                <li>દરેક પ્રકારના કોમ્પ્યુટર એસેસરીઝ (માઉસ, કીબોર્ડ, મોનીટર, કેમેરા, પ્રિન્ટર, સ્પીકર, કેબલ્સ, પાવર સપ્લાય, વગેરે).</li>
+                <li>રીફર્બિશ્ડ (Refurbished) અને બ્રાન્ડેડ પીસી/લેપટોપ ઉપલબ્ધ.</li>
+                <li>વિશેષ: <span class="highlight">અમરેલી જિલ્લામાં ફ્રી ડિલિવરી/ઇન્સ્ટોલેશન સેવા</span>.</li>
+                <li>તમારી જરૂર મુજબ કસ્ટમ પીસી બિલ્ડ/અપગ્રેડ.</li>
+                <li>ઓલ-ઈન-વન (All-in-one) પીસી તથા બિઝનેસ માટે સ્પેશિયલ સોલ્યુશન.</li>
+            </ul>
+
+            <div class="heading">સ્ટાર્ટિંગ પ્રાઇઝ અને પોપ્યુલર ઓપ્શન</div>
+            <table class="table">
+                <tr>
+                    <th>પ્રોડક્ટ</th>
+                    <th>સ્ટાર્ટિંગ કિંમત</th>
+                    <th>વિશેષતા</th>
+                </tr>
+                <tr>
+                    <td>ડેસ્કટોપ કોમ્પ્યુટર (Entry Level)</td>
+                    <td><span class="success">₹ 5000</span></td>
+                    <td>Pentium/Core2Duo/2GB/160GB/17" LCD</td>
+                </tr>
+                <tr>
+                    <td>ડેસ્કટોપ કોમ્પ્યુટર (Standard)</td>
+                    <td><span class="success">₹ 6000</span></td>
+                    <td>i3/i5 2nd Gen+, 4GB+, 250GB+, 18.5" LED</td>
+                </tr>
+                <tr>
+                    <td>લેપટોપ (Used/Refurbished)</td>
+                    <td><span class="success">₹ 7500</span></td>
+                    <td>i3/i5, 4GB+, SSD/HDD, Webcam, WiFi</td>
+                </tr>
+                <tr>
+                    <td>બ્રાન્ડેડ/કસ્ટમ પીસી બિલ્ડ</td>
+                    <td><span class="success">₹ 11000+</span></td>
+                    <td>Office, Gaming, Graphic Design, Student Use</td>
+                </tr>
+            </table>
+
+            <div class="heading">સર્વિસિસ અને વધારાની સુવિધા</div>
+            <ul class="item-list">
+                <li>ઓપરેટિંગ સિસ્ટમ, સોફ્ટવેર ઇન્સ્ટોલેશન અને સેટઅપ.</li>
+                <li>હાર્ડવેئر/સોફ્ટવેર અપગ્રેડ અને ટRouબલશૂટિંગ/રિપેર.</li>
+                <li>એડવાન્સ કન્ફિગરેશન, નેટવર્કિંગ, પ્રિન્ટર/સ્કેનર/કેમેરા સેટઅપ.</li>
+                <li>લેમિનેશન, પ્રિન્ટિંગ, સ્કેનિંગ અને ડિજિટલ ડોક્યુમેન્ટ સર્વિસ.</li>
+            </ul>
+            <div class="heading">શું મળશે?</div>
+            <ul class="item-list">
+                <li>દરેક પીસી/લેપટોપ સાથે ચેકિંગ અને વર્કિંગ વોરંટી.</li>
+                <li>બેસ્ટ ક્વોલિટી અને પર્સનલ એડવાઇઝ.</li>
+                <li>સ્ટુડન્ટ અને ઓફિસ માટે સ્પેશિયલ ડિસ્કાઉન્ટ.</li>
+                <li>કસ્ટમ ઓર્ડર પણ સ્વીકારીએ છીએ.</li>
+            </ul>
+            <div style="margin-top:24px;">
+                <span class="success">મેહરબાની કરીને તમારા બજેટ અને જરૂરિયાત મુજબ સંપર્ક કરો. વધુ માહિતી માટે WhatsApp/Call કરો.</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
