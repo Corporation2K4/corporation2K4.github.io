@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Router Information Gathering: What Data Your Wi-Fi Router is Broadcasting (and How to Stop It)</title>
+    <meta name="description" content="A deep dive into router information gathering, common vulnerabilities, and defensive configuration techniques for securing home and small business networks against network-level threats.">
+    
+    <link rel="stylesheet" href="style.css"> 
+    
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        .container {
+            max-width: 850px;
+            margin: 30px auto;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.2em;
+            margin-top: 1.5em;
+        }
+        pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 10px;
+            overflow-x: auto;
+            border-radius: 4px;
+            color: #555;
+        }
+        .ad-unit {
+            background-color: #fffaf0;
+            border: 1px solid #ffcc66;
+            padding: 20px;
+            margin: 2em 0;
+            text-align: center;
+            font-size: 1em;
+            color: #8a6d3b;
+            font-style: italic;
+        }
+        .warning {
+            color: #d9534f;
+            font-weight: bold;
+            border-left: 5px solid #d9534f;
+            padding-left: 10px;
+            margin: 1.5em 0;
+            background-color: #fdf7f7;
+            padding: 10px;
+        }
+        .callout {
+            background-color: #e6f7ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 1em 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Router Information Gathering: What Data Your Wi-Fi Router is Broadcasting (and How to Stop It) 🔒</h1>
+            <p><strong>Published:</strong> October 2025 | <strong>Author:</strong> Corporation2k4 Security Team</p>
+        </header>
+        
+        <p>Your Wi-Fi router is the digital front door to your home or small business network. Unlike a locked physical door, a router constantly broadcasts data—often far more than you realize—making it a prime target for reconnaissance and attack. Understanding what information your router **leaks** and how to **defensively configure** it is fundamental to modern cybersecurity. This article details the types of broadcast data, the threats they pose, and provides a real-world case study using an institutional D-Link router scan to demonstrate essential hardening techniques.</p>
+
+        <div class="ad-unit">
+            [AdSense Ad Unit 1 - Recommended: Display Ad or Native Article Ad]
+        </div>
+
+        <hr>
+
+        <h2 id="broadcast-data">1. The Unseen Broadcast: What Your Router Leaks</h2>
+        
+        <p>A router's primary function is to communicate, but in doing so, it reveals sensitive information that can be collected using standard network scanning tools (like Nmap). This process is known as **information gathering** or **fingerprinting**.</p>
+        
+        <h3>Types of Exposed Data</h3>
+        
+        <ul>
+            <li><strong>Service Set Identifier (SSID):</strong> The human-readable name of your Wi-Fi network. While hiding it (Disabling SSID Broadcast) offers minimal security against a determined attacker, it removes a low-hanging fruit for casual lookups.</li>
+            <li><strong>MAC Addresses (BSSID):</strong> The unique hardware identifier of the router's wireless interface. This cannot be hidden and is necessary for Wi-Fi to function.</li>
+            <li><strong>Open Ports & Running Services:</strong> The most critical leak. Any port that responds to an external request tells an attacker exactly what software or service is running (e.g., HTTP on port 80, DNS on port 53).</li>
+            <li><strong>Router/Firmware Fingerprints:</strong> Network services often reveal their software version and vendor name during initial communication. This allows attackers to look up known **Common Vulnerabilities and Exposures (CVEs)** for that specific model.</li>
+            <li><strong>DNS Information:</strong> The DNS server details and sometimes the network's internal structure or naming conventions.</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="case-study">2. Real-World Case Study: The Outdated D-Link Router</h2>
+
+        <p>We analyzed a live scan of an institutional D-Link router (with explicit permission from the institute's administrators for security testing) to illustrate common misconfigurations and dangers found in older, unmaintained hardware.</p>
+        
+        <h3>Analysis of Scan Results</h3>
+
+        <div class="callout">
+            <strong>Target Hardware:</strong> D-Link DIR-615 <br>
+            <strong>Firmware Version:</strong> 3.0.5 <br>
+            <strong>Local IP Address:</strong> <code>192.168.0.1</code>
+        </div>
+        
+        <p>The Nmap scan results showed several concerning open ports on the internal network address (<code>192.168.0.1</code>):</p>
+        <pre>
+PORT     STATE SERVICE         VERSION
+53/tcp   open  domain          dnsmasq 2.78
+80/tcp   open  http
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 200 OK
+|     Content-Security-Policy: default-src *; style-src 'self' 'unsafe-inline' ...
+|     X-Frame-Options: SAMEORIGIN
+|     Date: Thu, 01 Jan 1970 02:21:39 GMT
+</pre>
+        
+        <p><strong>The Core Vulnerability: End-of-Life (EoL) Software</strong></p>
+        
+        <p>The combination of **Model (DIR-615)** and **Firmware (3.0.5)** is the most critical finding. The D-Link DIR-615 series is an **End-of-Life (EoL)** product, meaning it no longer receives security updates or patches from the manufacturer. Firmware 3.0.5 is years old and likely contains multiple severe, publicly documented vulnerabilities (CVEs), including those that could allow remote **Command Injection** or **unauthenticated access**.</p>
+
+        <div class="warning">
+            🔥 **Critical Risk Warning:** The firmware version is highly outdated. Furthermore, the configuration snippet reveals **default or easily guessable administrative credentials** baked into the code: <code>BR2_PACKAGE_ANWEB_ADMIN_NAME: "admin"</code> and <code>BR2_PACKAGE_ANWEB_ADMIN_PASS: "admin"</code>. If the admin password was never changed from <code>admin/admin</code>, the router is completely exposed.
+        </div>
+        
+        <p><strong>Exposed Services Breakdown:</strong></p>
+        <ul>
+            <li><strong>Port 80 (HTTP):</strong> Open for web configuration. While necessary, it should ideally redirect to a secure **HTTPS (Port 443)** login to prevent cleartext password interception. The raw fingerprinting response further reveals server details and internal settings.</li>
+            <li><strong>Port 53 (DNS - dnsmasq 2.78):</strong> Running an outdated version of the <code>dnsmasq</code> DNS server. Older versions of <code>dnsmasq</code> have had critical vulnerabilities (DNS cache poisoning, RCE) that a scanner can quickly verify.</li>
+        </ul>
+
+        <div class="ad-unit">
+            [AdSense Ad Unit 2 - Recommended for middle of the article, after the core case study]
+        </div>
+        
+        <hr>
+
+        <h2 id="defensive-config">3. Defensive Configuration: Hardening Your Network Door</h2>
+
+        <p>Securing a router requires a layered approach, moving from basic password changes to advanced network filtering. These steps are universal best practices for any home or small business network.</p>
+
+        <h3>Tier 1: Essential Security (The Basics)</h3>
+        
+        <ol>
+            <li><strong>Change Default Credentials IMMEDIATELY:</strong> Never leave the administrative username and password as <code>admin/admin</code> or similar defaults. Use a long, complex, unique password for the router login.</li>
+            <li><strong>Update Firmware:</strong> This is the single most important step. Always check the manufacturer's website for the latest firmware. For EoL devices (like the D-Link DIR-615 example), the only safe option is to **replace the hardware** entirely with a modern router that actively receives security patches.</li>
+            <li><strong>Use WPA3/WPA2-AES Encryption:</strong> Disable obsolete WEP or WPA/TKIP encryption. Modern security requires **WPA2-AES (minimum)** or, ideally, **WPA3**.</li>
+        </ol>
+        
+        <h3>Tier 2: Advanced Configuration (The Hardening)</h3>
+        
+        <ul>
+            <li><strong>Disable Remote Management:</strong> In your router settings, find the "Administration" or "Security" section and ensure that **Remote Management (or Remote Access)** is completely disabled. This prevents attackers from accessing your router login from the public internet (WAN).</li>
+            <li><strong>Disable UPnP (Universal Plug and Play):</strong> UPnP automatically opens ports for devices like gaming consoles or streaming boxes. While convenient, it is a significant security risk, as malware can exploit it to open ports without your knowledge. Disable it entirely.</li>
+            <li><strong>Disable WPS (Wi-Fi Protected Setup):</strong> WPS is a flawed protocol designed for easy connection via a PIN. Its security weakness (a small, easily bruteforced PIN) makes it a critical vulnerability.</li>
+            <li><strong>Implement Network Segmentation (Guest Network):</strong> Isolate untrusted devices (like IoT, smart TVs, or visitor phones) on a dedicated **Guest Network**. This prevents a compromised guest device from accessing sensitive internal resources (servers, PCs) on the main network.</li>
+            <li><strong>Disable Unnecessary Services:</strong> Review your router's "Services" or "Tools" section and disable features you don't use, such as FTP, Telnet, or any cloud management features. Fewer services mean a smaller attack surface.</li>
+            <li><strong>Conceal the Fingerprint:</strong> Change your router's internal IP address (e.g., from <code>192.168.1.1</code> to <code>192.168.50.1</code>) and, if possible, change the SSID to something generic that doesn't reveal your vendor/model (e.g., "Generic-Network" instead of "D-Link-XXXX").</li>
+        </ul>
+        
+        <div class="ad-unit">
+            [AdSense Ad Unit 3 - Final Ad, before the conclusion]
+        </div>
+
+        <hr>
+
+        <h2 id="conclusion">Conclusion: The Price of Neglect</h2>
+
+        <p>As demonstrated by the D-Link case study, the greatest threat to network security is often **neglect**—the failure to update firmware or change default passwords. Routers are constantly broadcasting information that, in the hands of a skilled attacker, reveals a precise blueprint for compromise.</p>
+        
+        <p>Whether you manage a large institutional network or a small home office, the key is to proactively minimize the data your router broadcasts. **Assume your network door is visible** to everyone on the internet and take immediate, decisive action to reinforce the locks: update, disable, segment, and retire any outdated hardware.</p>
+        
+        <footer>
+            <p><em>Disclaimer: This article is for educational and security awareness purposes only. Never conduct unauthorized security testing against a network you do not own or have explicit, written permission to test.</em></p>
+        </footer>
+        
+        </div>
+
+</body>
+</html>
