@@ -1,332 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Router Information Gathering: What Data Your Wi-Fi Router is Broadcasting (and How to Stop It)</title>
-    <meta name="description" content="A deep dive into router information gathering, common vulnerabilities, and defensive configuration techniques for securing home and small business networks against network-level threats.">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509" crossorigin="anonymous"></script>
-    
-    <style>
-        :root {
-            --color-background: #000000;
-            --color-terminal-green: #00FF00;
-            --color-terminal-blue: #1e90ff;
-            --color-terminal-yellow: #FFD700;
-            --color-terminal-white: #FFFFFF;
-            --color-dim-green: #004400;
-        }
-        body {
-            background-color: var(--color-background);
-            color: var(--color-terminal-green);
-            font-family: 'Fira Mono', monospace;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-        #app-container {
-            max-width: 1200px;
-            margin: 32px auto 32px auto;
-            background: #111;
-            border-radius: 18px;
-            border: 3px solid var(--color-terminal-green);
-            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        #terminal-header {
-            width: 100%;
-            padding: 18px 24px;
-            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
-            border-radius: 14px 14px 0 0;
-            border-bottom: 3px solid var(--color-terminal-green);
-            text-align: center;
-            font-weight: bold;
-            text-shadow: 0 0 8px var(--color-terminal-green);
-            font-size: 1.15rem;
-            letter-spacing: 1px;
-            color: var(--color-terminal-white);
-        }
-        #top-nav-bar {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center; 
-            gap: 10px 20px;
-            margin-top: 15px; 
-            padding-top: 10px;
-            border-top: 1px dashed var(--color-terminal-green);
-        }
-        .nav-button {
-            background-color: transparent;
-            color: var(--color-terminal-white);
-            border: 2px solid var(--color-terminal-white);
-            padding: 8px 15px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            text-decoration: none; 
-            transition: all 0.2s;
-            border-radius: 5px;
-            font-weight: bold;
-            box-shadow: 0 0 5px var(--color-terminal-white);
-        }
-        .nav-button:hover {
-            background-color: var(--color-terminal-white);
-            color: #000;
-            box-shadow: 0 0 10px var(--color-terminal-yellow);
-            border-color: var(--color-terminal-yellow);
-        }
-        .nav-button.active {
-            background-color: var(--color-terminal-yellow);
-            color: #000;
-            border-color: var(--color-terminal-yellow);
-            box-shadow: 0 0 15px var(--color-terminal-yellow);
-        }
-        #main-layout {
-            display: flex;
-            flex-direction: column; 
-        }
-        #text-content {
-            padding: 32px 36px;
-            background: #151819;
-            border-radius: 0 0 14px 14px;
-            flex: 1 1 100%; 
-            min-width: 0; 
-            max-width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            color: var(--color-terminal-white); /* Default text color for content */
-            line-height: 1.7;
-        }
-
-        /* New Styles for Article Content */
-        #text-content h1 {
-            color: var(--color-terminal-yellow);
-            border-bottom: 2px solid var(--color-terminal-yellow);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-        #text-content h2 {
-            color: var(--color-terminal-yellow);
-            border-bottom: 1px dashed var(--color-terminal-green);
-            padding-bottom: 5px;
-            margin-top: 35px;
-            font-size: 1.5rem;
-        }
-        #text-content h3 {
-            color: var(--color-terminal-green);
-            margin-top: 25px;
-            font-size: 1.1rem;
-        }
-        #text-content p {
-            margin-bottom: 1em;
-        }
-        #text-content a {
-            color: var(--color-terminal-blue);
-            text-decoration: underline;
-        }
-        #text-content pre {
-            background-color: #000000;
-            border: 1px solid var(--color-terminal-green);
-            padding: 15px;
-            overflow-x: auto;
-            border-radius: 4px;
-            color: var(--color-terminal-green);
-            font-size: 0.9em;
-            box-shadow: 0 0 8px var(--color-dim-green);
-            margin: 1.5em 0;
-        }
-        #text-content ul, #text-content ol {
-            padding-left: 25px;
-            color: var(--color-terminal-white);
-        }
-        #text-content ul li::marker {
-            color: var(--color-terminal-green);
-        }
-        .ad-unit {
-            background-color: #050a10; 
-            border: 1px dashed var(--color-terminal-blue);
-            padding: 20px;
-            margin: 2em 0;
-            text-align: center;
-            font-size: 1em;
-            color: var(--color-terminal-blue);
-            font-style: italic;
-            border-radius: 4px;
-        }
-        .warning {
-            color: #ff7b72;
-            font-weight: bold;
-            border-left: 5px solid #d9534f;
-            padding-left: 15px;
-            margin: 1.5em 0;
-            background-color: #210a0a;
-            padding: 15px;
-            border-radius: 4px;
-        }
-        .callout {
-            background-color: #0d121c;
-            border-left: 4px solid var(--color-terminal-blue);
-            padding: 15px;
-            margin: 1em 0;
-            border-radius: 4px;
-            color: var(--color-terminal-white);
-        }
-        #text-content hr {
-            border: 0;
-            height: 1px;
-            margin: 2em 0;
-            background-image: linear-gradient(to right, rgba(0, 255, 0, 0), rgba(0, 255, 0, 0.75), rgba(0, 255, 0, 0));
-        }
-        footer {
-            padding-top: 20px;
-            border-top: 1px dashed var(--color-terminal-green);
-            margin-top: 30px;
-            font-size: 0.85em;
-            color: #8b949e;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Router Information Gathering: What Data Your Wi-Fi Router is Broadcasting (and How to Stop It) | Corporation2K4</title>
+    <meta name="description" content="A deep dive into router information gathering, common vulnerabilities, and defensive configuration techniques for securing home and small business networks against network-level threats.">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509"
+        crossorigin="anonymous"></script>
+    <style>
+        /* Base Styles - Copied directly from the example page */
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1200px;
+            margin: 32px auto 0 auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            gap: 10px 20px;
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            /* Styles for navigation buttons */
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover, .nav-button.active {
+            /* Hover and active styles */
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        #text-content {
+            /* Styles for main content area */
+            padding: 32px 36px;
+            background: #151819;
+            border-radius: 0 0 14px 14px;
+            line-height: 1.75;
+            color: var(--color-terminal-white);
+        }
+        .article-title {
+            /* Styles for article heading */
+            color: var(--color-terminal-yellow);
+            font-size: 2rem;
+            font-weight: bold;
+            border-bottom: 3px solid var(--color-terminal-green);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        .section-header {
+            /* Styles for sub-headings */
+            color: var(--color-terminal-green);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--color-terminal-green);
+        }
+        .code-block {
+            /* Styles for code blocks */
+            background-color: #0d0d0d;
+            border: 1px solid var(--color-dim-green);
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Fira Mono', monospace;
+            color: #FFD700; /* Yellow for code */
+        }
+        a {
+            /* Link styles */
+            color: var(--color-terminal-blue);
+            text-decoration: underline;
+        }
+        a:hover {
+            color: var(--color-terminal-yellow);
+        }
+        .ethical-note {
+            /* Special note for ethical disclaimer / critical warning (repurposed from example) */
+            border: 2px dashed #FF6347; /* Red/Orange */
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #2e0d0d;
+            color: #FF6347;
+            font-weight: bold;
+        }
+        .github-feature {
+            /* Highlighted section for info/data (repurposed from example) */
+            border-left: 5px solid var(--color-terminal-yellow);
+            padding: 10px 15px;
+            margin: 20px 0;
+            background-color: #1a1a00;
+        }
+    </style>
 </head>
 <body>
-    <div id="app-container">
-        <div id="terminal-header">
-            Corporation2K4: The Security & Tech Log
-            <span class="status"></span>
-            <nav id="top-nav-bar">
-                <a href="index.html" class="nav-button">INDEX :: Home</a>
-                <a href="articles.html" class="nav-button active">BLOG :: Security Articles</a> 
-                <a href="tutorials.html" class="nav-button">GUIDES :: Tutorials</a>
-                <a href="about_us.html" class="nav-button">INFO :: About Me</a>
-                <a href="contact_us.html" class="nav-button">HELP :: Contact Us</a>
-                <a href="privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
-                <a href="terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
-            </nav>
-        </div>
-        <div id="main-layout">
-            <div id="text-content">
-                <div id="article-content">
-                        <header>
-                            <h1 class="text-2xl font-bold">Router Information Gathering: What Data Your Wi-Fi Router is Broadcasting (and How to Stop It) <span style="color:var(--color-terminal-green);">🔒</span></h1>
-                            <p class="text-sm" style="color: var(--color-terminal-green);"><strong>Published:</strong> October 2025 | <strong>Author:</strong> Corporation2k4 Security Team</p>
-                        </header>
-                        
-                        <p>Your Wi-Fi router is the digital front door to your home or small business network. Unlike a locked physical door, a router constantly broadcasts data—often far more than you realize—making it a prime target for reconnaissance and attack. Understanding what information your router **leaks** and how to **defensively configure** it is fundamental to modern cybersecurity. This article details the types of broadcast data, the threats they pose, and provides a real-world case study using an institutional D-Link router scan to demonstrate essential hardening techniques.</p>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4: The Security & Tech Log
+            <nav id="top-nav-bar">
+                <a href="../index.html" class="nav-button">INDEX :: Home</a>
+                <a href="../articles.html" class="nav-button active">BLOG :: Security Articles</a> 
+                <a href="../tutorials.html" class="nav-button">GUIDES :: Tutorials</a>
+                <a href="../about_us.html" class="nav-button">INFO :: About Me</a>
+                <a href="../contact_us.html" class="nav-button">HELP :: Contact Us</a>
+                <a href="../privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
+                <a href="../terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
+            </nav>
+        </div>
+        <div id="main-layout">
+            <div id="text-content">
+                <p style="color: var(--color-terminal-blue);">* Article published by Corporation2k4 Security Team on October 2025 *</p>
 
-                        <div class="ad-unit">
-                            [AdSense Ad Unit 1 - Recommended: Display Ad or Native Article Ad]
-                        </div>
+                <h1 class="article-title">Router Information Gathering: What Data Your Wi-Fi Router is Broadcasting (and How to Stop It) <span style="color:var(--color-terminal-green);">🔒</span></h1>
+                
+                <p>Your Wi-Fi router is the digital front door to your home or small business network. Unlike a locked physical door, a router constantly broadcasts data—often far more than you realize—making it a prime target for reconnaissance and attack. Understanding what information your router **leaks** and how to **defensively configure** it is fundamental to modern cybersecurity. This article details the types of broadcast data, the threats they pose, and provides a real-world case study using an institutional D-Link router scan to demonstrate essential hardening techniques.</p>
 
-                        <hr>
+                <div class="ad-unit">
+                    [AdSense Ad Unit 1 - Recommended: Display Ad or Native Article Ad]
+                </div>
+                
+                <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 255, 0, 0), rgba(0, 255, 0, 0.75), rgba(0, 255, 0, 0)); margin: 30px 0;"/>
 
-                        <h2 id="broadcast-data">1. The Unseen Broadcast: What Your Router Leaks</h2>
-                        
-                        <p>A router's primary function is to communicate, but in doing so, it reveals sensitive information that can be collected using standard network scanning tools (like Nmap). This process is known as **information gathering** or **fingerprinting**.</p>
-                        
-                        <h3>Types of Exposed Data</h3>
-                        
-                        <ul>
-                            <li><strong>Service Set Identifier (SSID):</strong> The human-readable name of your Wi-Fi network. While hiding it (Disabling SSID Broadcast) offers minimal security against a determined attacker, it removes a low-hanging fruit for casual lookups.</li>
-                            <li><strong>MAC Addresses (BSSID):</strong> The unique hardware identifier of the router's wireless interface. This cannot be hidden and is necessary for Wi-Fi to function.</li>
-                            <li><strong>Open Ports & Running Services:</strong> The most critical leak. Any port that responds to an external request tells an attacker exactly what software or service is running (e.g., HTTP on port 80, DNS on port 53).</li>
-                            <li><strong>Router/Firmware Fingerprints:</strong> Network services often reveal their software version and vendor name during initial communication. This allows attackers to look up known **Common Vulnerabilities and Exposures (CVEs)** for that specific model.</li>
-                            <li><strong>DNS Information:</strong> The DNS server details and sometimes the network's internal structure or naming conventions.</li>
-                        </ul>
+                <h2 class="section-header" id="broadcast-data">1. The Unseen Broadcast: What Your Router Leaks</h2>
+                
+                <p>A router's primary function is to communicate, but in doing so, it reveals sensitive information that can be collected using standard network scanning tools (like Nmap). This process is known as **information gathering** or **fingerprinting**.</p>
+                
+                <h3 class="section-header">Types of Exposed Data</h3>
+                
+                <ul>
+                    <li><strong>Service Set Identifier (SSID):</strong> The human-readable name of your Wi-Fi network. While hiding it (Disabling SSID Broadcast) offers minimal security against a determined attacker, it removes a low-hanging fruit for casual lookups.</li>
+                    <li><strong>MAC Addresses (BSSID):</strong> The unique hardware identifier of the router's wireless interface. This cannot be hidden and is necessary for Wi-Fi to function.</li>
+                    <li><strong>Open Ports & Running Services:</strong> The most critical leak. Any port that responds to an external request tells an attacker exactly what software or service is running (e.g., HTTP on port 80, DNS on port 53).</li>
+                    <li><strong>Router/Firmware Fingerprints:</strong> Network services often reveal their software version and vendor name during initial communication. This allows attackers to look up known **Common Vulnerabilities and Exposures (CVEs)** for that specific model.</li>
+                    <li><strong>DNS Information:</strong> The DNS server details and sometimes the network's internal structure or naming conventions.</li>
+                </ul>
 
-                        <hr>
+                <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 255, 0, 0), rgba(0, 255, 0, 0.75), rgba(0, 255, 0, 0)); margin: 30px 0;"/>
 
-                        <h2 id="case-study">2. Real-World Case Study: The Outdated D-Link Router</h2>
+                <h2 class="section-header" id="case-study">2. Real-World Case Study: The Outdated D-Link Router</h2>
 
-                        <p>We analyzed a live scan of an institutional D-Link router (with explicit permission from the institute's administrators for security testing) to illustrate common misconfigurations and dangers found in older, unmaintained hardware.</p>
-                        
-                        <h3>Analysis of Scan Results</h3>
+                <p>We analyzed a live scan of an institutional D-Link router (with explicit permission from the institute's administrators for security testing) to illustrate common misconfigurations and dangers found in older, unmaintained hardware.</p>
+                
+                <h3 class="section-header">Analysis of Scan Results</h3>
 
-                        <div class="callout">
-                            <strong>Target Hardware:</strong> D-Link DIR-615 <br>
-                            <strong>Firmware Version:</strong> 3.0.5 <br>
-                            <strong>Local IP Address:</strong> <code>192.168.0.1</code>
-                        </div>
-                        
-                        <p>The Nmap scan results showed several concerning open ports on the internal network address (<code>192.168.0.1</code>):</p>
-                        <pre>
-PORT     STATE SERVICE         VERSION
-53/tcp   open  domain          dnsmasq 2.78
-80/tcp   open  http
-| fingerprint-strings: 
-|   FourOhFourRequest: 
-|     HTTP/1.1 200 OK
-|     Content-Security-Policy: default-src *; style-src 'self' 'unsafe-inline' ...
-|     X-Frame-Options: SAMEORIGIN
-|     Date: Thu, 01 Jan 1970 02:21:39 GMT
-</pre>
-                        
-                        <p><strong>The Core Vulnerability: End-of-Life (EoL) Software</strong></p>
-                        
-                        <p>The combination of **Model (DIR-615)** and **Firmware (3.0.5)** is the most critical finding. The D-Link DIR-615 series is an **End-of-Life (EoL)** product, meaning it no longer receives security updates or patches from the manufacturer. Firmware 3.0.5 is years old and likely contains multiple severe, publicly documented vulnerabilities (CVEs), including those that could allow remote **Command Injection** or **unauthenticated access**.</p>
+                <div class="github-feature">
+                    <strong>Target Hardware:</strong> D-Link DIR-615 <br>
+                    <strong>Firmware Version:</strong> 3.0.5 <br>
+                    <strong>Local IP Address:</strong> <code>192.168.0.1</code>
+                </div>
+                
+                <p>The Nmap scan results showed several concerning open ports on the internal network address (<code>192.168.0.1</code>):</p>
+                <div class="code-block">
+PORT      STATE SERVICE            VERSION<br>
+53/tcp    open  domain             dnsmasq 2.78<br>
+80/tcp    open  http<br>
+| fingerprint-strings: <br>
+|   FourOhFourRequest: <br>
+|     HTTP/1.1 200 OK<br>
+|     Content-Security-Policy: default-src *; style-src 'self' 'unsafe-inline' ...<br>
+|     X-Frame-Options: SAMEORIGIN<br>
+|     Date: Thu, 01 Jan 1970 02:21:39 GMT<br>
+</div>
+                
+                <p><strong>The Core Vulnerability: End-of-Life (EoL) Software</strong></p>
+                
+                <p>The combination of **Model (DIR-615)** and **Firmware (3.0.5)** is the most critical finding. The D-Link DIR-615 series is an **End-of-Life (EoL)** product, meaning it no longer receives security updates or patches from the manufacturer. Firmware 3.0.5 is years old and likely contains multiple severe, publicly documented vulnerabilities (CVEs), including those that could allow remote **Command Injection** or **unauthenticated access**.</p>
 
-                        <div class="warning">
-                            🔥 **Critical Risk Warning:** The firmware version is highly outdated. Furthermore, the configuration snippet reveals **default or easily guessable administrative credentials** baked into the code: <code>BR2_PACKAGE_ANWEB_ADMIN_NAME: "admin"</code> and <code>BR2_PACKAGE_ANWEB_ADMIN_PASS: "admin"</code>. If the admin password was never changed from <code>admin/admin</code>, the router is completely exposed.
-                        </div>
-                        
-                        <p><strong>Exposed Services Breakdown:</strong></p>
-                        <ul>
-                            <li><strong>Port 80 (HTTP):</strong> Open for web configuration. While necessary, it should ideally redirect to a secure **HTTPS (Port 443)** login to prevent cleartext password interception. The raw fingerprinting response further reveals server details and internal settings.</li>
-                            <li><strong>Port 53 (DNS - dnsmasq 2.78):</strong> Running an outdated version of the <code>dnsmasq</code> DNS server. Older versions of <code>dnsmasq</code> have had critical vulnerabilities (DNS cache poisoning, RCE) that a scanner can quickly verify.</li>
-                        </ul>
+                <div class="ethical-note">
+                    <strong>🔥 Critical Risk Warning:</strong> The firmware version is highly outdated. Furthermore, the configuration snippet reveals **default or easily guessable administrative credentials** baked into the code: <code>BR2_PACKAGE_ANWEB_ADMIN_NAME: "admin"</code> and <code>BR2_PACKAGE_ANWEB_ADMIN_PASS: "admin"</code>. If the admin password was never changed from <code>admin/admin</code>, the router is completely exposed.
+                </div>
+                
+                <p><strong>Exposed Services Breakdown:</strong></p>
+                <ul>
+                    <li><strong>Port 80 (HTTP):</strong> Open for web configuration. While necessary, it should ideally redirect to a secure **HTTPS (Port 443)** login to prevent cleartext password interception. The raw fingerprinting response further reveals server details and internal settings.</li>
+                    <li><strong>Port 53 (DNS - dnsmasq 2.78):</strong> Running an outdated version of the <code>dnsmasq</code> DNS server. Older versions of <code>dnsmasq</code> have had critical vulnerabilities (DNS cache poisoning, RCE) that a scanner can quickly verify.</li>
+                </ul>
 
-                        <div class="ad-unit">
-                            [AdSense Ad Unit 2 - Recommended for middle of the article, after the core case study]
-                        </div>
-                        
-                        <hr>
+                <div class="ad-unit">
+                    [AdSense Ad Unit 2 - Recommended for middle of the article, after the core case study]
+                </div>
+                
+                <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 255, 0, 0), rgba(0, 255, 0, 0.75), rgba(0, 255, 0, 0)); margin: 30px 0;"/>
 
-                        <h2 id="defensive-config">3. Defensive Configuration: Hardening Your Network Door</h2>
+                <h2 class="section-header" id="defensive-config">3. Defensive Configuration: Hardening Your Network Door</h2>
 
-                        <p>Securing a router requires a layered approach, moving from basic password changes to advanced network filtering. These steps are universal best practices for any home or small business network.</p>
+                <p>Securing a router requires a layered approach, moving from basic password changes to advanced network filtering. These steps are universal best practices for any home or small business network.</p>
 
-                        <h3>Tier 1: Essential Security (The Basics)</h3>
-                        
-                        <ol>
-                            <li><strong>Change Default Credentials IMMEDIATELY:</strong> Never leave the administrative username and password as <code>admin/admin</code> or similar defaults. Use a long, complex, unique password for the router login.</li>
-                            <li><strong>Update Firmware:</strong> This is the single most important step. Always check the manufacturer's website for the latest firmware. For EoL devices (like the D-Link DIR-615 example), the only safe option is to **replace the hardware** entirely with a modern router that actively receives security patches.</li>
-                            <li><strong>Use WPA3/WPA2-AES Encryption:</strong> Disable obsolete WEP or WPA/TKIP encryption. Modern security requires **WPA2-AES (minimum)** or, ideally, **WPA3**.</li>
-                        </ol>
-                        
-                        <h3>Tier 2: Advanced Configuration (The Hardening)</h3>
-                        
-                        <ul>
-                            <li><strong>Disable Remote Management:</strong> In your router settings, find the "Administration" or "Security" section and ensure that **Remote Management (or Remote Access)** is completely disabled. This prevents attackers from accessing your router login from the public internet (WAN).</li>
-                            <li><strong>Disable UPnP (Universal Plug and Play):</strong> UPnP automatically opens ports for devices like gaming consoles or streaming boxes. While convenient, it is a significant security risk, as malware can exploit it to open ports without your knowledge. Disable it entirely.</li>
-                            <li><strong>Disable WPS (Wi-Fi Protected Setup):</strong> WPS is a flawed protocol designed for easy connection via a PIN. Its security weakness (a small, easily bruteforced PIN) makes it a critical vulnerability.</li>
-                            <li><strong>Implement Network Segmentation (Guest Network):</strong> Isolate untrusted devices (like IoT, smart TVs, or visitor phones) on a dedicated **Guest Network**. This prevents a compromised guest device from accessing sensitive internal resources (servers, PCs) on the main network.</li>
-                            <li><strong>Disable Unnecessary Services:</strong> Review your router's "Services" or "Tools" section and disable features you don't use, such as FTP, Telnet, or any cloud management features. Fewer services mean a smaller attack surface.</li>
-                            <li><strong>Conceal the Fingerprint:</strong> Change your router's internal IP address (e.g., from <code>192.168.1.1</code> to <code>192.168.50.1</code>) and, if possible, change the SSID to something generic that doesn't reveal your vendor/model (e.g., "Generic-Network" instead of "D-Link-XXXX").</li>
-                        </ul>
-                        
-                        <div class="ad-unit">
-                            [AdSense Ad Unit 3 - Final Ad, before the conclusion]
-                        </div>
+                <h3 class="section-header">Tier 1: Essential Security (The Basics)</h3>
+                
+                <ol style="list-style-type: decimal; margin-left: 20px; color: var(--color-terminal-white);">
+                    <li><strong>Change Default Credentials IMMEDIATELY:</strong> Never leave the administrative username and password as <code>admin/admin</code> or similar defaults. Use a long, complex, unique password for the router login.</li>
+                    <li><strong>Update Firmware:</strong> This is the single most important step. Always check the manufacturer's website for the latest firmware. For EoL devices (like the D-Link DIR-615 example), the only safe option is to **replace the hardware** entirely with a modern router that actively receives security patches.</li>
+                    <li><strong>Use WPA3/WPA2-AES Encryption:</strong> Disable obsolete WEP or WPA/TKIP encryption. Modern security requires **WPA2-AES (minimum)** or, ideally, **WPA3**.</li>
+                </ol>
+                
+                <h3 class="section-header">Tier 2: Advanced Configuration (The Hardening)</h3>
+                
+                <ul style="list-style-type: disc; margin-left: 20px; color: var(--color-terminal-white);">
+                    <li><strong>Disable Remote Management:</strong> In your router settings, find the "Administration" or "Security" section and ensure that **Remote Management (or Remote Access)** is completely disabled. This prevents attackers from accessing your router login from the public internet (WAN).</li>
+                    <li><strong>Disable UPnP (Universal Plug and Play):</strong> UPnP automatically opens ports for devices like gaming consoles or streaming boxes. While convenient, it is a significant security risk, as malware can exploit it to open ports without your knowledge. Disable it entirely.</li>
+                    <li><strong>Disable WPS (Wi-Fi Protected Setup):</strong> WPS is a flawed protocol designed for easy connection via a PIN. Its security weakness (a small, easily bruteforced PIN) makes it a critical vulnerability.</li>
+                    <li><strong>Implement Network Segmentation (Guest Network):</strong> Isolate untrusted devices (like IoT, smart TVs, or visitor phones) on a dedicated **Guest Network**. This prevents a compromised guest device from accessing sensitive internal resources (servers, PCs) on the main network.</li>
+                    <li><strong>Disable Unnecessary Services:</strong> Review your router's "Services" or "Tools" section and disable features you don't use, such as FTP, Telnet, or any cloud management features. Fewer services mean a smaller attack surface.</li>
+                    <li><strong>Conceal the Fingerprint:</strong> Change your router's internal IP address (e.g., from <code>192.168.1.1</code> to <code>192.168.50.1</code>) and, if possible, change the SSID to something generic that doesn't reveal your vendor/model (e.g., "Generic-Network" instead of "D-Link-XXXX").</li>
+                </ul>
+                
+                <div class="ad-unit">
+                    [AdSense Ad Unit 3 - Final Ad, before the conclusion]
+                </div>
 
-                        <hr>
+                <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 255, 0, 0), rgba(0, 255, 0, 0.75), rgba(0, 255, 0, 0)); margin: 30px 0;"/>
 
-                        <h2 id="conclusion">Conclusion: The Price of Neglect</h2>
+                <h2 class="section-header" id="conclusion">Conclusion: The Price of Neglect</h2>
 
-                        <p>As demonstrated by the D-Link case study, the greatest threat to network security is often **neglect**—the failure to update firmware or change default passwords. Routers are constantly broadcasting information that, in the hands of a skilled attacker, reveals a precise blueprint for compromise.</p>
-                        
-                        <p>Whether you manage a large institutional network or a small home office, the key is to proactively minimize the data your router broadcasts. **Assume your network door is visible** to everyone on the internet and take immediate, decisive action to reinforce the locks: update, disable, segment, and retire any outdated hardware.</p>
-                        
-                        <footer>
-                            <p><em>Disclaimer: This article is for educational and security awareness purposes only. Never conduct unauthorized security testing against a network you do not own or have explicit, written permission to test.</em></p>
-                        </footer>
-                </div>
-            </div>
-        </div>
-    </div>
+                <p>As demonstrated by the D-Link case study, the greatest threat to network security is often **neglect**—the failure to update firmware or change default passwords. Routers are constantly broadcasting information that, in the hands of a skilled attacker, reveals a precise blueprint for compromise.</p>
+                
+                <p>Whether you manage a large institutional network or a small home office, the key is to proactively minimize the data your router broadcasts. **Assume your network door is visible** to everyone on the internet and take immediate, decisive action to reinforce the locks: update, disable, segment, and retire any outdated hardware.</p>
+                
+                <footer style="padding-top: 20px; border-top: 1px solid var(--color-terminal-green); margin-top: 30px; font-size: 0.85em; color: var(--color-terminal-white);">
+                    <p><em>Disclaimer: This article is for educational and security awareness purposes only. Never conduct unauthorized security testing against a network you do not own or have explicit, written permission to test.</em></p>
+                    <p style="text-align: right; margin-top: 20px; color: var(--color-terminal-yellow);">*End of Article Router_Info_Gathering.html*</p>
+                </footer>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
