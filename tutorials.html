@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorials & Guides - Corporation2K4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509"
+        crossorigin="anonymous"></script>
+    <style>
+        /* Reusing the exact styles from index.html for a consistent look */
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1200px;
+            margin: 32px auto 0 auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            gap: 10px 20px;
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover {
+            background-color: var(--color-terminal-white);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-terminal-yellow);
+            border-color: var(--color-terminal-yellow);
+        }
+        .nav-button.active {
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        #main-layout {
+            display: flex;
+            flex-direction: column; 
+        }
+        #text-content {
+            padding: 32px 36px;
+            background: #151819;
+            border-radius: 0 0 14px 14px;
+            flex: 1 1 100%; 
+            min-width: 0; 
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .terminal-line {
+            line-height: 1.65;
+            padding: 5px 0;
+            white-space: pre-wrap;
+            font-size: 1rem;
+        }
+        .prompt {
+            color: var(--color-terminal-blue);
+            font-weight: bold;
+        }
+        .success {
+            color: var(--color-terminal-yellow);
+            font-weight: bold;
+        }
+        .command {
+            color: var(--color-terminal-green);
+        }
+        .output-text {
+            color: var(--color-terminal-white);
+            font-size: 1rem;
+        }
+        .section-header {
+            color: var(--color-terminal-yellow);
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-bottom: 2px dashed var(--color-terminal-green);
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .tutorial-listing {
+            margin-bottom: 25px;
+            border: 1px solid var(--color-dim-green);
+            padding: 15px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        .tutorial-listing:hover {
+            background-color: #0a0a0a;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        }
+        .tutorial-listing h3 {
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+        }
+        .tutorial-listing a {
+            color: var(--color-terminal-green);
+            text-decoration: none;
+            font-weight: bold;
+            text-shadow: 0 0 2px var(--color-terminal-green);
+        }
+        .tutorial-listing a:hover {
+            text-decoration: underline;
+            color: var(--color-terminal-yellow);
+        }
+        .tutorial-meta {
+            font-size: 0.85rem;
+            color: var(--color-terminal-blue);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4: The Security & Tech Log
+            <nav id="top-nav-bar">
+                <a href="index.html" class="nav-button">INDEX :: Home</a>
+                <a href="articles.html" class="nav-button">BLOG :: Security Articles</a> 
+                <a href="tutorials.html" class="nav-button active">GUIDES :: Tutorials</a>
+                <a href="about_us.html" class="nav-button">INFO :: About Me</a>
+                <a href="contact_us.html" class="nav-button">HELP :: Contact Us</a>
+                <a href="privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
+                <a href="terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
+            </nav>
+        </div>
+        <div id="main-layout">
+            <div id="text-content">
+                <div class="terminal-line"><span class="prompt">yuri@corporation2k4:~$</span> <span class="command">man tutorials</span></div>
+                <div class="terminal-line success output-text">
+                    <p>Executing: Displaying practical, step-by-step guides and technical walkthroughs.</p>
+                </div>
+
+                <h2 class="section-header">:: Practical Technical Guides</h2>
+                <div class="terminal-line output-text">
+                    <p>These tutorials are detailed walkthroughs covering system setup, security configurations, programming environment creation, and hands-on ethical practices.</p>
+                </div>
+
+                <div class="tutorial-listing">
+                    <h3><a href="tutorials/guide_01_minimal_python.html">STEP-BY-STEP: Setting Up Your Minimal Python Development Environment on Linux</a></h3>
+                    <p class="output-text">A guide for quickly configuring a lightweight Linux box for Python development, avoiding heavy frameworks and IDEs for optimal learning speed.</p>
+                    <p class="tutorial-meta">Author: Yuri Orlow | Skill Level: Beginner | Focus: Python, Linux Setup</p>
+                </div>
+
+                <div class="tutorial-listing">
+                    <h3><a href="tutorials/guide_02_router_scan.html">HOW-TO: Perform an Ethical Vulnerability Scan on Your Own Wi-Fi Router</a></h3>
+                    <p class="output-text">Detailed guide on using open-source tools to ethically check your local router for common misconfigurations and security flaws.</p>
+                    <p class="tutorial-meta">Author: Yuri Orlow | Skill Level: Intermediate | Focus: Network Security, Router Hardening</p>
+                </div>
+
+                <div class="tutorial-listing">
+                    <h3><a href="tutorials/guide_03_binary_intro.html">BINARY EXPLOITATION: Introduction to Stack Overflows in C (Educational Use Only)</a></h3>
+                    <p class="output-text">A controlled environment walkthrough explaining the basics of binary exploitation, focusing on stack protection and defensive coding practices.</p>
+                    <p class="tutorial-meta">Author: Yuri Orlow | Skill Level: Advanced | Focus: C/C++, Binary Security</p>
+                </div>
+
+                <div class="tutorial-listing">
+                    <h3><a href="tutorials/guide_04_app_reverse.html">GUIDE: Basic Custom Mobile Application Reverse Engineering for Security Audits</a></h3>
+                    <p class="output-text">Using common tools to examine the code of a custom Android application to understand its basic function and identify security controls.</p>
+                    <p class="tutorial-meta">Author: Yuri Orlow | Skill Level: Intermediate | Focus: Android, Mobile Security</p>
+                </div>
+
+                <div class="terminal-line" style="margin-top: 30px;">
+                    <span class="prompt">yuri@corporation2k4:~$</span> <span class="command">content_check</span>
+                    <p class="output-text success">Ensure these guides are uploaded to the `tutorials/` directory. Each should contain clear code blocks, numbered steps, and a mandatory ethical disclaimer at the beginning and end.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
