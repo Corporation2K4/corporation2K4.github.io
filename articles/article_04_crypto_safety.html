@@ -20,14 +20,34 @@
             --color-terminal-white: #FFFFFF;
             --color-dim-green: #004400;
         }
+
+        /* Keyframes for the blinking cursor effect */
+        @keyframes cursor-blink {
+            0%, 100% { border-right-color: transparent }
+            50% { border-right-color: var(--color-terminal-yellow) }
+        }
+
+        /* Style for the live prompt simulation */
+        .live-prompt {
+            display: inline-block;
+            font-size: 1.15rem;
+            color: var(--color-terminal-white);
+            border-right: 3px solid var(--color-terminal-yellow); /* The blinking cursor */
+            animation: cursor-blink 1s step-end infinite;
+            padding-right: 2px;
+            text-shadow: none; /* No shadow on the prompt itself */
+        }
+
         body {
-            background-color: var(--color-background);
+            background-color: #030303; /* Slightly off black for contrast */
             color: var(--color-terminal-green);
             font-family: 'Fira Mono', monospace;
             line-height: 1.7;
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            /* Add subtle shadow to text for better glow on body elements */
+            text-shadow: 0 0 1px var(--color-terminal-green);
         }
         
         /* APP CONTAINER - OUTER SHELL */
@@ -37,7 +57,8 @@
             background: #111;
             border-radius: 18px;
             border: 3px solid var(--color-terminal-green);
-            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            /* Increased and layered shadow for stronger cyber-glow effect */
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.5), 0 0 20px var(--color-terminal-green), 0 2px 28px #0009;
             padding: 0;
             display: flex;
             flex-direction: column;
@@ -52,9 +73,10 @@
             border-bottom: 3px solid var(--color-terminal-green);
             text-align: center;
             font-weight: bold;
-            text-shadow: 0 0 8px var(--color-terminal-green);
-            font-size: 1.15rem;
-            letter-spacing: 1px;
+            /* Enhanced header text glow */
+            text-shadow: 0 0 10px var(--color-terminal-yellow), 0 0 5px var(--color-terminal-white);
+            font-size: 1.25rem; /* Slightly larger */
+            letter-spacing: 2px; /* More spacing */
             color: var(--color-terminal-white);
         }
 
@@ -193,8 +215,8 @@
             font-weight: 700;
         }
         .warning strong {
-            color: var(--color-terminal-yellow);
-            text-shadow: 0 0 5px var(--color-terminal-yellow);
+            color: var(--color-terminal-white); /* Changed to white for better contrast against yellow box */
+            text-shadow: 0 0 5px var(--color-terminal-white);
         }
 
         /* LISTS (ADAPTED TO TERMINAL STYLE) */
@@ -204,8 +226,8 @@
             list-style: none; /* Remove default marker */
         }
         ul li::before {
-            content: ">> ";
-            color: var(--color-terminal-blue);
+            content: "$ "; /* Changed marker from ">> " to classic command "$ " */
+            color: var(--color-terminal-yellow); /* Changed color to yellow */
             font-weight: bold;
         }
         dt {
@@ -237,9 +259,9 @@
     <div id="app-container">
         
         <div id="terminal-header">
-            Corporation2K4: The Security & Tech Log
-            <span class="status"></span>
-            <nav id="top-nav-bar">
+            <span style="color: var(--color-terminal-yellow);">[root@sec-log ~]# </span> 
+            <span style="color: var(--color-terminal-white);">/log/security/wallets/</span>
+            <span class="live-prompt"></span> <nav id="top-nav-bar">
                 <a href="index.html" class="nav-button">INDEX :: Home</a>
                 <a href="#" class="nav-button active">BLOG :: Wallet Security Deep Dive</a> 
                 <a href="tutorials.html" class="nav-button">GUIDES :: Tutorials</a>
