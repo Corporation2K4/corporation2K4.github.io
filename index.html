@@ -270,4 +270,53 @@
                     setTimeout(typeWriter, 50);
                 } else if (lineData.type === 'line') {
                     if (!currentLineElement) {
-                        const lines = terminalOutput.
+                        const lines = terminalOutput.querySelectorAll('.terminal-line');
+                        currentLineElement = lines[lines.length - 1];
+                        cursorElement = currentLineElement.querySelector('.cursor');
+                        if (cursorElement) cursorElement.remove();
+                        currentLineElement.innerHTML += ' <span class="output-text"></span>';
+                        currentLineElement = currentLineElement.querySelector('.output-text');
+                        charIndex = 0;
+                        const newCursor = document.createElement('span');
+                        newCursor.classList.add('cursor');
+                        currentLineElement.after(newCursor);
+                        cursorElement = newCursor;
+                    }
+                    const textContent = lineData.text.replace(/<[^>]*>/g, '');
+                    const char = textContent[charIndex];
+                    if (char) {
+                        currentLineElement.innerHTML += char;
+                        charIndex++;
+                    } else {
+                        if (cursorElement) cursorElement.remove();
+                        currentLineElement.innerHTML = lineData.text.substring(lineData.text.indexOf('>') + 1).replace('</span>', '').trim();
+                        currentLineElement = null;
+                        lineIndex++;
+                        charIndex = 0;
+                        setTimeout(() => {
+                            if (lineIndex < serviceLines.length) {
+                                const nextPrompt = createNewLine({
+                                    type: 'line',
+                                    text: '<span class="prompt">Waiting for next command...</span>'
+                                });
+                                const newCursor = document.createElement('span');
+                                newCursor.classList.add('cursor');
+                                nextPrompt.querySelector('.prompt').after(newCursor);
+                                cursorElement = newCursor;
+                                setTimeout(typeWriter, 1500);
+                            } else {
+                                if (cursorElement) cursorElement.remove();
+                            }
+                        }, 500);
+                        return;
+                    }
+                    setTimeout(typeWriter, 35);
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(typeWriter, 1500); 
+        });
+    </script>
+</body>
+</html>
