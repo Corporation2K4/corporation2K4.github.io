@@ -9,68 +9,111 @@
     <link rel="stylesheet" href="style.css"> 
     
     <style>
+        /* --- AIM-FUSION / TERMINAL / MATRIX THEME --- */
+        
+        /* Base Styling */
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Consolas', 'Courier New', monospace; /* Technical font */
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f8f8f8;
-            color: #333;
+            background-color: #0d1117; /* Dark charcoal/GitHub dark theme background */
+            color: #c9d1d9; /* Light gray text */
         }
+        
+        /* Main Content Container */
         .container {
-            max-width: 850px;
-            margin: 30px auto;
-            padding: 25px;
-            background: #ffffff;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #161b22; /* Slightly darker than body for depth */
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.1); /* Subtle green glow */
         }
+        
+        /* Headings - Green accent for a "console" look */
         h1, h2, h3 {
-            color: #0056b3;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 0.2em;
-            margin-top: 1.5em;
+            color: #39ff14; /* Neon Green */
+            border-bottom: 2px solid #238636; /* Darker green divider */
+            padding-bottom: 0.3em;
+            margin-top: 1.8em;
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
         }
+        
+        /* Code Blocks - The core terminal feature */
         pre {
-            background-color: #f4f4f4;
-            border: 1px solid #ddd;
-            padding: 10px;
+            background-color: #010409; /* Deep black console background */
+            border: 1px solid #39ff14; /* Neon green border */
+            padding: 15px;
             overflow-x: auto;
             border-radius: 4px;
-            color: #555;
+            color: #39ff14; /* Neon green text for code */
+            font-size: 0.9em;
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.3);
         }
+        
+        /* Regular list items */
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        /* Ad Unit - Maintained for Adsense structure, styled to fit theme */
         .ad-unit {
-            background-color: #fffaf0;
-            border: 1px solid #ffcc66;
+            background-color: #0d1117; 
+            border: 1px dashed #58a6ff; /* Blue dashed border to highlight external content */
             padding: 20px;
             margin: 2em 0;
             text-align: center;
             font-size: 1em;
-            color: #8a6d3b;
+            color: #58a6ff; /* Light blue text for informational note */
             font-style: italic;
+            border-radius: 4px;
         }
+        
+        /* Warning Box - Aggressive red/yellow for critical information */
         .warning {
-            color: #d9534f;
+            color: #ff7b72; /* Light red/danger color */
             font-weight: bold;
-            border-left: 5px solid #d9534f;
-            padding-left: 10px;
+            border-left: 5px solid #d9534f; /* Red solid bar */
+            padding-left: 15px;
             margin: 1.5em 0;
-            background-color: #fdf7f7;
-            padding: 10px;
+            background-color: #211c1c; /* Very dark red background */
+            padding: 15px;
+            border-radius: 4px;
         }
+        
+        /* Callout Box - Informational / Highlighted Data */
         .callout {
-            background-color: #e6f7ff;
-            border-left: 4px solid #007bff;
+            background-color: #24292f; /* Darker gray-blue */
+            border-left: 4px solid #58a6ff; /* Light blue accent */
             padding: 15px;
             margin: 1em 0;
+            border-radius: 4px;
         }
+
+        /* Footer / Disclaimer */
+        footer {
+            padding-top: 20px;
+            border-top: 1px solid #238636;
+            margin-top: 30px;
+            font-size: 0.85em;
+            color: #8b949e;
+        }
+
+        /* Horizontal Rule */
+        hr {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(57, 255, 20, 0), rgba(57, 255, 20, 0.75), rgba(57, 255, 20, 0));
+        }
+
     </style>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>Router Information Gathering: What Data Your Wi-Fi Router is Broadcasting (and How to Stop It) 🔒</h1>
+            <h1>Router Information Gathering: What Data Your Wi-Fi Router is Broadcasting (and How to Stop It) <span style="color:#39ff14;">🔒</span></h1>
             <p><strong>Published:</strong> October 2025 | <strong>Author:</strong> Corporation2k4 Security Team</p>
         </header>
         
