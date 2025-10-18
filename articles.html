@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Articles & Blog - Corporation2K4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509"
+        crossorigin="anonymous"></script>
+    <style>
+        /* Reusing the exact styles from index.html for a consistent look */
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1200px;
+            margin: 32px auto 0 auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            gap: 10px 20px;
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover {
+            background-color: var(--color-terminal-white);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-terminal-yellow);
+            border-color: var(--color-terminal-yellow);
+        }
+        .nav-button.active {
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        #main-layout {
+            display: flex;
+            flex-direction: column; 
+        }
+        #text-content {
+            padding: 32px 36px;
+            background: #151819;
+            border-radius: 0 0 14px 14px;
+            flex: 1 1 100%; 
+            min-width: 0; 
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .terminal-line {
+            line-height: 1.65;
+            padding: 5px 0;
+            white-space: pre-wrap;
+            font-size: 1rem;
+        }
+        .prompt {
+            color: var(--color-terminal-blue);
+            font-weight: bold;
+        }
+        .success {
+            color: var(--color-terminal-yellow);
+            font-weight: bold;
+        }
+        .command {
+            color: var(--color-terminal-green);
+        }
+        .output-text {
+            color: var(--color-terminal-white);
+            font-size: 1rem;
+        }
+        .section-header {
+            color: var(--color-terminal-yellow);
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-bottom: 2px dashed var(--color-terminal-green);
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .article-listing {
+            margin-bottom: 25px;
+            border: 1px solid var(--color-dim-green);
+            padding: 15px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        .article-listing:hover {
+            background-color: #0a0a0a;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        }
+        .article-listing h3 {
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+        }
+        .article-listing a {
+            color: var(--color-terminal-green);
+            text-decoration: none;
+            font-weight: bold;
+            text-shadow: 0 0 2px var(--color-terminal-green);
+        }
+        .article-listing a:hover {
+            text-decoration: underline;
+            color: var(--color-terminal-yellow);
+        }
+        .article-meta {
+            font-size: 0.85rem;
+            color: var(--color-terminal-blue);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4: The Security & Tech Log
+            <nav id="top-nav-bar">
+                <a href="index.html" class="nav-button">INDEX :: Home</a>
+                <a href="articles.html" class="nav-button active">BLOG :: Security Articles</a> 
+                <a href="tutorials.html" class="nav-button">GUIDES :: Tutorials</a>
+                <a href="about_us.html" class="nav-button">INFO :: About Me</a>
+                <a href="contact_us.html" class="nav-button">HELP :: Contact Us</a>
+                <a href="privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
+                <a href="terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
+            </nav>
+        </div>
+        <div id="main-layout">
+            <div id="text-content">
+                <div class="terminal-line"><span class="prompt">yuri@corporation2k4:~$</span> <span class="command">ls -l /blog/articles</span></div>
+                <div class="terminal-line success output-text">
+                    <p>Directory listing for high-value technical articles. Total articles published: <span class="command">[# of Articles]</span></p>
+                </div>
+
+                <h2 class="section-header">:: Latest Security Insights</h2>
+                <div class="terminal-line output-text">
+                    <p>This section features analysis, news, and in-depth articles on modern computing, mobile security trends, and proactive privacy defense.</p>
+                </div>
+
+                <div class="article-listing">
+                    <h3><a href="articles/article_01_linux_env.html">Analyzing the Optimal Setup: Minimalist Programming Environments for Python and C++</a></h3>
+                    <p class="output-text">A detailed breakdown of how to configure a lightweight Linux environment for learning Java, Python, and C/C++ without resource-heavy IDEs.</p>
+                    <p class="article-meta">Author: Yuri Orlow | Category: Programming/Linux | Status: **Required Content**</p>
+                </div>
+
+                <div class="article-listing">
+                    <h3><a href="articles/article_02_ai_prompting.html">Mastering the Prompt: How to Train AI into a Dedicated Math and Science Tutor</a></h3>
+                    <p class="output-text">Leveraging custom, specialized prompts to get accurate and detailed educational methods from large language models for complex subjects.</p>
+                    <p class="article-meta">Author: Yuri Orlow | Category: AI/Education | Status: **Required Content**</p>
+                </div>
+
+                <div class="article-listing">
+                    <h3><a href="articles/article_03_android_root.html">The Security Implications of Android Rooting and Custom ROM Reverse Engineering</a></h3>
+                    <p class="output-text">An educational dive into the architecture of rooted Android devices and basic application security analysis for defensive purposes.</p>
+                    <p class="article-meta">Author: Yuri Orlow | Category: Mobile Security | Status: **Required Content**</p>
+                </div>
+
+                <div class="article-listing">
+                    <h3><a href="articles/article_04_crypto_safety.html">Best Practices for Cryptocurrency Wallet Security: A 2025 Deep Dive</a></h3>
+                    <p class="output-text">An article covering cold storage, key management, and defensive strategies to protect digital assets from modern phishing and network attacks.</p>
+                    <p class="article-meta">Author: Yuri Orlow | Category: Cryptocurrency/Security | Status: **Required Content**</p>
+                </div>
+
+                <div class="article-listing">
+                    <h3><a href="articles/article_05_router_vuln.html">Router Information Gathering: What Data Your Wi-Fi Router is Broadcasting (and How to Stop It)</a></h3>
+                    <p class="output-text">Detailed analysis on common router vulnerabilities and defensive configuration techniques for home and small business networks.</p>
+                    <p class="article-meta">Author: Yuri Orlow | Category: Network Security | Status: **Required Content**</p>
+                </div>
+
+                <div class="terminal-line" style="margin-top: 30px;">
+                    <span class="prompt">yuri@corporation2k4:~$</span> <span class="command">note_to_admin</span>
+                    <p class="output-text">Please ensure the five articles linked above are written, are unique, and exceed 1,000 words each before applying for AdSense. They must be uploaded to the `articles/` directory.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
