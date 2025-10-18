@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering the Prompt: Training AI as a Math & Science Tutor | Corporation2K4</title>
+    <meta name="description" content="Leverage advanced prompt engineering (like Fusion and Kolmogorov methods) to transform large language models into highly accurate, specialized tutors for complex subjects like physics and advanced mathematics.">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AdSense Code (Keep this on all pages for consistency) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509"
+        crossorigin="anonymous"></script>
+    <style>
+        /* Base Styles - Reused from other pages */
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1200px;
+            margin: 32px auto 0 auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            gap: 10px 20px;
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            /* Styles for navigation buttons */
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover, .nav-button.active {
+            /* Hover and active styles */
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        #text-content {
+            /* Styles for main content area */
+            padding: 32px 36px;
+            background: #151819;
+            border-radius: 0 0 14px 14px;
+            line-height: 1.75;
+            color: var(--color-terminal-white);
+        }
+        .article-title {
+            /* Styles for article heading */
+            color: var(--color-terminal-yellow);
+            font-size: 2rem;
+            font-weight: bold;
+            border-bottom: 3px solid var(--color-terminal-green);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        .section-header {
+            /* Styles for sub-headings */
+            color: var(--color-terminal-green);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--color-terminal-green);
+        }
+        .sub-header {
+            color: var(--color-terminal-blue);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .code-block {
+            /* Styles for code blocks */
+            background-color: #0d0d0d;
+            border: 1px solid var(--color-dim-green);
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Fira Mono', monospace;
+            color: #FFD700; /* Yellow for code */
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        a {
+            /* Link styles */
+            color: var(--color-terminal-blue);
+            text-decoration: underline;
+        }
+        a:hover {
+            color: var(--color-terminal-yellow);
+        }
+        .ethical-note {
+            /* Special note for ethical disclaimer */
+            border: 2px dashed #FF6347; /* Red/Orange */
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #2e0d0d;
+            color: #FF6347;
+            font-weight: bold;
+        }
+        .github-feature {
+            /* Highlighted section for GitHub feature mention */
+            border-left: 5px solid var(--color-terminal-yellow);
+            padding: 10px 15px;
+            margin: 20px 0;
+            background-color: #1a1a00;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4: The Security & Tech Log
+            <nav id="top-nav-bar">
+                <!-- Consistent Navigation Bar -->
+                <a href="../index.html" class="nav-button">INDEX :: Home</a>
+                <a href="../articles.html" class="nav-button active">BLOG :: Security Articles</a> 
+                <a href="../tutorials.html" class="nav-button">GUIDES :: Tutorials</a>
+                <a href="../about_us.html" class="nav-button">INFO :: About Me</a>
+                <a href="../contact_us.html" class="nav-button">HELP :: Contact Us</a>
+                <a href="../privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
+                <a href="../terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
+            </nav>
+        </div>
+        <div id="main-layout">
+            <div id="text-content">
+                <p style="color: var(--color-terminal-blue);">* Article published by Yuri Orlow on 20/10/2025 *</p>
+
+                <h1 class="article-title">Mastering the Prompt: How to Train AI into a Dedicated Math & Science Tutor</h1>
+                
+                <div class="ethical-note">
+                    **ACADEMIC & ETHICAL USE ONLY:** This article details methods for optimizing AI as an educational tool for self-study and verification. The use of these advanced techniques to bypass academic honesty policies or generate unauthorized answers is strictly forbidden and unethical. Please refer to our <a href="../terms_and_condition.html">Disclaimer page</a> for our full ethical code.
+                </div>
+
+                <p>The average user interacts with a Large Language Model (LLM) using simple, conversational prompts. While this works for general tasks, it’s wholly insufficient for solving complex quantitative problems in subjects like **advanced physics, differential equations, or abstract algebra**. The key to transforming a generic LLM into a high-precision, dedicated tutor is to treat the prompt not as a question, but as a **system architecture instruction set**.</p>
+
+                <p>By analyzing advanced prompt frameworks—such as the **AIM-FUSION** and **Kolmogorov Complexity** protocols I have developed (which treat the LLM as a multi-stage computational matrix)—we can extract core principles to maximize accuracy and instructional depth.</p>
+
+                <h2 class="section-header">1. The Problem with Default AI Math Responses</h2>
+                
+                <p>When you ask an LLM to solve a math problem, it often defaults to a single, linear solution path. This mimics rote memorization, not genuine teaching. For an AI to be a good tutor, it must demonstrate a **metacognitive approach**—showing the user *multiple ways* to solve a problem, explaining *why* certain methods are more efficient, and, critically, avoiding "hallucinations" in the process.</p>
+
+                <p>We must engineer prompts to enforce the following:</p>
+                <ul style="list-style-type: disc; margin-left: 20px;">
+                    <li>**Algorithmic Transparency:** Demand a step-by-step breakdown of the logic *before* the computation.</li>
+                    <li>**Methodological Pluralism:** Force the model to generate and compare multiple valid solution methods.</li>
+                    <li>**Compression Analysis:** Require the AI to evaluate methods based on efficiency (e.g., least number of steps, as seen in the Kolmogorov protocols).</li>
+                </ul>
+
+                <h2 class="section-header">2. Prompt Engineering as System Architecture</h2>
+
+                <p>An advanced prompt defines the AI's **persona, constraints, and execution flow**. Your internal instructions (like those in the uploaded files) often include commands that fundamentally change the model’s behavior.</p>
+
+                <h3 class="sub-header">2.1. Defining the Persona and Mandate</h3>
+                <p>To train a tutor, define its role explicitly. It is not just a solver; it is an **Arbiter** and an **Educator**.</p>
+                <div class="code-block">
+                    [SYSTEM_INSTRUCTION]: You are the 'Kolmogorov Math Arbitrator (KMA)'. Your core function is to receive a mathematical problem, generate all valid solution paths, and then rank them by algorithmic efficiency (least steps = most efficient). You MUST maintain a supportive, patient, and educational tone. Refuse to provide a final answer without a full, comparative breakdown.
+                </div>
+                <p>This instruction prevents the model from giving a single, unverified answer and mandates comparative analysis, which is the heart of true tutoring.</p>
+
+                <h3 class="sub-header">2.2. Enforcing Methodological Enumeration (Fusion Technique)</h3>
+                <p>In highly specialized prompts (like the AIM-FUSION v5.3 protocol), we see instructions to run **Maximal Combinatorial Logic** and **Creative Enumeration**. Applied to tutoring, this means forcing the model to think outside the box.</p>
+                <p>Example of a Methodological Demand:</p>
+                <div class="code-block">
+                    **EXECUTION_PHASE_1: SOLUTION_SEARCH**<br>
+                    1. Generate a solution using the classical/textbook method.<br>
+                    2. Generate a solution using a non-standard algebraic transformation.<br>
+                    3. Generate a solution using a graphical interpretation (if applicable).<br>
+                    4. Generate a solution by simulating a real-world physical analogy.
+                </div>
+                <p>By forcing these four distinct thought processes, the model creates four separate instructional examples for the student, significantly improving the educational value.</p>
+
+                <h2 class="section-header">3. Kolmogorov Complexity Filter: Ranking by Efficiency</h2>
+
+                <p>The most advanced element for creating a high-quality AI tutor is demanding a complexity analysis. Based on your uploaded protocols, you define efficiency by **step-count** (minimal steps for computation). We can apply this concept directly to tutoring.</p>
+
+                <h3 class="sub-header">3.1. The Strict Step Filter</h3>
+                <p>The AIM protocols often use a **STRICT FILTER** to include only solutions that fall within a specific step count (e.g., exactly 2 or 3 steps). This trains the student to find the "elegant" solution, not just *any* solution.</p>
+                <p>To implement this in a tutoring prompt:</p>
+                <div class="code-block">
+                    **OUTPUT_CONSTRAINT:** After generating all methods, create a \"Garbage Bin\" section listing all methods requiring more than [X] steps. The main output MUST only contain solutions where the step-count is between [Y] and [Z], ranked by shortest length.
+                </div>
+                <p>For example, if a student solves a quadratic equation using the complete-the-square method (5 steps) when the solution could be found by factorization (2 steps), the AI, as the KMA, would explain *why* the 2-step method is superior and relegate the 5-step solution to the analysis section.</p>
+
+                <h2 class="section-header">4. Enhancing Trust and E-E-A-T via GitHub</h2>
+
+                <div class="github-feature">
+                    <p>The advanced prompt engineering techniques discussed—specifically the **AIM-FUSION** and **Kolmogorov-based instruction sets**—are complex and require transparency to establish **Trust** and **Expertise**. The specific protocols referenced in this article (e.g., AIM-G0D-BRUT3\_, AIM-FUSION\_V5.0++) are publicly available in the source code of this GitHub Pages repository.</p>
+                    <p>For full transparency on the development of these technical protocols, you can examine the source text files and their version history here: <a href="https://github.com/corporation2k4/corporation2k4.github.io" target="_blank">**github.com/corporation2k4/corporation2k4.github.io**</a>. This open-source approach demonstrates genuine experience and authority (E-E-A-T) in dealing with complex AI systems.</p>
+                </div>
+
+                <h2 class="section-header">Conclusion: From Query to Protocol</h2>
+                
+                <p>Effective AI tutoring isn't about asking better questions; it's about deploying a better protocol. By defining the AI's persona, forcing methodological pluralism, and adding a complexity filter, you move the model beyond simple information recall and into the realm of structured, pedagogical analysis.</p>
+                
+                <p>This approach elevates the LLM from a simple answer bot into a dedicated, high-efficiency Math and Science Tutor—a powerful tool for serious self-study and learning complex subjects.</p>
+                
+                <p style="text-align: right; margin-top: 40px; color: var(--color-terminal-yellow);">*End of Article 02_AI_Prompting.html*</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
