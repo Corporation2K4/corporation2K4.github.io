@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUIDE: Basic Mobile App Reverse Engineering for Security Audits | Corporation2K4</title>
+    <meta name="description" content="An educational guide by Yuri Orlow on reverse engineering Android applications. Learn to use Apktool, JADX, and Ghidra to analyze Java and native C/C++ code for security audits. For ethical use only.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509"
+     crossorigin="anonymous"></script>
+
+    <style>
+        /* CORE TERMINAL COLORS AND FONTS - Consistent with site theme */
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+            --color-terminal-red: #FF4136;
+        }
+
+        @keyframes cursor-blink { 0%, 100% { border-right-color: transparent } 50% { border-right-color: var(--color-terminal-yellow) } }
+        .live-prompt { display: inline-block; font-size: 1.15rem; color: var(--color-terminal-white); border-right: 3px solid var(--color-terminal-yellow); animation: cursor-blink 1s step-end infinite; padding-right: 2px; text-shadow: none; }
+
+        body { background-color: #030303; color: var(--color-terminal-green); font-family: 'Fira Mono', monospace; line-height: 1.7; margin: 0; padding: 0; min-height: 100vh; text-shadow: 0 0 1px var(--color-terminal-green); }
+        
+        #app-container { max-width: 1200px; margin: 32px auto; background: #111; border-radius: 18px; border: 3px solid var(--color-terminal-green); box-shadow: 0 0 50px rgba(0, 255, 0, 0.5), 0 0 20px var(--color-terminal-green), 0 2px 28px #0009; padding: 0; display: flex; flex-direction: column; }
+        
+        #terminal-header { width: 100%; padding: 18px 24px; background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%); border-radius: 14px 14px 0 0; border-bottom: 3px solid var(--color-terminal-green); text-align: center; font-weight: bold; text-shadow: 0 0 10px var(--color-terminal-yellow), 0 0 5px var(--color-terminal-white); font-size: 1.25rem; letter-spacing: 2px; color: var(--color-terminal-white); }
+
+        #top-nav-bar { width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; margin-top: 15px; padding-top: 10px; border-top: 1px dashed var(--color-terminal-green); }
+        .nav-button { background-color: transparent; color: var(--color-terminal-white); border: 2px solid var(--color-terminal-white); padding: 8px 15px; text-transform: uppercase; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; border-radius: 5px; font-weight: bold; box-shadow: 0 0 5px var(--color-terminal-white); }
+        .nav-button:hover, .nav-button.active { background-color: var(--color-terminal-yellow); color: #000; border-color: var(--color-terminal-yellow); box-shadow: 0 0 15px var(--color-terminal-yellow); }
+
+        #text-content { padding: 32px 36px; background: #151819; border-radius: 0 0 14px 14px; flex: 1 1 100%; color: var(--color-terminal-white); }
+
+        h1, h2, h3 { font-weight: bold; }
+        h1 { color: var(--color-terminal-yellow); text-shadow: 0 0 5px var(--color-terminal-yellow); border-bottom: 2px solid var(--color-terminal-green); padding-bottom: 0.5em; margin-top: 0; font-size: 1.8rem; margin-bottom: 0.5em; }
+        h2 { color: var(--color-terminal-yellow); border-bottom: 1px solid var(--color-terminal-yellow); padding-bottom: 0.3em; margin-top: 2em; font-size: 1.5rem; }
+        h3 { color: var(--color-terminal-blue); margin-top: 1.5em; font-size: 1.2rem; }
+        p { margin-bottom: 1em; font-size: 1rem; }
+        
+        .code-block { background-color: #0d0d0d; border: 1px solid var(--color-dim-green); padding: 15px; margin: 15px 0; overflow-x: auto; font-family: 'Fira Mono', monospace; color: #ccc; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; }
+        .code-block .comment { color: #008000; }
+        .code-block .prompt { color: var(--color-terminal-yellow); }
+        .code-block .keyword { color: var(--color-terminal-blue); }
+        .code-block .string { color: var(--color-terminal-red); }
+
+        strong { color: var(--color-terminal-green); font-weight: bold; }
+
+        .ad-unit { background-color: #001a00; border: 2px dashed var(--color-terminal-green); padding: 20px; margin: 2em 0; text-align: center; font-size: 1rem; color: var(--color-terminal-white); font-style: italic; min-height: 90px; }
+
+        .ethical-warning { color: var(--color-terminal-red); background-color: #2e0d0d; border: 2px solid var(--color-terminal-red); border-left: 5px solid var(--color-terminal-red); padding: 15px; margin: 1.5em 0; font-weight: 700; }
+        .ethical-warning strong { color: var(--color-terminal-white); }
+
+        .defensive-box { color: var(--color-terminal-green); background-color: #002e00; border: 2px solid var(--color-terminal-green); border-left: 5px solid var(--color-terminal-green); padding: 15px; margin: 1.5em 0; font-weight: 700; }
+        
+        hr { border-top: 1px dashed var(--color-terminal-green); margin: 2em 0; }
+        
+        footer p { font-style: italic; font-size: 0.9rem; color: var(--color-dim-green); }
+
+        .author-box { background-color: #0a0a0a; border: 1px solid var(--color-dim-green); padding: 20px; margin-top: 2em; border-radius: 8px; }
+        .author-box h3 { margin-top: 0; color: var(--color-terminal-blue); }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        
+        <div id="terminal-header">
+            <span style="color: var(--color-terminal-yellow);">[user@sec-lab ~]$ </span> 
+            <span style="color: var(--color-terminal-white);">/guides/app_reversing/</span>
+            <span class="live-prompt"></span>
+            <nav id="top-nav-bar">
+                <a href="../index.html" class="nav-button">INDEX :: Home</a>
+                <a href="../articles.html" class="nav-button">BLOG :: Security Articles</a> 
+                <a href="../tutorials.html" class="nav-button active">GUIDES :: Tutorials</a>
+                <a href="../about_us.html" class="nav-button">INFO :: About Me</a>
+                <a href="../contact_us.html" class="nav-button">HELP :: Contact Us</a>
+                <a href="../privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
+                <a href="../terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
+            </nav>
+        </div>
+        
+        <div id="main-layout">
+            <div id="text-content">
+                
+                <header>
+                    <h1>GUIDE: Basic Custom Mobile Application Reverse Engineering for Security Audits</h1>
+                    <p style="color: var(--color-terminal-green);">
+                        <span style="color: var(--color-terminal-yellow);">// Author:</span> Yuri Orlow | <span style="color: var(--color-terminal-yellow);">Skill Level:</span> Intermediate | <span style="color: var(--color-terminal-yellow);">Focus:</span> Android Security, Reverse Engineering
+                    </p>
+                </header>
+                
+                <p>
+                    Mobile applications are complex pieces of software, often containing sensitive logic, API keys, and proprietary algorithms. Reverse engineering is the process of deconstructing an application to understand its inner workings. For a security professional, this is a critical skill for performing thorough security audits, identifying vulnerabilities like hardcoded secrets, and verifying that security controls are implemented correctly.
+                </p>
+
+                <div class="ethical-warning">
+                    <strong>LEGAL AND ETHICAL MANDATE: FOR AUTHORIZED AUDITS ONLY.</strong>
+                    <br>
+                    You must only perform reverse engineering on applications that you have **explicit, written permission** to test. Unauthorized reverse engineering of proprietary software can be a violation of its terms of service and may be illegal. This guide is for educating security professionals and developers on how to audit their own applications.
+                </div>
+
+                <div class="ad-unit">
+                    <p>// ADVERTISEMENT //</p>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1691429093626509"
+                         data-ad-slot="YOUR_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+
+                <hr>
+
+                <h2 id="step1">The Auditor's Toolkit</h2>
+                <p>
+                    To begin, we need a set of specialized tools. These open-source projects are the industry standard for mobile application analysis.
+                </p>
+                <ul>
+                    <li><strong>Apktool:</strong> A tool for reverse engineering Android application packages (APKs). It unpacks the APK into a readable file structure, including resources and the `AndroidManifest.xml`.</li>
+                    <li><strong>JADX:</strong> A powerful decompiler that converts Android's Dalvik bytecode (`.dex` files) back into highly readable Java or Kotlin source code.</li>
+                    <li><strong>Ghidra:</strong> A software reverse engineering (SRE) framework developed by the NSA. We will use it to analyze native libraries (`.so` files) written in C/C++, which are common in games and performance-critical apps.</li>
+                </ul>
+                <p>Installation of these tools is platform-specific, but all are well-documented and readily available online.</p>
+
+                <h2 id="step2">Phase 1: Deconstructing the APK</h2>
+                <p>
+                    Our first step is to unpack the target APK file using Apktool. This allows us to inspect the application's manifest, resources, and raw bytecode.
+                </p>
+                <div class="code-block">
+                    <span class="prompt">user@sec-lab ~]$</span> apktool d -o ./output_folder target_app.apk
+                    <br>
+                    <span class="output-header">I: Using Apktool 2.6.1</span>
+                    <br>
+                    <span class="output-header">I: Loading resource table...</span>
+                    <br>
+                    <span class="output-header">I: Decoding AndroidManifest.xml with resources...</span>
+                    <br>
+                    <span class="output-header">I: Copying assets and libs...</span>
+                </div>
+                <p>
+                    Inside the `output_folder`, you will find several key items:
+                </p>
+                <ul>
+                    <li><strong>AndroidManifest.xml:</strong> A human-readable version of the app's manifest. Check this for permissions, exported activities, and other high-level configuration issues.</li>
+                    <li><strong>res/:</strong> Application resources like images and layouts.</li>
+                    <li><strong>lib/:</strong> This directory contains the compiled native libraries (e.g., `lib/armeabi-v7a/libnative-lib.so`). This is a critical folder for our analysis.</li>
+                    <li><strong>smali/:</strong> The disassembled Dalvik bytecode. While readable, we will use JADX for a higher-level view.</li>
+                </ul>
+
+                <div class="ad-unit">
+                    <p>// ADVERTISEMENT //</p>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1691429093626509"
+                         data-ad-slot="YOUR_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+
+                <hr>
+
+                <h2 id="step3">Phase 2: Analyzing Java/Kotlin Code with JADX</h2>
+                <p>
+                    Next, we open the original `target_app.apk` file with JADX-GUI. JADX will automatically decompile the `classes.dex` file, presenting a clean, navigable source tree. This is where the bulk of the application's logic often resides.
+                </p>
+                <h3>What to Look For:</h3>
+                <ul>
+                    <li><strong>Hardcoded Secrets:</strong> Search the entire codebase for strings like "api_key", "password", "secret", or IP addresses.</li>
+                    <li><strong>Insecure Data Storage:</strong> Check how the app stores data. Is it using SharedPreferences for sensitive information? Is it writing to world-readable files?</li>
+                    <li><strong>JNI (Java Native Interface) Calls:</strong> Look for functions that bridge the Java code to the native libraries. These are key indicators of where to focus our native code analysis.</li>
+                </ul>
+                <div class="code-block">
+                    <span class="comment">// Example of a JNI call found in decompiled Java code</span>
+                    <br>
+                    <span class="keyword">public class</span> SecurityUtils {
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">static</span> {
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.loadLibrary(<span class="string">"native-lib"</span>);
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}
+                    <br><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// This function is implemented in the C/C++ library</span>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">public static native boolean</span> isDeviceSecure();
+                    <br>
+                    }
+                </div>
+                <p>This snippet tells us that a critical security check, `isDeviceSecure()`, is not implemented in Java but in a native library named `libnative-lib.so`.</p>
+
+                <h2 id="step4">Phase 3: Analyzing Native Libraries with Ghidra</h2>
+                <p>
+                    Now we turn to the native code. This is common in games for performance, or in security-conscious apps to hide sensitive logic from easy decompilation. We will use Ghidra to analyze the `libnative-lib.so` file we extracted with Apktool.
+                </p>
+                <ol>
+                    <li>Create a new project in Ghidra and import the `.so` file.</li>
+                    <li>Let Ghidra perform its initial auto-analysis. This will identify functions, strings, and cross-references.</li>
+                    <li>In the "Symbol Tree" window, filter for the Java function name. JNI function names follow a specific pattern: `Java_com_package_name_ClassName_methodName`.</li>
+                </ol>
+                <p>For our example, we would search for `Java_com_example_myapp_SecurityUtils_isDeviceSecure`. Ghidra will show us the disassembled ARM assembly code and, more importantly, a decompiled C version.</p>
+                <div class="code-block">
+                    <span class="comment">// Decompiled C code from Ghidra for the isDeviceSecure function</span>
+                    <br>
+                    <span class="keyword">bool</span> Java_com_example_myapp_SecurityUtils_isDeviceSecure(JNIEnv *env, <span class="keyword">jobject</span> thiz) {
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// This is a weak root detection check!</span>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;FILE *file = fopen(<span class="string">"/system/app/Superuser.apk"</span>, <span class="string">"r"</span>);
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> (file != NULL) {
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fclose(file);
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="keyword">true</span>; <span class="comment">// Returns 'true' if Superuser.apk exists</span>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="keyword">false</span>;
+                    <br>
+                    }
+                </div>
+                <p>
+                    By analyzing the native code, we've discovered that the "security check" is just a simple file existence check for a common rooting app. This is a weak control that can be easily bypassed.
+                </p>
+
+                <hr>
+
+                <div class="defensive-box">
+                    <strong>Defensive Measures for Developers</strong>
+                    <br>
+                    To make this kind of analysis harder, developers should:
+                    <ul>
+                        <li><strong>Use Obfuscation:</strong> Tools like ProGuard (for Java/Kotlin) and obfuscators for C/C++ can rename functions and classes, making the decompiled code much harder to read.</li>
+                        <li><strong>Implement Anti-Tampering:</strong> Add checks to verify the app's signature at runtime to ensure it hasn't been modified.</li>
+                        <li><strong>Avoid Hardcoding Secrets:</strong> Never store API keys, encryption keys, or other secrets directly in the code. Use secure storage mechanisms and retrieve them from a secure server when needed.</li>
+                        <li><strong>Use Multi-layered Security Checks:</strong> Don't rely on a single client-side check (like the root detection above). Always perform critical security validations on the server-side.</li>
+                    </ul>
+                </div>
+
+                <h2 id="conclusion">Conclusion: A Holistic View of Application Security</h2>
+                <p>
+                    Effective mobile application security auditing requires looking beyond just the Java/Kotlin source code. By combining tools like Apktool, JADX, and Ghidra, we can gain a holistic view of an application's architecture, identify hidden logic in native libraries, and uncover vulnerabilities that would otherwise be missed. This process is essential for building and verifying truly secure mobile applications.
+                </p>
+
+                <div class="author-box">
+                    <h3>About the Author</h3>
+                    <p>Yuri Orlow is a security researcher and developer with a passion for low-level systems. He believes that a deep understanding of offensive techniques is the most effective tool for building robust defensive strategies. His work focuses on making complex security topics accessible to developers and engineers.</p>
+                </div>
+                
+                <footer>
+                    <p><em>[System Log] Disclaimer: This guide is for authorized security auditing and educational purposes only. Unauthorized reverse engineering is prohibited.</em></p>
+                </footer>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
