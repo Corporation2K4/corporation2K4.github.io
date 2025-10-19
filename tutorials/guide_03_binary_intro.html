@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro to Binary Exploitation: Stack Overflows in C | Corporation2K4</title>
+    <meta name="description" content="An educational guide by Yuri Orlow on the fundamentals of binary exploitation, demonstrating a classic stack overflow in C to teach the importance of secure, defensive coding practices. For ethical, educational use only.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509"
+     crossorigin="anonymous"></script>
+
+    <style>
+        /* CORE TERMINAL COLORS AND FONTS - Consistent with site theme */
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+            --color-terminal-red: #FF4136;
+        }
+
+        @keyframes cursor-blink { 0%, 100% { border-right-color: transparent } 50% { border-right-color: var(--color-terminal-yellow) } }
+        .live-prompt { display: inline-block; font-size: 1.15rem; color: var(--color-terminal-white); border-right: 3px solid var(--color-terminal-yellow); animation: cursor-blink 1s step-end infinite; padding-right: 2px; text-shadow: none; }
+
+        body { background-color: #030303; color: var(--color-terminal-green); font-family: 'Fira Mono', monospace; line-height: 1.7; margin: 0; padding: 0; min-height: 100vh; text-shadow: 0 0 1px var(--color-terminal-green); }
+        
+        #app-container { max-width: 1200px; margin: 32px auto; background: #111; border-radius: 18px; border: 3px solid var(--color-terminal-green); box-shadow: 0 0 50px rgba(0, 255, 0, 0.5), 0 0 20px var(--color-terminal-green), 0 2px 28px #0009; padding: 0; display: flex; flex-direction: column; }
+        
+        #terminal-header { width: 100%; padding: 18px 24px; background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%); border-radius: 14px 14px 0 0; border-bottom: 3px solid var(--color-terminal-green); text-align: center; font-weight: bold; text-shadow: 0 0 10px var(--color-terminal-yellow), 0 0 5px var(--color-terminal-white); font-size: 1.25rem; letter-spacing: 2px; color: var(--color-terminal-white); }
+
+        #top-nav-bar { width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; margin-top: 15px; padding-top: 10px; border-top: 1px dashed var(--color-terminal-green); }
+        .nav-button { background-color: transparent; color: var(--color-terminal-white); border: 2px solid var(--color-terminal-white); padding: 8px 15px; text-transform: uppercase; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; border-radius: 5px; font-weight: bold; box-shadow: 0 0 5px var(--color-terminal-white); }
+        .nav-button:hover, .nav-button.active { background-color: var(--color-terminal-yellow); color: #000; border-color: var(--color-terminal-yellow); box-shadow: 0 0 15px var(--color-terminal-yellow); }
+
+        #text-content { padding: 32px 36px; background: #151819; border-radius: 0 0 14px 14px; flex: 1 1 100%; color: var(--color-terminal-white); }
+
+        h1, h2, h3 { font-weight: bold; }
+        h1 { color: var(--color-terminal-yellow); text-shadow: 0 0 5px var(--color-terminal-yellow); border-bottom: 2px solid var(--color-terminal-green); padding-bottom: 0.5em; margin-top: 0; font-size: 1.8rem; margin-bottom: 0.5em; }
+        h2 { color: var(--color-terminal-yellow); border-bottom: 1px solid var(--color-terminal-yellow); padding-bottom: 0.3em; margin-top: 2em; font-size: 1.5rem; }
+        h3 { color: var(--color-terminal-blue); margin-top: 1.5em; font-size: 1.2rem; }
+        p { margin-bottom: 1em; font-size: 1rem; }
+        
+        .code-block { background-color: #0d0d0d; border: 1px solid var(--color-dim-green); padding: 15px; margin: 15px 0; overflow-x: auto; font-family: 'Fira Mono', monospace; color: #ccc; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; }
+        .code-block .comment { color: #008000; }
+        .code-block .prompt { color: var(--color-terminal-yellow); }
+        .code-block .output-header { color: var(--color-terminal-green); font-weight: bold; }
+        .code-block .keyword { color: var(--color-terminal-blue); }
+        .code-block .string { color: var(--color-terminal-red); }
+
+        strong { color: var(--color-terminal-green); font-weight: bold; }
+
+        .ad-unit { background-color: #001a00; border: 2px dashed var(--color-terminal-green); padding: 20px; margin: 2em 0; text-align: center; font-size: 1rem; color: var(--color-terminal-white); font-style: italic; min-height: 90px; }
+
+        .ethical-warning { color: var(--color-terminal-red); background-color: #2e0d0d; border: 2px solid var(--color-terminal-red); border-left: 5px solid var(--color-terminal-red); padding: 15px; margin: 1.5em 0; font-weight: 700; }
+        .ethical-warning strong { color: var(--color-terminal-white); }
+
+        .defensive-box { color: var(--color-terminal-green); background-color: #002e00; border: 2px solid var(--color-terminal-green); border-left: 5px solid var(--color-terminal-green); padding: 15px; margin: 1.5em 0; font-weight: 700; }
+        
+        hr { border-top: 1px dashed var(--color-terminal-green); margin: 2em 0; }
+        
+        footer p { font-style: italic; font-size: 0.9rem; color: var(--color-dim-green); }
+
+        .author-box { background-color: #0a0a0a; border: 1px solid var(--color-dim-green); padding: 20px; margin-top: 2em; border-radius: 8px; }
+        .author-box h3 { margin-top: 0; color: var(--color-terminal-blue); }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        
+        <div id="terminal-header">
+            <span style="color: var(--color-terminal-yellow);">[user@dev-box ~]$ </span> 
+            <span style="color: var(--color-terminal-white);">/guides/binary_exploitation/</span>
+            <span class="live-prompt"></span>
+            <nav id="top-nav-bar">
+                <a href="../index.html" class="nav-button">INDEX :: Home</a>
+                <a href="../articles.html" class="nav-button">BLOG :: Security Articles</a> 
+                <a href="../tutorials.html" class="nav-button active">GUIDES :: Tutorials</a>
+                <a href="../about_us.html" class="nav-button">INFO :: About Me</a>
+                <a href="../contact_us.html" class="nav-button">HELP :: Contact Us</a>
+                <a href="../privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
+                <a href="../terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
+            </nav>
+        </div>
+        
+        <div id="main-layout">
+            <div id="text-content">
+                
+                <header>
+                    <h1>BINARY EXPLOITATION: Introduction to Stack Overflows in C</h1>
+                    <p style="color: var(--color-terminal-green);">
+                        <span style="color: var(--color-terminal-yellow);">// Author:</span> Yuri Orlow | <span style="color: var(--color-terminal-yellow);">Skill Level:</span> Advanced | <span style="color: var(--color-terminal-yellow);">Focus:</span> C/C++, Binary Security
+                    </p>
+                </header>
+                
+                <p>
+                    Binary exploitation is the art of finding flaws in a compiled program's machine code to make it behave in unintended ways. This guide serves as a foundational introduction to the most classic vulnerability of all: the **stack-based buffer overflow**. Our goal is not to create hackers, but to educate developers on how these attacks work so they can write more secure, resilient code.
+                </p>
+
+                <div class="ethical-warning">
+                    <strong>EXTREMELY IMPORTANT: FOR EDUCATIONAL USE ONLY.</strong>
+                    <br>
+                    The information presented here is for academic and defensive security research in a **controlled, isolated lab environment**. Attempting to use these techniques on any system, program, or network you do not own is **illegal and unethical**. This guide is intended to demonstrate a vulnerability so you can learn to prevent it. We take no responsibility for misuse of this information.
+                </div>
+
+                <div class="ad-unit">
+                    <p>// ADVERTISEMENT //</p>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1691429093626509"
+                         data-ad-slot="YOUR_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+
+                <hr>
+
+                <h2 id="step1">Understanding the Stack</h2>
+                <p>
+                    When a function is called in a program, a "stack frame" is created. This is a region of memory that stores the function's local variables, arguments, and, most importantly, the **return address**—the location in the code the program should jump back to when the function finishes. The stack grows downwards in memory. A simplified view looks like this:
+                </p>
+                <div class="code-block">
+                    <span class="output-header">[ Higher Memory Addresses ]</span>
+                    <br>
+                    ...
+                    <br>
+                    [ Function Arguments ]
+                    <br>
+                    <span class="output-header">[ Return Address ] &lt;-- The crucial pointer back to main()</span>
+                    <br>
+                    [ Saved Frame Pointer ]
+                    <br>
+                    [ Local Variables (e.g., a character buffer) ]
+                    <br>
+                    ...
+                    <br>
+                    <span class="output-header">[ Lower Memory Addresses ]</span>
+                </div>
+                <p>A stack overflow occurs when we write more data into a local variable (a buffer) than it was designed to hold. This excess data "overflows" and overwrites adjacent memory on the stack, including the critical return address.</p>
+
+                <h2 id="step2">The Vulnerable Program</h2>
+                <p>
+                    Let's create a simple C program with a classic buffer overflow vulnerability. The `strcpy()` function is notoriously unsafe because it doesn't check the size of the destination buffer.
+                </p>
+                <div class="code-block">
+                    <span class="comment">// vulnerable.c</span>
+                    <br>
+                    <span class="keyword">#include &lt;stdio.h&gt;</span>
+                    <br>
+                    <span class="keyword">#include &lt;string.h&gt;</span>
+                    <br><br>
+                    <span class="keyword">void</span> vulnerable_function(<span class="keyword">char</span> *input) {
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">char</span> buffer[100];
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;strcpy(buffer, input); <span class="comment">// Unsafe! No size check.</span>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;printf(<span class="string">"Input received: %s\n"</span>, buffer);
+                    <br>
+                    }
+                    <br><br>
+                    <span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv) {
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> (argc > 1) {
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vulnerable_function(argv[1]);
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> 0;
+                    <br>
+                    }
+                </div>
+                <p>Here, `buffer` can only hold 100 bytes. If we provide an input string longer than that, we will cause an overflow.</p>
+
+                <h2 id="step3">Compiling for Demonstration</h2>
+                <p>
+                    Modern compilers have built-in protections. To demonstrate this classic exploit, we must manually disable them. **Never do this in production code.**
+                </p>
+                <div class="code-block">
+                    <span class="prompt">user@dev-box ~]$</span> <span class="comment"># Compile without stack canaries and with an executable stack</span>
+                    <br>
+                    <span class="prompt">user@dev-box ~]$</span> gcc -m32 -fno-stack-protector -z execstack -o vulnerable vulnerable.c
+                </div>
+                <ul>
+                    <li><code>-m32</code>: Compiles a 32-bit binary, which simplifies address calculations for this tutorial.</li>
+                    <li><code>-fno-stack-protector</code>: Disables stack canaries, a key protection that detects overflows.</li>
+                    <li><code>-z execstack</code>: Makes the stack executable, allowing us to run code we inject there.</li>
+                </ul>
+
+                <div class="ad-unit">
+                    <p>// ADVERTISEMENT //</p>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1691429093626509"
+                         data-ad-slot="YOUR_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+
+                <hr>
+
+                <h2 id="step4">Triggering the Crash</h2>
+                <p>
+                    Let's see what happens when we provide an input that is too long. We can use Python to generate a string of 200 'A' characters.
+                </p>
+                <div class="code-block">
+                    <span class="prompt">user@dev-box ~]$</span> ./vulnerable $(python -c 'print("A" * 200)')
+                    <br>
+                    <span class="output-header">Input received: AAAAAAAAAAAAAAAAA...</span>
+                    <br>
+                    <span class="output-header">Segmentation fault (core dumped)</span>
+                </div>
+                <p>
+                    Success! The "Segmentation fault" means the program tried to access memory it wasn't allowed to. This happened because we overwrote the return address with a series of `0x41` (the hex code for 'A'), causing the program to try and jump to the invalid address `0x41414141` when the function returned.
+                </p>
+
+                <h2 id="step5">The Goal: Defensive Coding and Mitigation</h2>
+                <p>
+                    We have successfully crashed the program. An attacker would take this further by carefully crafting the input to overwrite the return address with the memory location of malicious code (shellcode). However, our goal is to learn how to **prevent** this.
+                </p>
+                <div class="defensive-box">
+                    <strong>Secure Coding Practice: The Fix</strong>
+                    <br>
+                    The vulnerability exists because `strcpy` is unbounded. The fix is to use a "bounded" function like `strncpy`, which requires you to specify the maximum number of bytes to copy.
+                </div>
+                <div class="code-block">
+                    <span class="comment">// secure.c - The corrected version</span>
+                    <br>
+                    <span class="keyword">#include &lt;stdio.h&gt;</span>
+                    <br>
+                    <span class="keyword">#include &lt;string.h&gt;</span>
+                    <br><br>
+                    <span class="keyword">void</span> secure_function(<span class="keyword">char</span> *input) {
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">char</span> buffer[100];
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Safe! Copies at most 99 bytes, leaving room for the null terminator.</span>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;strncpy(buffer, input, <span class="keyword">sizeof</span>(buffer) - 1);
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;buffer[<span class="keyword">sizeof</span>(buffer) - 1] = <span class="string">'\0'</span>; <span class="comment">// Ensure null termination</span>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;printf(<span class="string">"Input received: %s\n"</span>, buffer);
+                    <br>
+                    }
+                    <br>
+                    <span class="comment">// ... main function remains the same ...</span>
+                </div>
+                <p>
+                    By using `strncpy`, we guarantee that no matter how long the input is, we will never write past the end of the `buffer`, preventing the overflow entirely.
+                </p>
+
+                <h3>Modern Compiler Protections</h3>
+                <p>
+                    Beyond secure coding, modern systems use multiple layers of defense:
+                </p>
+                <ul>
+                    <li><strong>Stack Canaries:</strong> A secret value is placed on the stack before the return address. If an overflow occurs and this value is changed, the program detects the tampering and aborts safely before the malicious jump can happen.</li>
+                    <li><strong>ASLR (Address Space Layout Randomization):</strong> This technology randomizes the memory addresses of the stack, libraries, and executable each time a program is run. This makes it extremely difficult for an attacker to guess the correct return address to jump to.</li>
+                    <li><strong>NX Bit (Non-Execute Bit):</strong> This is a hardware feature that marks regions of memory, like the stack, as non-executable. Even if an attacker successfully injects code onto the stack, the CPU will refuse to run it.</li>
+                </ul>
+
+                <hr>
+
+                <h2 id="conclusion">Conclusion: Offense Informs Defense</h2>
+                <p>
+                    Understanding how a stack overflow works is the first step toward appreciating the critical importance of secure coding and modern system protections. By choosing safe functions, keeping your compiler's security features enabled, and understanding memory layout, you can build software that is far more resilient to this entire class of attack. The goal is not to exploit, but to build unbreakable systems.
+                </p>
+
+                <div class="author-box">
+                    <h3>About the Author</h3>
+                    <p>Yuri Orlow is a security researcher and developer with a passion for low-level systems. He believes that a deep understanding of offensive techniques is the most effective tool for building robust defensive strategies. His work focuses on making complex security topics accessible to developers and engineers.</p>
+                </div>
+                
+                <footer>
+                    <p><em>[System Log] Disclaimer: This advanced guide is for educational and research purposes in isolated environments only. Misuse of this information can have serious legal and ethical consequences.</em></p>
+                </footer>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
