@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOW-TO: Perform an Ethical Vulnerability Scan on Your Wi-Fi Router | Corporation2K4</title>
+    <meta name="description" content="A detailed, step-by-step guide on using Nmap and other open-source tools to ethically scan your own Wi-Fi router for common security vulnerabilities and misconfigurations.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509"
+     crossorigin="anonymous"></script>
+
+    <style>
+        /* CORE TERMINAL COLORS AND FONTS - Consistent with site theme */
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+            --color-terminal-red: #FF4136;
+        }
+
+        @keyframes cursor-blink { 0%, 100% { border-right-color: transparent } 50% { border-right-color: var(--color-terminal-yellow) } }
+        .live-prompt { display: inline-block; font-size: 1.15rem; color: var(--color-terminal-white); border-right: 3px solid var(--color-terminal-yellow); animation: cursor-blink 1s step-end infinite; padding-right: 2px; text-shadow: none; }
+
+        body { background-color: #030303; color: var(--color-terminal-green); font-family: 'Fira Mono', monospace; line-height: 1.7; margin: 0; padding: 0; min-height: 100vh; text-shadow: 0 0 1px var(--color-terminal-green); }
+        
+        #app-container { max-width: 1200px; margin: 32px auto; background: #111; border-radius: 18px; border: 3px solid var(--color-terminal-green); box-shadow: 0 0 50px rgba(0, 255, 0, 0.5), 0 0 20px var(--color-terminal-green), 0 2px 28px #0009; padding: 0; display: flex; flex-direction: column; }
+        
+        #terminal-header { width: 100%; padding: 18px 24px; background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%); border-radius: 14px 14px 0 0; border-bottom: 3px solid var(--color-terminal-green); text-align: center; font-weight: bold; text-shadow: 0 0 10px var(--color-terminal-yellow), 0 0 5px var(--color-terminal-white); font-size: 1.25rem; letter-spacing: 2px; color: var(--color-terminal-white); }
+
+        #top-nav-bar { width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; margin-top: 15px; padding-top: 10px; border-top: 1px dashed var(--color-terminal-green); }
+        .nav-button { background-color: transparent; color: var(--color-terminal-white); border: 2px solid var(--color-terminal-white); padding: 8px 15px; text-transform: uppercase; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; border-radius: 5px; font-weight: bold; box-shadow: 0 0 5px var(--color-terminal-white); }
+        .nav-button:hover, .nav-button.active { background-color: var(--color-terminal-yellow); color: #000; border-color: var(--color-terminal-yellow); box-shadow: 0 0 15px var(--color-terminal-yellow); }
+
+        #text-content { padding: 32px 36px; background: #151819; border-radius: 0 0 14px 14px; flex: 1 1 100%; color: var(--color-terminal-white); }
+
+        h1, h2, h3 { font-weight: bold; }
+        h1 { color: var(--color-terminal-yellow); text-shadow: 0 0 5px var(--color-terminal-yellow); border-bottom: 2px solid var(--color-terminal-green); padding-bottom: 0.5em; margin-top: 0; font-size: 1.8rem; margin-bottom: 0.5em; }
+        h2 { color: var(--color-terminal-yellow); border-bottom: 1px solid var(--color-terminal-yellow); padding-bottom: 0.3em; margin-top: 2em; font-size: 1.5rem; }
+        h3 { color: var(--color-terminal-blue); margin-top: 1.5em; font-size: 1.2rem; }
+        p { margin-bottom: 1em; font-size: 1rem; }
+        
+        .code-block { background-color: #0d0d0d; border: 1px solid var(--color-dim-green); padding: 15px; margin: 15px 0; overflow-x: auto; font-family: 'Fira Mono', monospace; color: #ccc; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; }
+        .code-block .comment { color: #008000; }
+        .code-block .prompt { color: var(--color-terminal-yellow); }
+        .code-block .output-header { color: var(--color-terminal-green); font-weight: bold; }
+
+        strong { color: var(--color-terminal-green); font-weight: bold; }
+
+        .ad-unit { background-color: #001a00; border: 2px dashed var(--color-terminal-green); padding: 20px; margin: 2em 0; text-align: center; font-size: 1rem; color: var(--color-terminal-white); font-style: italic; min-height: 90px; }
+
+        .ethical-warning { color: var(--color-terminal-red); background-color: #2e0d0d; border: 2px solid var(--color-terminal-red); border-left: 5px solid var(--color-terminal-red); padding: 15px; margin: 1.5em 0; font-weight: 700; }
+        .ethical-warning strong { color: var(--color-terminal-white); }
+
+        dl dt { color: var(--color-terminal-green); font-weight: bold; margin-top: 1em; }
+        dl dd { margin-left: 20px; padding-left: 10px; border-left: 2px solid var(--color-dim-green); }
+        
+        hr { border-top: 1px dashed var(--color-terminal-green); margin: 2em 0; }
+        
+        footer p { font-style: italic; font-size: 0.9rem; color: var(--color-dim-green); }
+
+        .author-box { background-color: #0a0a0a; border: 1px solid var(--color-dim-green); padding: 20px; margin-top: 2em; border-radius: 8px; }
+        .author-box h3 { margin-top: 0; color: var(--color-terminal-blue); }
+
+        .github-feature { border-left: 5px solid var(--color-terminal-white); padding: 10px 15px; margin: 20px 0; background-color: #1c1c1c; }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        
+        <div id="terminal-header">
+            <span style="color: var(--color-terminal-yellow);">[user@kali ~]$ </span> 
+            <span style="color: var(--color-terminal-white);">/guides/router_scan/</span>
+            <span class="live-prompt"></span>
+            <nav id="top-nav-bar">
+                <a href="../index.html" class="nav-button">INDEX :: Home</a>
+                <a href="../articles.html" class="nav-button">BLOG :: Security Articles</a> 
+                <a href="../tutorials.html" class="nav-button active">GUIDES :: Tutorials</a>
+                <a href="../about_us.html" class="nav-button">INFO :: About Me</a>
+                <a href="../contact_us.html" class="nav-button">HELP :: Contact Us</a>
+                <a href="../privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
+                <a href="../terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
+            </nav>
+        </div>
+        
+        <div id="main-layout">
+            <div id="text-content">
+                
+                <header>
+                    <h1>HOW-TO: Perform an Ethical Vulnerability Scan on Your Own Wi-Fi Router</h1>
+                    <p style="color: var(--color-terminal-green);">
+                        <span style="color: var(--color-terminal-yellow);">// Author:</span> Yuri Orlow | <span style="color: var(--color-terminal-yellow);">Skill Level:</span> Beginner-Intermediate | <span style="color: var(--color-terminal-yellow);">Focus:</span> Network Security, Nmap
+                    </p>
+                </header>
+                
+                <p>
+                    Your home Wi-Fi router is the gateway to your entire digital life. It connects your computers, phones, smart TVs, and IoT devices to the internet. Yet, most people set it up once and forget about it, leaving it vulnerable to attack. This guide will walk you through the process of performing a basic, **ethical** security scan on your own router using powerful open-source tools.
+                </p>
+
+                <div class="ethical-warning">
+                    <strong>CRITICAL ETHICAL WARNING:</strong> The techniques described in this article are for educational purposes and should **ONLY** be used to scan devices and networks that you personally own. Performing a vulnerability scan on a network or device without explicit, written permission from the owner is illegal in most jurisdictions and is a violation of our terms of service. <strong>You are responsible for your actions.</strong>
+                </div>
+
+                <div class="ad-unit">
+                    <p>// ADVERTISEMENT //</p>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1691429093626509"
+                         data-ad-slot="YOUR_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+
+                <hr>
+
+                <h2 id="step1">Step 1: Prerequisites and Tool Installation</h2>
+                <p>
+                    Our primary tool will be **Nmap (Network Mapper)**, the industry standard for network discovery and security auditing. We'll install it on a Linux system.
+                </p>
+                <div class="code-block">
+                    <span class="prompt">user@kali ~]$</span> <span class="comment"># Update package lists and install Nmap</span>
+                    <br>
+                    <span class="prompt">user@kali ~]$</span> sudo apt update && sudo apt install nmap -y
+                </div>
+                <p>
+                    Next, you need to identify your router's local IP address. This is your network's "default gateway." You can find it with the following command:
+                </p>
+                <div class="code-block">
+                    <span class="prompt">user@kali ~]$</span> ip r | grep default
+                    <br>
+                    <span class="output-header">default via 192.168.0.1 dev eth0 proto dhcp metric 100</span>
+                </div>
+                <p>In this example, the router's IP is <code>192.168.0.1</code>. Yours might be different (e.g., 192.168.1.1 or 10.0.0.1).</p>
+
+                <h2 id="step2">Step 2: Running the Initial Scan</h2>
+                <p>
+                    We will start with a service version detection scan (`-sV`) to see what ports are open and what software is running on them. This is a safe, non-intrusive scan.
+                </p>
+                <div class="code-block">
+                    <span class="prompt">user@kali ~]$</span> sudo nmap -sV 192.168.0.1
+                </div>
+                <p>
+                    This command can take a few minutes. Below is an annotated analysis of a real scan performed on a D-Link DIR-615 router, which we will use as our case study.
+                </p>
+
+                <div class="ad-unit">
+                    <p>// ADVERTISEMENT //</p>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1691429093626509"
+                         data-ad-slot="YOUR_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+
+                <hr>
+
+                <h2 id="step3">Step 3: Analyzing the Scan Results - A Case Study</h2>
+                <p>
+                    Our scan returned several open ports. Let's break down what they mean and what they tell us about the router's security posture.
+                </p>
+                <div class="code-block">
+                    <span class="output-header">Nmap scan report for dlinkrouter (192.168.0.1)</span>
+                    <br>
+                    <span class="output-header">Host is up (0.076s latency).</span>
+                    <br>
+                    <span class="output-header">Not shown: 993 closed tcp ports (conn-refused)</span>
+                    <br>
+                    <span class="output-header">PORT     STATE SERVICE         VERSION</span>
+                    <br>
+                    53/tcp   open  domain          dnsmasq 2.78
+                    <br>
+                    80/tcp   open  http
+                    <br>
+                    81/tcp   open  hosts2-ns?
+                    <br>
+                    443/tcp  open  ssl/https?
+                    <br>
+                    4445/tcp open  ssl/upnotifyp?
+                    <br>
+                    8888/tcp open  sun-answerbook?
+                    <br>
+                    9999/tcp open  abyss?
+                    <br>
+                    <span class="output-header">MAC Address: 78:98:E8:13:5C:C1 (D-Link International)</span>
+                </div>
+
+                <dl>
+                    <dt>Port 53 (domain): dnsmasq 2.78</dt>
+                    <dd>This is the router's DNS forwarder. Dnsmasq is very common, but specific versions can have known vulnerabilities (like DNSpooq). A quick search reveals version 2.78 is several years old, highlighting the importance of firmware updates.</dd>
+
+                    <dt>Port 80 (http): Web Admin Interface</dt>
+                    <dd>This is the unencrypted login page for the router's settings. The scan shows it redirects to `/admin/index.html`. Running services over unencrypted HTTP on a local network is a security risk. The headers also reveal security features like `X-XSS-Protection` are enabled, which is good, but they don't compensate for a weak password.</dd>
+
+                    <dt>Port 443 (https): Secure Web Admin Interface</dt>
+                    <dd>This is the encrypted login page. Nmap was able to pull the SSL certificate, which shows it was issued by "D-Link" and is self-signed. Critically, it was created in <strong>2009</strong> and is valid until 2030. This is a very old, likely weak, certificate.</dd>
+                    
+                    <dt>Ports 81, 4445, 8888, 9999 (Unknown Services)</dt>
+                    <dd>Nmap couldn't definitively identify these services. High, non-standard ports on consumer routers are often used for features like UPnP (Universal Plug and Play), remote management, or manufacturer-specific apps. Unidentified open ports are a concern because they represent an unknown attack surface.</dd>
+                </dl>
+
+                <h2 id="step4">Step 4: Actionable Security Recommendations</h2>
+                <p>Based on our scan, here are the critical next steps to secure this router:</p>
+                <ol>
+                    <li><strong>Update the Firmware:</strong> This is the single most important action. The scan identified the device as a D-Link DIR-615 with firmware version 3.0.5. Go to the D-Link support website, find the page for this model, and download the latest firmware. This will patch known vulnerabilities in services like `dnsmasq`.</li>
+                    <li><strong>Change the Default Password:</strong> Log in to the admin panel (at http://192.168.0.1) and immediately change the administrator password to something long, complex, and unique.</li>
+                    <li><strong>Disable Unnecessary Services:</strong> In the router's settings, disable UPnP, remote administration (WAN management), and any other services you do not explicitly need. This will close the unknown open ports.</li>
+                    <li><strong>Disable HTTP Access:</strong> If possible, configure the router to only allow administration over HTTPS (Port 443) and disable the unencrypted HTTP (Port 80) interface.</li>
+                </ol>
+
+                <hr>
+
+                <div class="github-feature">
+                    <h3>GitHub Feature: Router Security Checklist</h3>
+                    <p>For a more comprehensive approach, you can use a security hardening checklist. This GitHub Gist provides a general-purpose checklist you can adapt for securing your own home router, covering points from our scan and more.</p>
+                    <script src="https://gist.github.com/yuriorlow/a8e3f3d06a2f4e8b9b4e2af5e3e7a12c.js"></script>
+                </div>
+
+                <div class="ad-unit">
+                    <p>// ADVERTISEMENT //</p>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1691429093626509"
+                         data-ad-slot="YOUR_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+
+                <hr>
+
+                <h2 id="conclusion">Conclusion: Taking Control of Your Network</h2>
+                <p>
+                    Running a simple Nmap scan demystifies your router's security. In just a few minutes, we identified outdated software, unnecessary open ports, and weak configurations. By regularly performing these ethical checks and following basic security hygiene, you can significantly harden the most critical device on your network and protect your digital life.
+                </p>
+
+                <div class="author-box">
+                    <h3>About the Author</h3>
+                    <p>Yuri Orlow is a self-taught programmer and security enthusiast with a focus on open-source technologies. He believes that the most effective way to learn is by building from the ground up, using simple tools to understand complex systems. His guides aim to empower users to take control of their own technology safely and ethically.</p>
+                </div>
+                
+                <footer>
+                    <p><em>[System Log] Disclaimer: This guide is for educational purposes only. You are solely responsible for your actions. Always ensure you have permission before scanning any device or network.</em></p>
+                </footer>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
