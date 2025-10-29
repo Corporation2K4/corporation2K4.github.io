@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Defense of Risk-Cost-Benefit Analysis | Corporation2K4</title>
+    <meta name="description" content="An essay by Kristin Shrader-Frechette defending the use of risk-cost-benefit analysis (RCBA) as a valuable tool for environmentalists, addressing formal, economic, and ethical criticisms.">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509"
+        crossorigin="anonymous"></script>
+    <style>
+        /* Base Styles - Reused from other pages */
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1200px;
+            margin: 32px auto 0 auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            gap: 10px 20px;
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            /* Styles for navigation buttons */
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover, .nav-button.active {
+            /* Hover and active styles */
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        #text-content {
+            /* Styles for main content area */
+            padding: 32px 36px;
+            background: #151819;
+            border-radius: 0 0 14px 14px;
+            line-height: 1.75;
+            color: var(--color-terminal-white);
+        }
+        .article-title {
+            /* Styles for article heading */
+            color: var(--color-terminal-yellow);
+            font-size: 2rem;
+            font-weight: bold;
+            border-bottom: 3px solid var(--color-terminal-green);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        .section-header {
+            /* Styles for sub-headings */
+            color: var(--color-terminal-green);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--color-terminal-green);
+        }
+        .code-block {
+            /* Styles for code blocks / quotes */
+            background-color: #0d0d0d;
+            border: 1px solid var(--color-dim-green);
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Fira Mono', monospace;
+            color: #d3d3d3; /* Lighter white for quotes */
+        }
+        a {
+            /* Link styles */
+            color: var(--color-terminal-blue);
+            text-decoration: underline;
+        }
+        a:hover {
+            color: var(--color-terminal-yellow);
+        }
+        .author-bio {
+            border-left: 5px solid var(--color-terminal-blue);
+            padding: 10px 15px;
+            margin: 20px 0;
+            background-color: #0d1a2e;
+        }
+        .page-footer-note {
+            text-align: right;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            color: #888; /* Dimmed text for page numbers */
+            border-top: 1px dashed var(--color-dim-green);
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4: The Security & Tech Log
+            <nav id="top-nav-bar">
+                <a href="../index.html" class="nav-button">INDEX :: Home</a>
+                <a href="../articles.html" class="nav-button active">BLOG :: Security Articles</a> 
+                <a href="../tutorials.html" class="nav-button">GUIDES :: Tutorials</a>
+                <a href="../about_us.html" class="nav-button">INFO :: About Me</a>
+                <a href="../contact_us.html" class="nav-button">HELP :: Contact Us</a>
+                <a href="../privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
+                <a href="../terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
+            </nav>
+        </div>
+        <div id="main-layout">
+            <div id="text-content">
+                <p style="color: var(--color-terminal-blue);">* Academic Essay loaded from archive... *</p>
+
+                <h1 class="article-title">77<br>A Defense of Risk-Cost-Benefit Analysis</h1>
+
+                <p class="section-header" style="font-size: 1.25rem; text-align: center; margin-top: -10px; margin-bottom: 25px;">KRISTIN SHRADER-FRECHETTE</p>
+
+                <div class="author-bio">
+                    <p><strong>Kristin Shrader-Frechette</strong> is professor in both the environmental sciences and policy program and the philosophy department at the University of South Florida. She is the author of numerous books and articles in environmental ethics and risk assessment, including <em>Environmental Ethics</em> (1981), <em>Nuclear Power and Public Policy</em> (1983), and <em>Risk Analysis and Scientific Method</em> (1985).</p>
+                </div>
+                
+                <p>In this essay, Shrader-Frechette argues that critics of science, such as William Rees and Mark Sagoff (see the two previous readings), level unsound criticisms against using the cost-benefit model for making environmental decisions. After explaining the basic idea of risk-cost-benefit analysis (RCBA), she shows how it can be useful to environmentalists. Then she examines several criticisms of RCBA, including objections to it as a formal method, an economic method, and an ethical method. Shrader-Frechette argues that they all fail to undermine its value as a tool for environmentalists.</p>
+
+                <p>Environmentalists often criticize science. They frequently argue for a more romantic, sensitive, holistic, or profound view of the world than science provides. William Rees, for example, criticizes economics on the grounds that it falls victim to scientific materialism; in his article in this volume, he says we need a new paradigm, other than economics, for achieving sustainable development. Similarly, Mark Sagoff, also writing in this text, criticizes the economic model of benefit-cost analysis and argues that it is not always the proper method for making environmental decisions. In particular, he criticizes benefit-cost analysis as utilitarian.</p>
+
+                <p>This essay argues that environmentalists' criticisms of science often are misguided. The criticisms err mainly because they ignore the fact that good science can help environmental causes as well as hinder them. Economic methods, for example, can show that nuclear power is not cost effective,<sup>1</sup> that it makes little economic sense to bury long-lived hazardous wastes,<sup>2</sup> and that biological conservation is extraordinarily cost effective.<sup>3</sup> One reason some environmentalists are antiscience or antieconomics—and ignore the way science can help environmentalism—is that they misunderstand science. They attribute flaws to science when the errors are the result of how people use, interpret, or apply science, not the result of science itself. Rees, for example, criticizes economics as guilty of scientific materialism, yet this essay will show that economics (benefit-cost analysis) can be interpreted in terms of many frameworks, not just scientific materialism. Similarly, Sagoff criticizes benefit-cost analysis as utilitarian, yet this essay will show that the technique is neither purely utilitarian, nor utilitarian in a flawed way, because those who use benefit-cost analysis can interpret it in terms of Kantian values, not just utilitarian ones. If this essay is right, then the ethical problems with economics are not with the science itself but with us, humans who interpret and use it in biased ways. In other words, the real problems of economics are the political and ethical biases of its users, not the science itself. To paraphrase Shakespeare: The fault, dear readers, is not with the science but with ourselves, that we are underlings who use it badly.</p>
+
+                <p>Consider the case of risk-cost-benefit analysis and attacks on it. Risk-cost-benefit analysis (RCBA), the target of many philosophers' and environmentalists' criticisms, is very likely the single, most used economic method, at least in the United States, for evaluating the desirability of a variety of technological actions—from building a liquefied natural gas facility to adding yellow dye number 2 to margarine. The 1969 National Environmental Policy Act requires that some form of RCBA be used to evaluate all federal environment related projects.<sup>4</sup> Also, all U.S. regulatory agencies—with the exception perhaps of only the Occupational Health and Safety Administration (OSHA)—routinely use RCBA to help determine their policies.<sup>5</sup></p>
+
+                <p>Basically, RCBA consists of three main steps. These are (1) identifying all the risks, costs, and benefits associated with a particular policy action; (2) converting those risk, cost, and benefit values into dollar figures; and (3) then adding them to determine whether benefits outweigh the risks and costs. Consider the proposed policy action of coating fresh vegetables with a waxy, carcinogenic chemical to allow them to be stored for longer periods of time. Associated with such a policy would be items such as the risk of worker carcinogenesis or the cost of labor and materials for coating the vegetables. The relevant benefits would include factors such as increased market value of the vegetables since the preservative coating would reduce spoilage and losses in storage.</p>
+                
+                <p>Those who favor RCBA argue that this technique—for identifying, quantifying, comparing, and adding all factors relevant to an economic decision—ought to be</p>
+
+                <div class="code-block" style="text-align: center; font-style: italic;">
+                    This essay, although including work previously published by the author, was written for this work and appears in this form for the first time.
+                </div>
+                
+                <div class="page-footer-note">A Defense of Risk-Cost-Benefit Analysis 507</div>
+
+                <p>one of the major considerations that any rational person takes into account in developing social policy. To my knowledge, no economist or policymaker ever has argued that RCBA ought to be the sole basis on which any social or environmental choice is made. Despite the fact that RCBA, an application of welfare economics, dominates U.S. decision making regarding environmental and technological issues, it continues to draw much criticism. Economists, industrial representatives, and governmental spokespersons tend to support use of RCBA, but philosophers, environmentalists, and consumer activists tend to criticize its employment.</p>
+
+                <p>This essay (1) summarizes the three main lines of criticism of RCBA, (2) outlines arguments for objections to RCBA, (3) shows that the allegedly most devastating criticisms of RCBA are at best misguided and at worst incorrect, and (4) reveals the real source of the alleged deficiencies of RCBA. Let us begin with the three main criticisms of RCBA. These are objections to RCBA (1) as a formal method, (2) as an economic method, and (3) as an ethical method.</p>
+
+                <h2 class="section-header">OBJECTION 1: RCBA AS A FORMAL METHOD</h2>
+                <p>The most strident criticisms of RCBA (as a formal method for making social decisions) come from phenomenologically oriented scholars, such as Hubert and Stuart Dreyfus at Berkeley. They argue that, because it is a rigid, formal method, RCBA cannot model all instances of "human situational understanding."<sup>6</sup> For example, say Stuart Dreyfus, Lawrence Tribe, and Robert Socolow, whenever someone makes a decision, whether about playing chess or driving an automobile, he or she uses intuition and not some analytic, economic "point count."<sup>7</sup> They claim that formal models like RCBA fail to capture the essence of human decision making. The models are too narrow and oversimplified in focusing on allegedly transparent rationality and scientific know-how. Rather, say Dreyfus and others, human decision making is mysterious, unformalizable, and intuitive, something close to wisdom.<sup>8</sup> This is because the performance of human decision making requires expertise and human skill acquisition that cannot be taught by means of any algorithm or formal method like RCBA.<sup>9</sup></p>
+                <p>Moreover, say Robert Coburn, Amory Lovins, Alasdair MacIntyre, and Peter Self, humans not only do not go through any formal routine like RCBA, but they could not, even if they wanted to. Why not? Humans, they say, often can't distinguish costs from benefits. For example, generating increased amounts of electricity represents a cost for most environmentalists, but a benefit for most economists. Lovins and his colleagues also claim that people don't know either the probability of certain events, such as energy-related accidents, or the consequences likely to follow from them; they don't know because humans are not like calculating machines; they cannot put a number on what they value.<sup>10</sup></p>
+
+                <p>Although these criticisms of RCBA are thought provoking, they need not be evaluated in full here, in part because they are analyzed elsewhere.<sup>11</sup> Instead, it might be good merely to sketch the sorts of arguments that, when developed, are capable of answering these objections to the use of RCBA. There are at least six such arguments.</p>
+                <p>The first is that, since Dreyfus and others merely point to deficiencies in RCBA without arguing that there is some less deficient decision method superior to RCBA, they provide only necessary but not sufficient grounds for rejecting RCBA. A judgment about sufficient grounds for rejecting RCBA ought to be based on a relative evaluation of all methodologic alternatives because reasonable people only reject a method if they have a better alternative to it. Showing deficiencies in RCBA does not establish that a better method is available.</p>
+                <p>A second argument is that Dreyfus, Tribe, Socolow, and others have "proved too much." If human decision making is unavoidably intuitive and if benefits are indistinguishable from costs, as they say, then no rational, debatable, nonarbitrary form of technologic policymaking is possible. This is because rational policymaking presupposes at least that persons can distinguish what is undesirable from what is desirable, costs from benefits. If they cannot, then this problem does not count against only RCBA but against any method. Moreover, Dreyfus and others ignore the fact that no policymaking methods, including RCBA, are perfect. And if not, then no theory should be merely criticized separately, since such criticisms say nothing about which theory is the least desirable of all.</p>
+                <p>Another argument, especially relevant to Dreyfus's claims that RCBA is not useful for individual tasks, such as the decision making involved in driving a car, is that many of the objections to RCBA focus on a point not at issue. That RCBA is not amenable to individual decision making is not at issue. The real issue is how to take into account millions of individual opinions, to make societal decisions. This is because societal decision making presupposes some unifying perspective or method of aggregating preferences of many people, a problem not faced by the individual making choices. Of course, accomplishing RCBA is not like individual decision making, and that is precisely why social choices require some formal analytic tool like RCBA.</p>
+                <p>Criticisms of RCBA as a formal method are also questionable because Dreyfus and others provide an incomplete analysis of societal decision making in making appeals to wisdom and intuition. They fail to specify, in a political and practical context, whose wisdom and intuitions ought to be followed and what criteria ought to be used when the wisdom and intuitions of different persons conflict in an environmental controversy. RCBA answers these questions in a methodical way.</p>
+                <p>A final argument against criticisms of RCBA, as a formal method, is that Dreyfus and others are incomplete in using policy arguments that ignore the real world importance of making decisions among finite alternatives and with finite resources. Wisdom may tell us that human life has an infinite value, but the scientific and economic reality is that attaining a zero-risk society is impossible and that there are not enough resources for saving all lives. In dismissing RCBA, Dreyfus and others fail to give their answers to the tough question of what criterion to use in distributing environmental health and safety.<sup>12</sup> If we do not use RCBA, what informal method is a bigger help? This realistic question they do not answer. If not, RCBA may be the best method among many bad methods.</p>
+
+                <div class="page-footer-note" style="margin-top:0;">508 A Defense of Risk-Cost-Benefit Analysis</div>
+                
+                <h2 class="section-header">OBJECTION 2: RCBA AS AN ECONOMIC METHOD</h2>
+                <p>Although these six argument-sketches are too brief to be conclusive in answering objections to RCBA as a formal method, let us move on to the second type of criticism so that we can get to the main focus of this essay. Philosophers of science and those who are critical of mainstream economics, like Kenneth Boulding, most often criticize RCBA as a deficient economic method. Perhaps the most powerful methodologic attack on RCBA deficiencies focuses on its central methodologic assumption: Societal welfare can be measured as the algebraic sum of compensating variations (CVs). By analytically unpacking the concept of compensating variation, one can bring many RCBA deficiencies to light.</p>
+                <p>According to RCBA theory, each individual has a CV that measures the change in his or her welfare as a consequence of a proposed policy action. For example, suppose a university was considering raising the price of student parking permits from $200 per year to $400 per year and using the additional money to build a parking garage on campus. Suppose also that the university would decide whether this act or policy was desirable on the basis of the way it affected all the students. Raising the parking fees and building a garage would affect the welfare of each student differently, depending on her (or his) circumstances. According to economic theory, the CV of each student would measure her particular change in welfare. To find exactly how each student would measure her CV, her change in welfare because of the changed parking fees, we would ask her to estimate it. For example, suppose Susan drives to campus each day and has a part-time job off campus, so she cannot carpool or ride a bus because she needs her car to move efficiently between campus and work. Susan wants to have the parking garage, however, because she has to look nice in her part-time job. If the university builds the parking garage, she will not get wet and muddy walking to her car and will not have to spend 20 minutes searching for a parking place. If someone asked Susan to put a monetary value on paying $200 more per year for parking in a garage, she might say this change was worth an additional $100, and that, even if the fees increased by $300, would rather have the parking garage. That is, Susan would say her CV was +$100 because she would gain from the new plan. However, suppose Sally also drives to campus each day and suppose her welfare is affected negatively by the increase in parking fees and the proposed parking garage. Because Sally lives at an inconvenient location two hours away, she must drive to campus and park her car every day. But because she lives so far away, has no part-time job, and is going to school with savings, Sally wants to pay as little as possible for parking and prefers the existing muddy, uncovered parking lots. If someone asks Sally to put a monetary value on paying $200 more per year for parking in a garage, she might say this change harmed her by $200. That is, Sally would say her CV was –$200. Economists who use RCBA believe that, in order to determine the desirability of building the parking garage and charging $200 more per year, they should add all the CVs of gainers (like Susan) and losers (like Sally) and see whether the gains of the action outweigh the losses.</p>
+                <p>Or consider the case of using CVs to measure the effects of building a dam. The CVs of some persons will be positive, and those of others will be negative. Those in the tourism industry might be affected positively, whereas those interested in wilderness experiences might be affected negatively. The theory is that the proposed dam is cost-beneficial if the sum of the CVs of the gainers can outweigh the sum of the CVs of the losers. In more technical language, according to economist Ezra Mishan, a CV is the sum of money that, if received or paid after the economic (or technologic) change in question, would make the individual no better or worse off than before the change. If, for example, the price of a bread loaf falls by 10 cents, the CV is the maximum sum a man would pay to be allowed to buy bread at this lower price. Per contra, if the loaf rises by 10 cents, the CV is the minimum sum the man must receive if he is to continue to feel as well off as he was before the rise in price.<sup>13</sup> Implicit in the notion of a CV are three basic presuppositions, all noted in standard texts on welfare economics and cost-benefit analysis: (1) the compensating variation is a measure of how gains can be so distributed to make everyone in the community better off<sup>14</sup>; (2) the criterion for whether one is better off is how well off one feels subjectively<sup>15</sup>; and (3) one's feelings of being well off or better off are measured by a sum of money judged by the individual and calculated at the given set of prices on the market.<sup>16</sup></p>
+                <p>According to the critics of RCBA, each of the three presuppositions built into the concept of a CV contains controversial assumptions.<sup>17</sup> The first presupposition, that CVs provide a measure of how to make everyone better</p>
+
+                <div class="page-footer-note" style="margin-top:0;">A Defense of Risk-Cost-Benefit Analysis 509</div>
+                
+                <p>off, is built on at least two questionable assumptions: Gains and losses, costs and benefits, for every individual in every situation can be computed numerically.<sup>18</sup> A second questionable assumption built into this presupposition is that employing an economic change to improve the community welfare is acceptable, even though distributional effects of this change are ignored. Many people have argued that the effect of this assumption is merely to make economic changes that let the rich get richer and the poor get poorer, thus reflecting the dominant ideologies of the power groups dominating society.</p>
+                <p>The second presupposition built into the notion of CV, that the criterion for whether one is better off is how one feels subjectively, as measured in quantitative terms, also embodies a number of doubtful assumptions. Some of these are that, as Kenneth Arrow admits, individual welfare is defined in terms of egoistic hedonism<sup>19</sup>; that the individual is the best judge of his welfare, that is, that preferences reveal welfare, despite the fact that utility is often different from morality<sup>20</sup>; that summed preferences of individual members of a group reveal group welfare<sup>21</sup>; and that wealthy and poor persons are equally able to judge their well-being. This last assumption has been widely criticized since willingness to pay is a function of the marginal utility of one's income. That is, rich people are more easily able to pay for improvements to their welfare than poor people are. As a consequence, poor persons obviously cannot afford to pay as much as rich persons in order to avoid the risks and other disamenities of technology-related environmental pollution.<sup>22</sup> That is why poor people are often forced to live in areas of high pollution, while wealthy people can afford to live in cleaner environments.</p>
+                <p>Continuing the analysis of CV, critics of RCBA point out that the third presupposition built into the notion of CV also involves a number of questionable assumptions. The presupposition that one's feelings of being better off are measured by money, and calculated in terms of market prices, includes at least one highly criticized assumption—that prices measure values. This assumption is controversial on a number of grounds. For one thing, it begs the difference between wants and morally good wants. It also ignores economic effects that distort prices. Some of these distorting effects include monopolies, externalities, speculative instabilities, and "free goods," such as clean air.<sup>23</sup></p>
+                <p>Because methodologic criticisms such as these have been a major focus of much contemporary writing in philosophy of economics and in sociopolitical philosophy, discussion of them is extremely important. However, economists generally admit most of the preceding points but claim that they have no better alternative method to use than RCBA. If their claim is at least partially correct, as I suspect it is (see the previous section of this essay), then many of the preceding criticisms of RCBA are beside the point. Also, both economists and philosophers have devised ways of avoiding most of the troublesome presuppositions and consequences of the assumptions built into the notion of compensating variation. Chief among these ways of improving RCBA are use of alternative weighting schemes and employment of various ways to make the controversial aspects of RCBA explicit and open to evaluation. Use of a weighting scheme for RCBA would enable one, for example, to "cost" inequitably distributed risks more than equitably distributed ones. Also, if one desired, it would be possible to employ a Rawlsian weighting scheme for promoting the welfare of the least-well-off persons. One of the chief reforms, important for addressing the economic deficiencies of RCBA, would be to employ a form of adversary assessment in which alternative RCBA studies would be performed by groups sharing different ethical and methodologic presuppositions. Such adversary assessment has already been accomplished, with success, in Ann Arbor, Michigan, and in Cambridge, Massachusetts.<sup>24</sup> Hence, at least in theory, there are ways to avoid the major economic deficiencies inherent in RCBA.</p>
+
+                <h2 class="section-header">OBJECTION 3: RCBA AS AN ETHICAL METHOD</h2>
+                <p>The most potentially condemning criticisms of RCBA come from the ranks of moral philosophers. Most of those who criticize RCBA on ethical grounds, as one might suspect, are deontologists who employ standard complaints against utilitarians. Philosophers, such as Alasdair MacIntyre and Douglas MacLean, claim that some things are priceless and not amenable to risk-benefit costing. Alan Gewirth argues that certain commitments—for example, the right not to be caused to contract cancer—cannot be traded off (via RCBA) for some utilitarian benefit.<sup>25</sup> In sum, the claim of these ethicist critics of RCBA is that moral commitments, rights, and basic goods are inviolable and incommensurable and hence cannot be "bargained away" in a utilitarian scheme like RCBA, which is unable to take adequate account of them and of values like distributive justice.</p>
+                <p>Of course, the linchpin assumption of the arguments of Gewirth, MacLean, and others is that RCBA is indeed utilitarian. If this assumption can be proved wrong, then (whatever else is wrong with RCBA) it cannot be attacked on the grounds that it is utilitarian.</p>
+
+                <h3 class="section-header" style="font-size: 1.25rem;">Misguided Ethical Criticism of RCBA</h3>
+                <p>RCBA is not essentially utilitarian in some damaging sense for a number of reasons. First of all, let's admit that RCBA is indeed utilitarian in one crucial respect: The optimal choice is always determined by some function of the utilities attached to the consequences of all the options considered. Hence, reasoning in RCBA is unavoidably consequentialist.</p>
+
+                <div class="page-footer-note" style="margin-top:0;">510 A Defense of Risk-Cost-Benefit Analysis</div>
+
+                <p>Because it is unavoidably consequentialist, however, means neither that RCBA is consequentialist in some disparaging sense, nor that it is only consequentialist, both points that are generally begged by deontological critics of RCBA. Of course, RCBA is necessarily consequentialist, but so what? Anyone who follows some deontological theory and ignores consequences altogether is just as simplistic as anyone who focuses merely on consequences and ignores deontological elements. This is exactly the point recognized by Amartya Sen when he notes that Jeremy Bentham and John Rawls capture two different but equally important aspects of interpersonal welfare considerations.<sup>26</sup> Both provide necessary conditions for ethical judgments, but neither is sufficient.</p>
+                <p>Although RCBA is necessarily consequentialist, there are at least four reasons that it is not only consequentialist in some extremist or disparaging sense. First, any application of RCBA principles presupposes that we make some value judgments that cannot be justified by utilitarian standards alone.<sup>27</sup> For example, suppose we are considering which of a variety of possible actions (e.g., building a nuclear plant, a coal plant, or a solar facility) ought to be evaluated in terms of RCBA. A utilitarian value judgment would not suffice for reducing the set of options. It would not suffice for deciding which of many available chemicals to use in preserving foods in a given situation, for example, because we would not have performed the utility weighting yet. Usually we use deontological grounds for rejecting some option. For instance, we might reject chemical X as a food preservative because it is a powerful carcinogen and use of it would threaten consumers' rights to life.</p>
+                <p>Second, RCBA also presupposes another type of nonutilitarian value judgment by virtue of the fact that it would be impossible to know the utilities attached to an infinity of options because they are infinite. To reduce these options, one would have to make some nonutilitarian value judgments about which options not to consider. For example, suppose chemical Z (considered for preserving food) were known to cause death to persons with certain allergic sensitivities or to persons with diabetes. On grounds of preventing a violation of a legal right to equal protection, analysts using RCBA could simply exclude chemical Z from consideration, much as they exclude technically or economically infeasible options for consideration</p>
+                <p>Also, in the course of carrying out RCBA calculations—one is required to make a number of nonutilitarian value judgments. Some of these are: (1) There is a cardinal or ordinal scale in terms of which the consequences may be assigned some number, (2) a particular discount rate ought to be used, (3) or certain values ought to be assigned to certain consequences. For example, if policymakers subscribed to the deontological, evaluative judgment that future generations have rights equal to our own, then they could employ a zero discount rate. Nothing in the theory underlying RCBA would prevent them from doing so and from recognizing this deontological value.</p>
+                <p>Third, one could weight the RCBA parameters to reflect whatever value system society wishes. As Ralph Keeney has noted, one could always assign the value of negative infinity to consequences alleged to be the result of an action that violated some deontological principle.<sup>28</sup> Thus, if one wanted to avoid any technology likely to result in violation of people's rights not to be caused to contract cancer, one could easily do so.</p>
+                <p>Fourth, RCBA is not necessarily utilitarian, as Patrick Suppes points out, because the theory could, in principle, be adopted (without change) to represent a "calculus of obligation and a theory of expected obligation"; in other words, RCBA is materially indifferent, a purely formal calculus with an incomplete theory of rationality.<sup>29</sup> This being so, one need not interpret only market parameters as costs. Indeed, economists have already shown that one can interpret RCBA to accommodate egalitarianism and intuitionism as well as utilitarianism.<sup>30</sup> More generally, Kenneth Boulding has eloquently demonstrated that economic supply-demand curves can be easily interpreted to fit even a benevolent or an altruistic ethical framework, not merely a utilitarian ethical framework.<sup>31</sup></p>
+
+                <h2 class="section-header">THE REAL SOURCE OF RCBA PROBLEMS</h2>
+                <p>If these four arguments, from experts such as Suppes and Keeney, are correct, then much of the criticism of RCBA, at least for its alleged ethical deficiencies, has been misguided. It has been directed at the formal, economic, and ethical theory underlying RCBA, when apparently something else is the culprit. This final section will argue that there are at least two sources of the problems that have made RCBA so notorious. One is the dominant political ideology in terms of which RCBA has been interpreted, applied, and used. The second source of the difficulties associated with RCBA has been the tendency of both theorists and practitioners—economists and philosophers alike—to claim more objectivity for the conclusions of RCBA than the evidence warrants. Let's investigate both of these problem areas.</p>
+                <p>Perhaps the major reason that people often think, erroneously, that RCBA is utilitarian is that capitalist utilitarians first used the techniques. Yet, to believe that the logical and ethical presuppositions built into economic methods can be identified with the logical and ethical beliefs of those who originate or use the methods is to commit the genetic fallacy.<sup>32</sup> Origins do not necessarily determine content. And, if not, then RCBA has no built-in ties to utilitarianism.<sup>33</sup> What has happened is that, in practice, one interpretation of RCBA has been dominant. This interpretation, in terms of capitalist utilitarianism, is what is incompatible with nonutilitarian values. But this means that the problems associated with</p>
+                
+                <div class="page-footer-note" style="margin-top:0;">A Defense of Risk-Cost-Benefit Analysis 511</div>
+
+                <p>the dominant political ideology, in terms of which RCBA is interpreted, has been confused with RCBA problems. Were the methods interpreted according to a different ideology, it would be just as wrong to equate RCBA with that ideology.</p>
+                <p>Confusion about the real source of the problems with RCBA has arisen because of the difficulty of determining causality. The cause of the apparent utilitarian biases in RCBA is the dominant ideology in terms of which people interpret it. The cause is not the method itself. This is like the familiar point, which often needs reiteration, that humans, not computers, cause computer errors. Given this explanation, it is easy to see why C. B. Macpherson argues that there is no necessary incompatibility between maximizing utilities and maximizing some nonutilitarian value. The alleged incompatibility arises only after one interprets the nonutilitarian value. In this case, the alleged incompatibility arises only when one interprets utilities in terms of unlimited individual appropriations and market incentives.<sup>34</sup></p>
+                <p>If the preceding view of RCBA is correct and if people have erroneously identified one—of many possible—interpretations of RCBA with the method, then obviously they have forgotten that RCBA is a formal calculus to be used with a variety of interpretations. But if they have forgotten that RCBA is open to many different interpretations, then they have identified one dominant political interpretation with RCBA itself, then they have forgotten that, because of this dominant interpretation, RCBA is politically loaded. And if they have forgotten that they are employing a utilitarian interpretation that is politically loaded, then they probably have assumed that RCBA is objective by virtue of its being part of science.</p>
+                <p>Utilitarian philosophers and welfare economists have been particularly prone to the errors of believing that utilitarian interpretations of decision making are objective and value-free. Utilitarian R. M. Hare argues in his book, for example, that moral philosophy can be done without ontology<sup>35</sup>; he also argues that moral philosophy can be done objectively and with certainty, that there are no irresolvable moral conflicts<sup>36</sup>; and that objective moral philosophy is utilitarian in character.<sup>37</sup> Hare even goes so far as to argue that a hypothetical-deductive method can be used to obtain moral evaluations and to test them.<sup>38</sup> Hare, one of the best moral philosophers of the century, equates utilitarian tenets with value-free, certain conclusions obtained by the scientific method of hypothesis-deduction. His error here means that we ought not be surprised that lesser minds also have failed to recognize the evaluative and interpretational component in utilitarianism and in the utilitarian interpretations of RCBA. Numerous well-known practitioners of RCBA have argued that the technique is objective, and they have failed to recognize its value component.<sup>39</sup> Milton Friedman calls economics objective,"<sup>40</sup> and Chauncey Starr, Chris Whipple, David Okrent, and other practitioners of RCBA use the same terminology; they even claim that those who do not accept their value-laden interpretations of RCBA are following merely "subjective" interpretations.<sup>41</sup></p>
+                <p>Given that both moral philosophers and practitioners of RCBA claim that their utilitarian analyses are objective, they create an intellectual climate in which RCBA is presumed to be more objective, value-free, and final than it really is. Hence, one of the major problems with RCBA is not that it is inherently utilitarian but that its users erroneously assume it has a finality that it does not possess. It is one of many possible techniques, and it has many interpretations. Were this recognized, then people would not oppose it so vehemently.</p>
+                
+                <h2 class="section-header">SUMMARY AND CONCLUSIONS</h2>
+                <p>RCBA has many problems. As a formal method, it suggests that life is more exact and precise than it really is. As an economic method, it suggests that people make decisions on the basis of hedonism and egoism. As an ethical method, people have interpreted it in utilitarian ways, in ways that serve the majority of people, but not always the minority.</p>
+                <p>Despite all these criticisms, RCBA is often better than most environmentalists believe. It is better because criticisms of RCBA often miss the point in two important ways. First, the criticisms miss the point that society needs some methodical way to tally costs and benefits associated with its activities. While it is true that RCBA has problems because of its being a formal, economic method, this criticism of it misses the point. The point is that we humans need some clear, analytic way to help us with environmental decision making. Most people would not write a blank check in some area of personal life, and no one ought to write a blank check for solving societal problems. Not using some technique like RCBA means that we would be writing a blank check, making decisions and commitments without being aware of their costs, benefits, and consequences. All that RCBA asks of us is that we add up all the risks, benefits, and costs of our actions. It asks that we not make decisions without considering all the risks, costs, and benefits. The point is that RCBA does not need to be perfect to be useful in societal and environmental decision making; it needs only to be useful, helpful, and better than other available methods for making societal decisions.</p>
+                <p>Second, criticisms of RCBA miss the point because they blame RCBA for a variety of ethical problems, mainly problems associated with utilitarianism. RCBA, however, is merely a formal calculus for problem solving. The users of RCBA are responsible for the capitalistic, utilitarian interpretation of it. If so, then what needs to be done is neither to abandon RCBA, nor to condemn it as utilitarian, but to give some philosophical lessons in the value ladenness of its interpretations. We need more ethical and epistemological sensitivity among those who interpret RCBA, and we need to recognize practical, political problems for what they are. The problem is with us, with our values, with our politics. The problem is not with RCBA methods that merely reflect our values and politics.</p>
+
+                <div class="page-footer-note" style="margin-top:0;">512 A Defense of Risk-Cost-Benefit Analysis</div>
+
+                <h2 class="section-header">Notes</h2>
+                <p style="font-size: 0.9rem; line-height: 1.6;">
+                    1. K. S. Shrader-Frechette, Nuclear Power and Public Policy (Boston: Kluwer, 1983), 54–60.<br>
+                    2. K. S. Shrader-Frechette, Burying Uncertainty (Berkeley: University of California Press, 1993), 239–241.<br>
+                    3. K. S. Shrader-Frechette and E. McCoy, Method in Ecology (New York: Cambridge University Press, 1993), 175–185.<br>
+                    4. See Ian G. Barbour, Technology, Environment, and Human Values (New York: Praeger, 1980), 163–164.<br>
+                    5. Luther J. Carter, "Dispute over Cancer Risk Quantification," Science 203, no. 4387 (1979): 1324–1325.<br>
+                    6. Stuart E. Dreyfus, "Formal Models vs. Human Situational Understanding: Inherent Limitations on the Modeling of Business Expertise," Technology and People 1 (1982): 133–165. See also S. Dreyfus, "The Risks! and Benefits? of Risk-Benefit Analysis," unpublished paper presented on March 24, 1983, in Berkeley, California, at the Western Division meeting of the American Philosophical Association. Stuart Dreyfus and his brother Hubert Dreyfus share the beliefs attributed to Stuart in these and other publications. They often co-author publications. See, for example, S. Dreyfus and H. Dreyfus, "The Scope, Limits, and Training Implications of Three Models of ... Behavior," ORC 79-2 (Berkeley: Operations Research Center, University of California, February 1979).<br>
+                    7. S. Dreyfus, "Formal Models," op. cit., note 6, 161. See also Lawrence H. Tribe, "Technology Assessment and the Fourth Discontinuity," Southern California Law Review 46, no. 3 (June 1973): 659; and Robert Socolow, "Failures of Discourse," in D. Scherer and T. Attig, eds., Ethics and the Environment (Englewood Cliffs, NJ: Prentice Hall, 1983); 152–166.<br>
+                    8. S. Dreyfus, "Formal Models," op. cit., note 6, 161–163; and Douglas MacLean, "Understanding the Nuclear Power Controversy," in A. L. Caplan and H. Englehardt, eds., Scientific Controversies (Cambridge: Cambridge University Press, 1983), Part 5.<br>
+                    9. S. Dreyfus, "The Risks! and Benefits?" op. cit., note 6, 2.<br>
+                    10. Peter Self, Econocrats and the Policy Process: The Politics and Philosophy of Cost-Benefit Analysis (London: Macmillan, 1975), 70; Alisdair MacIntyre, "Utilitarians and Cost-Benefit Analysis," in D. Scherer and T. Attig, eds., Ethics and the Environment, op. cit., note 7, 143–145; and Amory Lovins, "Cost-Risk-Benefit Assessment in Energy Policy," George Washington Law Review 45, no. 5 (August 1977): 913–916, 925–926. See also Robert Coburn, "Technology Assessment, Human Good, and Freedom," in K. E. Goodpaster and K. M. Sayer, eds., Ethics and Problems of the 21st Century (Notre Dame: University of Notre Dame Press, 1979), 108; E. J. Mishan, Cost-Benefit Analysis (New York: Praeger, 1976), 160–161; Gunnar Myrdal, The Political Element in the Development of Economic Theory, Paul Streeten, trans. (Cambridge: Harvard University Press, 1955), 89; and A. Radomysler, "Welfare Economics and Economic Policy," in K. Arrow and T. Scitovsky, eds., Readings in Welfare Economics (Homewood, IL: Irwin, 1969), p. 89.<br>
+                    11. See K. S. Shrader-Frechette, Science Policy, Ethics, and Economic Methodology (Boston: Reidel, 1985), 38-54. See also K. S. Shrader-Frechette, Risk and Rationality (Berkeley: University of California Press, 1991), 169-196.<br>
+                    12. Shrader-Frechette, Science Policy, op. cit., note 11, 36–54; K. S. Shrader-Frechette, Risk and Rationality, op. cit., note 11, 169–183.<br>
+                    13. Mishan, Cost-Benefit Analysis, op. cit., note 10, 391.<br>
+                    14. Ibid., 390.<br>
+                    15. Ibid., 309.<br>
+                    16. E. J. Mishan, Welfare Economics (New York: Random House, 1969), 113; see also 107–113.<br>
+                    17. For a more complete analysis of these points, see K. S. Shrader-Frechette, "Technology Assessment as Applied Philosophy of Science," Science, Technology, and Human Values 6, no. 33 (Fall 1980), 33–50.<br>
+                    18. M. W. Jones-Lee, The Value of Life (Chicago: University of Chicago Press, 1976), 3; and R. Coburn, "Technology Assessment," in K. E. Goodpaster and K. M. Sayer, eds., Ethics and Problems of the 21st Century, op. cit., note 10, 109. See also Oskar Morgenstern, On the Accuracy of Economic Observations (Princeton, NJ: Princeton University Press, 1963), 100–101.<br>
+                    19. Cited in V. C. Walsh, "Axiomatic Choice Theory and Values," in Sidney Hook, ed., Human Values and Economic Policy (New York: New York University Press, 1967), 197.<br>
+                    20. See R. Coburn, "Technology Assessment," in K. E. Goodpaster and K. M. Sayer, eds., Ethics and Problems of the 21st Century, op. cit., note 10, 109-110; Gail Kennedy, "Social Choice and Policy Formation," in S. Hook, ed., Human Values and Economic Policy, op. cit., note 19, 142; and John Ladd, "The Use of Mechanical Models for the Solution of Ethical Problems," in S. Hook, ed., Human Values and Economic Policy, op. cit., 167-168. See also Mark Lutz and Kenneth Lux, The Challenge of Humanistic Economics (London: Benjamin/Cummings, 1979). Finally, see Richard Brandt, "Personal Values and the Justification of Institutions," in S. Hook, ed., Human Values and Economic Policy, op. cit., note 19, 37; and
+                </p>
+
+                <div class="page-footer-note" style="margin-top:0;">A Defense of Risk-Cost-Benefit Analysis 513</div>
+                
+                <p style="font-size: 0.9rem; line-height: 1.6;">
+                    John Ladd, "Models," in S. Hook, ed., Human Values and Economic Policy, op. cit., note 19, 159–168.<br>
+                    21. G. Kennedy, "Social Choice," S. Hook, ed., Human Values and Economic Policy, op. cit., note 20, 148, makes the same point.<br>
+                    22. Peter S. Albin, "Economic Values and the Values of Human Life," in S. Hook, ed., Human Values and Economic Policy, op. cit., note 19, 97; and M. W. Jones-Lee, Value of Life, op. cit., note 18, 20-55.<br>
+                    23. See J. A. Hobson, Confessions of an Economic Heretic (Sussex, England: Harvester Press, 1976), 39–40; and Benjamin M. Anderson, Social Value (New York: A. M. Kelley, 1966), 24, 26, 31, 162. See also Kenneth Boulding, "The Basis of Value Judgments in Economics," in S. Hook, ed., Human Values and Economic Policy, op. cit., note 19, 67-79; and O. Morgenstern, Accuracy of Economic Observations, op. cit., note 18, 19. Finally, see E. J. Mishan, Cost-Benefit Analysis, op. cit., note 10, 393–394; and E. F. Schumacher, Small Is Beautiful (New York: Harper, 1973), 38-49; as well as N. Georgescu-Roegen, Energy and Economic Myths (New York: Pergamon, 1976), x, 10–14.<br>
+                    24. See Shrader-Frechette, Science Policy, op. cit., note 11, Chapters 8–9; Shrader-Frechette, Risk and Rationality, op. cit., note 11; and B. A. Weisbrod, "Income Redistribution Effects and Benefit-Cost Analysis," in S. Chase, ed., Problems in Public Expenditure Analysis (Washington, D.C.: Brookings, 1972), 177-208. See also P. Dasgupta, S. Marglin, and A. Sen, Guidelines of Project Evaluation (New York: UNIDO, 1972); and A. V. Kneese, S. Ben-David, and W. Schulze, "The Ethical Foundations of Benefit-Cost Analysis," in D. MacLean and P. Brown, eds., "A Study of the Ethical Foundations of Benefit-Cost Techniques," unpublished report done with funding from the National Science Foundation, Program in Ethics and Values in Science and Technology, August 1979.<br>
+                    25. Lovins, "Cost-Risk-Benefit Assessment," op. cit., note 10, 929-930; Douglas MacLean, "Qualified Risk Assessment and the Quality of Life," in D. Zinberg, ed., Uncertain Power (New York: Pergamon, 1983), Part V; and Alan Gewirth, "Human Rights and the Prevention of Cancer," in D. Scherer and T. Attig, eds., Ethics and the Environment, op. cit., note 7, 177.<br>
+                    26. Amartya K. Sen, "Rawls Versus Bentham," in N. Daniels, ed., Reading Rawls (New York: Basic Books, 1981), 283–292.<br>
+                    27. Ronald Giere, "Technological Decision Making," in M. Bradie and K. Sayre, eds., Reason and Decision (Bowling Green, OH: Bowling Green State University Press, 1981), Part 3, makes a similar argument.<br>
+                    28. Ralph G. Keeney mentioned this to me in a private conversation at Berkeley in January 1983.<br>
+                    29. Patrick Suppes, "Decision Theory," in P. Edwards, ed., Encyclopedia of Philosophy, Vol. 1 and 2 (New York: Collier-Macmillan, 1967), 311.<br>
+                    30. P. S. Dasgupta and G. M. Heal, Economic Theory and Exhaustible Resources (Cambridge: Cambridge University Press, 1979), 269–281.<br>
+                    31. K. Boulding, "Value Judgments," in S. Hook, ed., Human Values and Economic Policy, op. cit., note 23, 67ff.<br>
+                    32. Alexander Rosenberg makes this point in Macroeconomic Laws (Pittsburgh: University of Pittsburgh Press, 1976), 203.<br>
+                    33. Tribe, "Technology Assessment," op. cit., note 7, 628-629; MacLean, "Qualified Risk Assessment," op. cit., note 25, Parts 5 and 6; MacIntyre, "Utilitarians and Cost-Benefit Analysis," op. cit., note 10, 139-142; Gewirth, "Human Rights," op. cit., note 25, 177; and C. B. MacPherson, "Democratic Theory: Ontology and Technology," in C. Mitcham and R. Mackey, eds., Philosophy and Technology (New York: Free Press, 1972), 167-168.<br>
+                    34. See note 33.<br>
+                    35. R. M. Hare, Moral Thinking (Oxford: Clarendon Press, 1981), 6 (see also 210–211).<br>
+                    36. Ibid, 26.<br>
+                    37. Ibid., 4.<br>
+                    38. Ibid., 12-14.<br>
+                    39. See, for example, Chauncey Starr, "Benefit-Cost Studies in Sociotechnical Systems," in Committee on Engineering Policy, Perspectives on Benefit-Risk Decision Making (Washington, D.C.: National Academy of Engineering, 1972), 26ff.; Chauncey Starr and Chris Whipple, "Risks of Risk Decisions," Science 208, no. 4448 (1980): 1116-1117; and D. Okrent and C. Whipple, Approach to Societal Risk Acceptance Criteria and Risk Management, Report no. PB-271264 (Washington, D.C.: Department of Commerce, 1977), 10.<br>
+                    40. Milton Friedman, "Value Judgments in Economics," in S. Hook, ed., Human Values and Economic Policy, op. cit., note 19, 85-88.<br>
+                    41. See also note 39; K. S. Shrader-Frechette, Risk Analysis and Scientific Method (Boston: Reidel, 1985), especially 176–189; and Shrader-Frechette, Risk and Rationality, op. cit., note 11, 169–196.
+                </p>
+
+                <h2 class="section-header">Study Questions</h2>
+                <ol style="list-style-type: decimal; margin-left: 20px;">
+                    <li>Compare Shrader-Frechette's essay with the two previous selections by William Rees and Mark Sagoff. How do they differ? Who has the stronger arguments?</li>
+                    <li>What is the risk-cost-benefit analysis (RCBA), and how does it work? How valuable is it for environmental policy? Discuss Shrader-Frechette's assessment of this issue.</li>
+                    <li>What are the major objections to RCBA that Shrader-Frechette considers? How does she deal with them? Discuss her arguments.</li>
+                </ol>
+
+                <div class="page-footer-note" style="margin-top:0; text-align: left; border: none; padding: 0;">514 A Defense of Risk-Cost-Benefit Analysis</div>
+
+                <p style="text-align: right; margin-top: 40px; color: var(--color-terminal-yellow);">*End of Article 77_RCBA_Defense.html*</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
