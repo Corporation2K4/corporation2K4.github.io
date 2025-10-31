@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3U8 Stream Player | Corporation2K4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691429093626509"
+        crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --color-background: #000000;
+            --color-terminal-green: #00FF00;
+            --color-terminal-blue: #1e90ff;
+            --color-terminal-yellow: #FFD700;
+            --color-terminal-white: #FFFFFF;
+            --color-dim-green: #004400;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-terminal-green);
+            font-family: 'Fira Mono', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        #app-container {
+            max-width: 1200px;
+            margin: 32px auto 0 auto;
+            background: #111;
+            border-radius: 18px;
+            border: 3px solid var(--color-terminal-green);
+            box-shadow: 0 0 40px var(--color-terminal-green), 0 2px 28px #0009;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #terminal-header {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(90deg, #002e00 80%, var(--color-terminal-blue) 100%);
+            border-radius: 14px 14px 0 0;
+            border-bottom: 3px solid var(--color-terminal-green);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--color-terminal-green);
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            color: var(--color-terminal-white);
+        }
+        #top-nav-bar {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; 
+            gap: 10px 20px;
+            margin-top: 15px; 
+            padding-top: 10px;
+            border-top: 1px dashed var(--color-terminal-green);
+        }
+        .nav-button {
+            background-color: transparent;
+            color: var(--color-terminal-white);
+            border: 2px solid var(--color-terminal-white);
+            padding: 8px 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none; 
+            transition: all 0.2s;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 5px var(--color-terminal-white);
+        }
+        .nav-button:hover {
+            background-color: var(--color-terminal-white);
+            color: #000;
+            box-shadow: 0 0 10px var(--color-terminal-yellow);
+            border-color: var(--color-terminal-yellow);
+        }
+        .nav-button.active {
+            background-color: var(--color-terminal-yellow);
+            color: #000;
+            border-color: var(--color-terminal-yellow);
+            box-shadow: 0 0 15px var(--color-terminal-yellow);
+        }
+        #main-layout {
+            display: flex;
+            flex-direction: column; 
+        }
+        #text-content {
+            padding: 32px 36px;
+            background: #151819;
+            border-radius: 0 0 14px 14px;
+            flex: 1 1 100%; 
+            min-width: 0; 
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .player-section {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 680px;
+            background: #181818;
+            border: 2px solid var(--color-terminal-green);
+            border-radius: 14px;
+            padding: 28px 20px 18px 20px;
+            box-shadow: 0 0 15px var(--color-dim-green);
+            margin-bottom: 26px;
+        }
+        label {
+            color: var(--color-terminal-yellow);
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 6px 10px;
+            border: 1.5px solid var(--color-terminal-green);
+            border-radius: 6px;
+            background: #0b0b0b;
+            color: var(--color-terminal-white);
+            margin-bottom: 13px;
+            margin-right: 8px;
+            font-family: 'Fira Mono', monospace;
+            font-size: 1rem;
+        }
+        button {
+            background: var(--color-terminal-yellow);
+            color: #222;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            margin-bottom: 16px;
+            margin-left: 2px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Fira Mono', monospace;
+        }
+        button:hover {
+            background: #fff700;
+        }
+        .notice {
+            font-size: 0.95rem;
+            color: var(--color-terminal-blue);
+            margin-bottom: 12px;
+        }
+        #player-container {
+            width: 100%;
+            margin-top: 12px;
+        }
+        .adsense-block {
+            margin: 18px 0;
+            text-align: center;
+        }
+        video {
+            background: #000;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 640px;
+            height: 360px;
+            outline: 2px solid var(--color-terminal-green);
+        }
+        .error-message {
+            color: #ff3333;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-header">
+            Corporation2K4: The Security & Tech Log
+            <span class="status"></span>
+            <nav id="top-nav-bar">
+                <a href="index.html" class="nav-button">INDEX :: Home</a>
+                <a href="articles.html" class="nav-button">BLOG :: Security Articles</a> 
+                <a href="tutorials.html" class="nav-button">GUIDES :: Tutorials</a>
+                <a href="about_us.html" class="nav-button">INFO :: About Me</a>
+                <a href="contact_us.html" class="nav-button">HELP :: Contact Us</a>
+                <a href="privacy_policy.html" class="nav-button">LEGAL :: Privacy Policy</a>
+                <a href="terms_and_condition.html" class="nav-button">LEGAL :: Disclaimer/T&C</a>
+                <a href="m3u8_player.html" class="nav-button active">TOOLS :: M3U8 Stream Player</a>
+            </nav>
+        </div>
+        <div id="main-layout">
+            <div id="text-content">
+                <h2 style="color:var(--color-terminal-yellow);font-size:1.25rem;margin-bottom: 14px;">Online M3U8 Stream Player</h2>
+                <div class="player-section">
+                    <div class="notice">
+                        Paste any public <b>.m3u8</b> link (HLS stream) below. No files are uploaded or stored.<br>
+                        <b>Tip:</b> Make sure the stream allows CORS and is public.
+                    </div>
+                    <label for="m3u8url">M3U8 Stream URL:</label><br>
+                    <input type="text" id="m3u8url" placeholder="https://example.com/playlist.m3u8" autofocus>
+                    <button onclick="playStream()">Play</button>
+                    <div id="player-container">
+                        <video id="video" controls poster="" preload="none"></video>
+                        <div id="error-message" class="error-message"></div>
+                    </div>
+                </div>
+                <div class="adsense-block">
+                    <!-- Google AdSense Responsive Ad -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1691429093626509"
+                         data-ad-slot="1234567890"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+                <div class="notice">
+                    <b>Note:</b> This tool is for educational, legal, and personal streams only.
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function playStream() {
+            const url = document.getElementById('m3u8url').value.trim();
+            const video = document.getElementById('video');
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = '';
+            if(!url || !url.endsWith('.m3u8')) {
+                errorDiv.textContent = 'Please enter a valid .m3u8 stream URL.';
+                video.pause();
+                video.removeAttribute('src');
+                video.load();
+                return;
+            }
+            if(window.hls) {
+                window.hls.destroy();
+                window.hls = null;
+            }
+            if (Hls.isSupported()) {
+                window.hls = new Hls();
+                window.hls.loadSource(url);
+                window.hls.attachMedia(video);
+                window.hls.on(Hls.Events.ERROR, function(event, data) {
+                    errorDiv.textContent = 'Playback error. This stream may block CORS or be offline.';
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.addEventListener('error', function() {
+                    errorDiv.textContent = 'Playback error. This stream may block CORS or be offline.';
+                }, { once: true });
+            } else {
+                errorDiv.textContent = 'Your browser does not support HLS playback.';
+            }
+        }
+    </script>
+</body>
+</html>
